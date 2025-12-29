@@ -608,6 +608,7 @@ section { padding: 50px 5%; }
 
 /* --- CARDS --- */
 .team-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 25px; }
+.team-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px; }
 .card {
     background: var(--bg-card); border: 1px solid #333; display: flex; flex-direction: column;
     transition: transform 0.3s, border-color 0.3s;
@@ -631,6 +632,42 @@ section { padding: 50px 5%; }
 
 /* --- TABLES --- */
 .table-responsive { overflow-x: auto; margin-top: 20px; }
+    /* Force grids to single column on mobile */
+    .match-row, .team-grid, .roster-container, .match-dashboard-card {
+        grid-template-columns: 1fr !important;
+        width: 100% !important;
+        gap: 20px !important;
+        padding: 0 10px !important;
+    }
+
+    /* Ensure cards and matches take full width */
+    .card, .match-card, .match-card-v3, .match-card-row {
+        width: 100% !important;
+        margin-bottom: 20px !important;
+    }
+
+    /* Tables: allow horizontal scroll on small screens */
+    .table-responsive { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+}
+
+@media (max-width: 600px) {
+    /* Scale down large hero titles to avoid horizontal scrolling */
+    .hero-title, .hero h1, .section-title, h1 {
+        font-size: 2.5rem !important;
+        line-height: 1.1 !important;
+    }
+    .hero-sub, .hero p { font-size: 0.9rem !important; }
+
+    /* Smaller spacing and tighter cards */
+    .card-content { padding: 16px !important; }
+    .card-image { height: 160px !important; }
+
+    /* Ensure match scores and team names don't overflow */
+    .score-main, .m-score-main-v3, .m-score-main { font-size: clamp(1.2rem, 6vw, 2.2rem) !important; line-height: 1 !important; }
+    .team-name, .team { font-size: 1rem !important; }
+    .match-meta { flex: none !important; width: 100% !important; }
+    .match-row { flex-direction: column !important; align-items: stretch !important; }
+}
 .ranking-table, .training-table {
     width: 100%; border-collapse: collapse; background-color: var(--bg-card);
     min-width: 600px; font-family: var(--font-body); border: 2px solid #444;

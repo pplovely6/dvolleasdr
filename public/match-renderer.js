@@ -5,12 +5,47 @@ document.addEventListener("DOMContentLoaded", () => {
     fetch("/api/data/matches-db")
         .then(res => res.json())
         .then(data => {
+            // parse date robustly
+            function parseDateString(s) {
+                if (!s) return NaN;
+                s = s.toString().trim();
+                // Try Date constructor first (handles '10 JAN 2026' and ISO)
+                const byCtor = new Date(s);
+                if (!isNaN(byCtor)) return byCtor.getTime();
+                // Digit parts like 11/10/25 or 6/12/2025
+                const parts = s.match(/\d+/g);
+                if (parts && parts.length >= 3) {
+                    let day = parts[0], month = parts[1], year = parts[2];
+                    if (year.length === 2) year = '20' + year;
+                    return new Date(parseInt(year,10), parseInt(month,10) - 1, parseInt(day,10)).getTime();
+                }
+                // Fallback: try parsing month names (e.g. '10 JAN 2026')
+                const tokens = s.split(/\s+/);
+                if (tokens.length >= 3) {
+                    const mnames = {jan:0,feb:1,mar:2,apr:3,may:4,jun:5,jul:6,aug:7,sep:8,oct:9,nov:10,dec:11};
+                    const day = parseInt(tokens[0],10);
+                    const mon = tokens[1].toLowerCase().slice(0,3);
+                    const yearT = tokens[2];
+                    const month = mnames[mon];
+                    const year = (yearT && yearT.length===2) ? parseInt('20'+yearT,10) : parseInt(yearT,10);
+                    if (!isNaN(day) && month !== undefined && !isNaN(year)) return new Date(year, month, day).getTime();
+                }
+                return NaN;
+            }
+
             containers.forEach(container => {
                 const limit = parseInt(container.dataset.limit) || 3;
                 const playerPoints = JSON.parse(container.dataset.playerPoints || "{}");
-                container.innerHTML = ""; 
+                container.innerHTML = "";
 
-                [...data.matches].reverse().slice(0, limit).forEach(match => {
+                const matches = Array.isArray(data.matches) ? data.matches.slice() : [];
+                matches.sort((a,b) => {
+                    const da = parseDateString(a.date);
+                    const db = parseDateString(b.date);
+                    return (db || 0) - (da || 0); // newest first
+                });
+
+                matches.slice(0, limit).forEach(match => {
                     const points = playerPoints[match.id] || null;
                     container.innerHTML += renderVWCard(match, points);
                 });

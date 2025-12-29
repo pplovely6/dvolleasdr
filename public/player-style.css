@@ -413,5 +413,23 @@
     .m-pts-v2, .m-pts-badge { display:flex; justify-content:center; align-items:center; }
     .m-team-row, .m-team-v3 { white-space: normal; overflow-wrap: anywhere; }
 }
+/* Additional mobile fixes to override inline styles on team pages */
+@media (max-width: 900px) {
+    .match-row, .team-grid, .roster-container {
+        grid-template-columns: 1fr !important;
+        width: 100% !important;
+        gap: 20px !important;
+        padding: 0 10px !important;
+    }
+    .card, .match-card, .match-card-v3 { width: 100% !important; margin-bottom: 18px !important; }
+    .table-responsive { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+}
+
+@media (max-width: 600px) {
+    .hero h1, .hero-title { font-size: 2.5rem !important; line-height: 1.1 !important; }
+    .hero p, .hero-sub { font-size: 0.9rem !important; }
+    .m-score-main-v3, .m-score-v2, .main-score { font-size: clamp(1rem, 6vw, 2.2rem) !important; }
+    .team-name, .team { font-size: 1rem !important; }
+}
     .stat-group { border-bottom: 1px solid var(--vw-divider); padding-bottom: 20px; }
 }

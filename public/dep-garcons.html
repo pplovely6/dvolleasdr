@@ -408,60 +408,84 @@
                     if(window.setLanguage) window.setLanguage(localStorage.getItem('language') || 'fr');
                 });
 
-            // 2. MATCHES (LATEST)
+            // 2. MATCHES (LATEST) - sort by date (newest first)
             fetch(`${API_BASE}/data/${FILES.matches}`)
                 .then(res => res.json())
                 .then(data => {
                     const container = document.getElementById('match-container');
                     if (!container) return;
-                    
+
+                    function parseDateString(s){
+                        if(!s) return NaN;
+                        s = s.toString().trim();
+                        const byCtor = new Date(s);
+                        if(!isNaN(byCtor)) return byCtor.getTime();
+                        const parts = s.match(/\d+/g);
+                        if(parts && parts.length >= 3){
+                            let day = parts[0], month = parts[1], year = parts[2];
+                            if(year.length === 2) year = '20' + year;
+                            return new Date(parseInt(year,10), parseInt(month,10)-1, parseInt(day,10)).getTime();
+                        }
+                        const tokens = s.split(/\s+/);
+                        if(tokens.length >= 3){
+                            const mnames = {jan:0,feb:1,mar:2,apr:3,may:4,jun:5,jul:6,aug:7,sep:8,oct:9,nov:10,dec:11};
+                            const day = parseInt(tokens[0],10);
+                            const mon = tokens[1].toLowerCase().slice(0,3);
+                            const yearT = tokens[2];
+                            const month = mnames[mon];
+                            const year = (yearT && yearT.length===2) ? parseInt('20'+yearT,10) : parseInt(yearT,10);
+                            if(!isNaN(day) && month !== undefined && !isNaN(year)) return new Date(year, month, day).getTime();
+                        }
+                        return NaN;
+                    }
+
                     container.innerHTML = "";
-                    const matches = (data.matches || []).slice(-1); 
+                    const matches = Array.isArray(data.matches) ? data.matches.slice() : [];
+                    matches.sort((a,b) => (parseDateString(b.date)||0) - (parseDateString(a.date)||0));
 
                     if(matches.length === 0) {
                         container.innerHTML = "<p style='padding:20px; color:#888; text-align:center;'>Aucun résultat disponible.</p>";
                     } else {
-                        matches.forEach(m => {
-                            const setsLine = Array.isArray(m.sets) ? m.sets.join(" ") : m.sets;
-                            const scoreParts = (m.score || "0-0").split(/[-:]/).map(s => parseInt(s.trim()));
-                            const homeScore = scoreParts[0] || 0;
-                            const awayScore = scoreParts[1] || 0;
-                            const isHome = m.home.toUpperCase().includes("DARDILLY");
-                            const isWin = isHome ? (homeScore > awayScore) : (awayScore > homeScore);
-                            
-                            const statusClass = isWin ? "status-win" : "status-loss";
-                            const homeWin = homeScore > awayScore;
-                            const awayWin = awayScore > homeScore;
-                            const homeLogo = m.home.includes("DARDILLY") ? '<img src="image_fd6867.png" class="mini-logo-v3">' : '<div class="logo-spacer"></div>';
-                            const awayLogo = m.away.includes("DARDILLY") ? '<img src="image_fd6867.png" class="mini-logo-v3">' : '<div class="logo-spacer"></div>';
+                        const m = matches[0];
+                        const setsLine = Array.isArray(m.sets) ? m.sets.join(" ") : m.sets;
+                        const scoreParts = (m.score || "0-0").split(/[-:]/).map(s => parseInt(s.trim()));
+                        const homeScore = scoreParts[0] || 0;
+                        const awayScore = scoreParts[1] || 0;
+                        const isHome = m.home.toUpperCase().includes("DARDILLY");
+                        const isWin = isHome ? (homeScore > awayScore) : (awayScore > homeScore);
+                        
+                        const statusClass = isWin ? "status-win" : "status-loss";
+                        const homeWin = homeScore > awayScore;
+                        const awayWin = awayScore > homeScore;
+                        const homeLogo = m.home.includes("DARDILLY") ? '<img src="image_fd6867.png" class="mini-logo-v3">' : '<div class="logo-spacer"></div>';
+                        const awayLogo = m.away.includes("DARDILLY") ? '<img src="image_fd6867.png" class="mini-logo-v3">' : '<div class="logo-spacer"></div>';
 
-                            container.innerHTML = `
-                                <div class="match-card-v3 ${statusClass}" style="border-left: 6px solid var(--${isWin ? 'win' : 'loss'});">
-                                    <div class="match-main-v3">
-                                        <div class="match-header-v3">
-                                            <span class="m-category-tag">DERNIER RÉSULTAT</span>
-                                            <span class="m-date-v3">${m.date}</span>
+                        container.innerHTML = `
+                            <div class="match-card-v3 ${statusClass}" style="border-left: 6px solid var(--${isWin ? 'win' : 'loss'});">
+                                <div class="match-main-v3">
+                                    <div class="match-header-v3">
+                                        <span class="m-category-tag">DERNIER RÉSULTAT</span>
+                                        <span class="m-date-v3">${m.date}</span>
+                                    </div>
+                                    <div class="match-body-v3">
+                                        <div class="m-teams-col">
+                                            <div class="m-team-row ${homeWin ? 'winner' : 'loser'}">
+                                                ${homeLogo}
+                                                <span>${m.home}</span>
+                                            </div>
+                                            <div class="m-team-row ${awayWin ? 'winner' : 'loser'}">
+                                                ${awayLogo}
+                                                <span>${m.away}</span>
+                                            </div>
                                         </div>
-                                        <div class="match-body-v3">
-                                            <div class="m-teams-col">
-                                                <div class="m-team-row ${homeWin ? 'winner' : 'loser'}">
-                                                    ${homeLogo}
-                                                    <span>${m.home}</span>
-                                                </div>
-                                                <div class="m-team-row ${awayWin ? 'winner' : 'loser'}">
-                                                    ${awayLogo}
-                                                    <span>${m.away}</span>
-                                                </div>
-                                            </div>
-                                            <div class="m-score-col">
-                                                <div class="m-score-main-v3">${m.score.replace('-', ' - ')}</div>
-                                                <div class="m-sets-v3">${setsLine}</div>
-                                            </div>
+                                        <div class="m-score-col">
+                                            <div class="m-score-main-v3">${m.score.replace('-', ' - ')}</div>
+                                            <div class="m-sets-v3">${setsLine}</div>
                                         </div>
                                     </div>
                                 </div>
-                            `;
-                        });
+                            </div>
+                        `;
                     }
                 });
 
@@ -469,15 +493,46 @@
             fetch(`${API_BASE}/data/${FILES.schedule}`)
                 .then(res => res.json())
                 .then(data => {
-                    const list = data.schedule || [];
-                    const nextMatch = list[0]; 
+                    const list = Array.isArray(data.schedule) ? data.schedule.slice() : [];
+
+                    function parseDateString(s){
+                        if(!s) return NaN;
+                        s = s.toString().trim();
+                        const byCtor = new Date(s);
+                        if(!isNaN(byCtor)) return byCtor.getTime();
+                        const parts = s.match(/\d+/g);
+                        if(parts && parts.length >= 3){
+                            let day = parts[0], month = parts[1], year = parts[2];
+                            if(year.length === 2) year = '20' + year;
+                            return new Date(parseInt(year,10), parseInt(month,10)-1, parseInt(day,10)).getTime();
+                        }
+                        const tokens = s.split(/\s+/);
+                        if(tokens.length >= 3){
+                            const mnames = {jan:0,feb:1,mar:2,apr:3,may:4,jun:5,jul:6,aug:7,sep:8,oct:9,nov:10,dec:11};
+                            const day = parseInt(tokens[0],10);
+                            const mon = tokens[1].toLowerCase().slice(0,3);
+                            const yearT = tokens[2];
+                            const month = mnames[mon];
+                            const year = (yearT && yearT.length===2) ? parseInt('20'+yearT,10) : parseInt(yearT,10);
+                            if(!isNaN(day) && month !== undefined && !isNaN(year)) return new Date(year, month, day).getTime();
+                        }
+                        return NaN;
+                    }
+
+                    // sort ascending (earliest first)
+                    list.sort((a,b) => (parseDateString(a.date)||0) - (parseDateString(b.date)||0));
+
+                    // find first match that is today or in the future
+                    const now = new Date(); now.setHours(0,0,0,0);
+                    let nextMatch = list.find(m => (parseDateString(m.date) || 0) >= now.getTime());
+                    if(!nextMatch) nextMatch = list[0];
 
                     if (nextMatch) {
-                        document.getElementById('nm-date').innerText = `${nextMatch.date} • ${nextMatch.time}`;
+                        document.getElementById('nm-date').innerText = `${nextMatch.date}${nextMatch.time ? ' • ' + nextMatch.time : ''}`;
                         document.getElementById('nm-home').innerText = nextMatch.home;
                         document.getElementById('nm-away').innerText = nextMatch.away;
-                        document.getElementById('nm-away-ph').innerText = nextMatch.away.substring(0,3).toUpperCase();
-                        document.getElementById('nm-loc').innerText = nextMatch.location;
+                        document.getElementById('nm-away-ph').innerText = (nextMatch.away || '').substring(0,3).toUpperCase();
+                        document.getElementById('nm-loc').innerText = nextMatch.location || '';
                     } else {
                         document.querySelector('.next-match-card').innerHTML = "<p style='color:#777; text-align:center; margin-top:50px;'>Aucun match prévu.</p>";
                     }
