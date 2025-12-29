@@ -398,5 +398,20 @@
     
     .stats-grid { grid-template-columns: 1fr; gap: 30px; }
     .stat-group:not(:last-child)::after { display: none; }
+
+/* Fallback responsive rules for match cards to avoid overlap on older pages */
+@media (max-width: 900px) {
+    .match-item-card, .match-card-row, .match-card-v3 {
+        grid-template-columns: 8px 1fr 1fr 60px 60px;
+        align-items: center;
+        display: grid;
+    }
+    .m-score-v2, .m-score-main-v3, .m-score-main, .main-score {
+        font-size: clamp(1rem, 6vw, 2.2rem) !important;
+        line-height: 1 !important;
+    }
+    .m-pts-v2, .m-pts-badge { display:flex; justify-content:center; align-items:center; }
+    .m-team-row, .m-team-v3 { white-space: normal; overflow-wrap: anywhere; }
+}
     .stat-group { border-bottom: 1px solid var(--vw-divider); padding-bottom: 20px; }
 }

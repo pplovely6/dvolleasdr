@@ -1,8 +1,8 @@
 document.addEventListener("DOMContentLoaded", () => {
     const containers = document.querySelectorAll("[data-match-container]");
     
-    // Updated to use the full backend API URL
-    fetch("http://localhost:3000/api/data/matches-db")
+    // Updated to use relative path for API
+    fetch("/api/data/matches-db")
         .then(res => res.json())
         .then(data => {
             containers.forEach(container => {

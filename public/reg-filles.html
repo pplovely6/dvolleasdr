@@ -356,10 +356,10 @@
     </footer>
 
     <script src="lang.js"></script>
-    
+    <script src="player-db.js"></script>
     <script>
         document.addEventListener("DOMContentLoaded", () => {
-            const API_BASE = "http://localhost:3000/api";
+            const API_BASE = "/api";
             
             // FILES CONFIGURATION
             const FILES = {
@@ -401,31 +401,47 @@
                     if (!container) return;
                     
                     container.innerHTML = "";
-                    const matches = (data.matches || []).slice(-1).reverse(); 
+                    const matches = (data.matches || []).slice(-1); 
 
                     if(matches.length === 0) {
                         container.innerHTML = "<p style='padding:20px; color:#888; text-align:center;'>Aucun résultat disponible.</p>";
                     } else {
                         matches.forEach(m => {
+                            const setsLine = Array.isArray(m.sets) ? m.sets.join(" ") : m.sets;
+                            const scoreParts = (m.score || "0-0").split(/[-:]/).map(s => parseInt(s.trim()));
+                            const homeScore = scoreParts[0] || 0;
+                            const awayScore = scoreParts[1] || 0;
                             const isHome = m.home.toUpperCase().includes("DARDILLY");
-                            const homeLogoHtml = isHome 
-                                ? `<img src="image_fd6867.png" alt="Logo" class="team-logo">`
-                                : `<div class="team-placeholder">${m.home.substring(0,3).toUpperCase()}</div>`;
-                            const awayLogoHtml = !isHome
-                                ? `<img src="image_fd6867.png" alt="Logo" class="team-logo">`
-                                : `<div class="team-placeholder">${m.away.substring(0,3).toUpperCase()}</div>`;
+                            const isWin = isHome ? (homeScore > awayScore) : (awayScore > homeScore);
+                            
+                            const homeWin = homeScore > awayScore;
+                            const awayWin = awayScore > homeScore;
+                            const homeLogo = m.home.includes("DARDILLY") ? '<img src="image_fd6867.png" class="mini-logo-v3">' : '<div class="logo-spacer"></div>';
+                            const awayLogo = m.away.includes("DARDILLY") ? '<img src="image_fd6867.png" class="mini-logo-v3">' : '<div class="logo-spacer"></div>';
 
-                            container.innerHTML += `
-                                <div class="match-card">
-                                    <div class="card-header-label" style="font-size:1.5rem; margin-bottom:15px;" data-i18n="matches_title">DERNIER RÉSULTAT</div>
-                                    <div class="card-date">${m.date}</div>
-                                    <div class="teams-row">
-                                        <div class="team-block">${homeLogoHtml}<div class="team-name">${m.home}</div></div>
-                                        <div class="center-info">
-                                            <div class="main-score">${m.score}</div>
-                                            <div class="sets-detail">${m.sets ? m.sets.join(' | ') : ''}</div>
+                            container.innerHTML = `
+                                <div class="match-card-v3" style="border-left: 6px solid var(--${isWin ? 'win' : 'loss'});">
+                                    <div class="match-main-v3">
+                                        <div class="match-header-v3">
+                                            <span class="m-category-tag">DERNIER RÉSULTAT</span>
+                                            <span class="m-date-v3">${m.date}</span>
                                         </div>
-                                        <div class="team-block">${awayLogoHtml}<div class="team-name">${m.away}</div></div>
+                                        <div class="match-body-v3">
+                                            <div class="m-teams-col">
+                                                <div class="m-team-row ${homeWin ? 'winner' : 'loser'}">
+                                                    ${homeLogo}
+                                                    <span>${m.home}</span>
+                                                </div>
+                                                <div class="m-team-row ${awayWin ? 'winner' : 'loser'}">
+                                                    ${awayLogo}
+                                                    <span>${m.away}</span>
+                                                </div>
+                                            </div>
+                                            <div class="m-score-col">
+                                                <div class="m-score-main-v3">${m.score.replace('-', ' - ')}</div>
+                                                <div class="m-sets-v3">${setsLine}</div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             `;

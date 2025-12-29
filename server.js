@@ -5,7 +5,8 @@ const cors = require('cors');
 
 const app = express();
 // Change const PORT = 3000; to:
-const PORT = process.env.PORT || 3000;
+const PORT = 5000;
+const HOST = '0.0.0.0';
 
 app.use(cors());
 app.use(express.json());
@@ -120,8 +121,8 @@ app.delete('/api/delete/:file/:id', (req, res) => {
 });
 
 // Start Server
-app.listen(PORT, () => {
+app.listen(PORT, HOST, () => {
     console.log(`--------------------------------------------------`);
-    console.log(`SERVER RUNNING at http://localhost:${PORT}/admin.html`);
+    console.log(`SERVER RUNNING at http://${HOST}:${PORT}/admin.html`);
     console.log(`--------------------------------------------------`);
 });

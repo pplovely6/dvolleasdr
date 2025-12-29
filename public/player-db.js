@@ -4,9 +4,18 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // 1. Determine which team to load based on current page or default
     // You can create different variables for m15, seniors, etc.
-    const TEAM_FILE = "db-m18-garcons"; 
+    const TEAM_FILE = window.location.pathname.includes("dep-garcons") ? "db-dep-garcons" :
+                      window.location.pathname.includes("m18.html") ? "db-m18-garcons" :
+                      window.location.pathname.includes("m18-filles-1") ? "db-m18-filles-1" :
+                      window.location.pathname.includes("m18-f-2") ? "db-m18-filles-2" :
+                      window.location.pathname.includes("m15-f") ? "db-m15-filles" :
+                      window.location.pathname.includes("m13-mx") ? "db-m13-mixte" :
+                      window.location.pathname.includes("reg-filles") ? "db-senior-filles-1" :
+                      window.location.pathname.includes("dep-filles") ? "db-senior-filles-2" :
+                      "db-m18-garcons"; 
 
-    fetch(`http://localhost:3000/api/data/${TEAM_FILE}`)
+    console.log("Loading team:", TEAM_FILE);
+    fetch(`/api/data/${TEAM_FILE}`)
         .then(res => res.json())
         .then(data => {
             list.innerHTML = "";

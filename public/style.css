@@ -14,6 +14,10 @@
     /* FONT DEFINITIONS */
     --font-head: 'Outfit', sans-serif;
     --font-body: 'Outfit', sans-serif;
+    
+    /* MATCH CARD COLORS */
+    --win: #2ba640;  /* Green */
+    --loss: #ff4e45; /* Red */
 }
 .btn-accent {
     background-color: var(--brand-accent);
@@ -278,8 +282,54 @@ nav a:hover::after, nav a.active::after { width: 100%; }
 
 /* Mobile Fixes */
 @media (max-width: 600px) {
-    .m-score-main-v3 { font-size: 1.8rem; }
-    .m-team-v3 { font-size: 0.75rem; }
+    .match-card-v3 {
+        padding: 0;
+    }
+    .match-header-v3 {
+        padding: 8px 15px;
+        font-size: 0.75rem;
+    }
+    .match-body-v3 {
+        grid-template-columns: 1fr;
+        padding: 15px;
+        gap: 15px;
+    }
+    .m-teams-col {
+        gap: 10px;
+    }
+    .m-team-row {
+        font-size: 0.9rem;
+        gap: 10px;
+    }
+    .m-score-col {
+        border-left: none;
+        border-top: 1px solid #333;
+        padding-left: 0;
+        padding-top: 15px;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    .m-score-main-v3 {
+        font-size: 2rem;
+    }
+    .mini-logo-v3 {
+        width: 24px;
+        height: 24px;
+    }
+}
+/* Improve responsiveness: prevent overlapping scores and long team names */
+.match-card-v3 { padding: 8px; }
+.match-body-v3 { grid-auto-rows: auto; }
+.m-team-row { overflow-wrap: anywhere; word-break: break-word; }
+.m-score-main-v3 { font-size: clamp(1.2rem, 6.5vw, 2.5rem); line-height: 1; }
+.main-score { font-size: clamp(1.6rem, 7vw, 4rem); }
+
+@media (max-width: 900px) {
+    .match-body-v3 { grid-template-columns: 1fr; }
+    .m-score-col { text-align: center; border-left: none; border-top: 1px solid #333; padding-top: 12px; }
+    .m-team-row { justify-content: center; }
 }
 .match-card-v3 {
     background: #1a1d24;

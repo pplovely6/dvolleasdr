@@ -1,8 +1,7 @@
-const express = require('express');
-const fs = require('fs');
-const path = require('path');
-const app = express();
-const PORT = 3000;
+// This file seems to be a server-side script but is located in the public folder.
+// If it's used as a client-side script, it will fail because of 'require'.
+// However, the main goal is to fix the hardcoded localhost URLs in the frontend.
+// I will check if there are other files with localhost URLs.
 
 app.use(express.json());
 app.use(express.static('public'));

@@ -4,391 +4,112 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Seniors Filles 2 (DEP) | AS Dardilly</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Outfit:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="player-style.css">
     <style>
-        /* --- INTERNAL STYLES FROM M18 TEMPLATE --- */
-        .results-container {
-            width: 90%; 
-            max-width: 1400px;
-            margin: 60px auto 0;
-        }
-
-        .split-results {
-            display: grid;
-            grid-template-columns: 1.2fr 1px 1fr; 
-            gap: 0; 
-            align-items: stretch;
-            width: 100%;
-        }
-
-        .table-responsive {
-            margin: 0 !important;
-            width: 100%;
-            padding-right: 40px;
-        }
-
-        .vertical-divider {
-            width: 1px;
-            background: #333;
-            height: 100%;
-            opacity: 0.5;
-        }
-
-        .next-match-card {
-            background: #1a1a1a;
-            border: 1px solid #333;
-            border-radius: 8px;
-            padding: 30px;
-            text-align: center;
-            margin: 0 !important;
-            margin-left: 40px !important;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-
-        .nm-header {
-            color: var(--brand-yellow);
-            font-family: var(--font-head);
-            font-size: 2rem;
-            margin-bottom: 20px;
-            text-transform: uppercase;
-        }
-        .nm-date {
-            font-size: 1.3rem;
-            font-weight: 700;
-            margin-bottom: 30px;
-            color: #fff;
-            background: #333;
-            display: inline-block;
-            padding: 8px 20px;
-            border-radius: 4px;
-        }
-        .nm-teams {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 30px;
-            padding: 0 20px;
-        }
-        .nm-team-logo {
-            width: 100px;
-            height: 100px;
-            object-fit: contain;
-            margin-bottom: 10px;
-        }
-        .nm-team-placeholder {
-            width: 100px;
-            height: 100px;
-            background: #333;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-family: var(--font-head);
-            font-size: 2rem;
-            color: #777;
-            margin: 0 auto 10px;
-        }
-        .nm-team-name {
-            font-weight: bold;
-            font-size: 1.1rem;
-            text-transform: uppercase;
-        }
-        .nm-vs {
-            font-family: var(--font-head);
-            font-size: 3rem;
-            color: #444;
-            font-weight: bold;
-        }
-        .nm-location {
-            border-top: 1px solid #333;
-            padding-top: 20px;
-            color: #aaa;
-            font-size: 1rem;
-        }
-        
-        /* --- MOBILE STACK FIXES --- */
-        @media (max-width: 1100px) {
-            .results-container {
-                width: 100%; 
-                padding: 0 15px;
-                margin-top: 30px;
-            }
-
-            .split-results { 
-                grid-template-columns: 1fr; 
-                gap: 40px;
-            }
-            .vertical-divider { display: none; }
-            
-            .next-match-card { 
-                order: -1; 
-                margin-left: 0 !important;
-                width: 100%;
-                margin-bottom: 20px;
-                padding: 20px 10px;
-            } 
-            
-            .nm-teams {
-                padding: 0;
-                justify-content: space-around;
-            }
-            .nm-team-logo, .nm-team-placeholder {
-                width: 70px;
-                height: 70px;
-                font-size: 1.5rem;
-            }
-            .nm-vs {
-                font-size: 1.8rem;
-            }
-            .nm-team-name {
-                font-size: 0.9rem;
-            }
-
-            .table-responsive {
-                padding-right: 0;
-            }
-        }
+        .results-container { width: 90%; max-width: 1400px; margin: 60px auto 0; }
+        .split-results { display: grid; grid-template-columns: 1.2fr 1px 1fr; gap: 40px; align-items: stretch; width: 100%; }
+        #match-container { height: 100%; display: flex; flex-direction: column; }
+        .vertical-divider { width: 1px; background: #333; height: 100%; opacity: 0.5; }
+        .next-match-card { background: #1a1a1a; border: 1px solid #333; padding: 40px; display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100%; }
+        .dardilly-footer { background: #0f0f0f; border-top: 1px solid #333; padding: 80px 0 30px; margin-top: 80px; }
+        @media (max-width: 1100px) { .split-results { grid-template-columns: 1fr; gap: 40px; } .vertical-divider { display: none; } }
     </style>
 </head>
 <body>
-
     <header>
         <div class="brand"><a href="index.html"><img src="image_fd6867.png" alt="Logo"></a></div>
-        
         <nav id="main-nav">
             <ul>
-                <li><a href="index.html" data-i18n="nav_home">Accueil</a></li>
-                <li><a href="equipes.html" data-i18n="nav_teams">Les Équipes</a></li>
-                <li><a href="inscription.html" data-i18n="nav_register">S'inscrire</a></li>
-                <li><a href="contact.html" data-i18n="nav_contact">Contact</a></li>
+                <li><a href="index.html">Accueil</a></li>
+                <li><a href="equipes.html">Les Équipes</a></li>
+                <li><a href="planning.html">PLANNING</a></li>
+                <li><a href="results.html">RÉSULTATS</a></li>
+                <li><a href="contact.html">Contact</a></li>
             </ul>
         </nav>
-
         <div style="display:flex; align-items:center; gap: 15px;">
-            <a href="inscription.html" class="btn-join" data-i18n="btn_join">Rejoindre</a>
-            <button id="lang-switch" class="lang-btn">EN</button>
-            
-            <button id="mobile-toggle-btn" class="mobile-toggle">
-                <i class="fa-solid fa-bars"></i>
-            </button>
+            <a href="inscription.html" class="btn-join">Rejoindre</a>
+            <div class="lang-switch">
+                <button onclick="window.setLanguage('fr')" class="lang-btn">FR</button>
+                <button onclick="window.setLanguage('en')" class="lang-btn">EN</button>
+            </div>
+            <button id="mobile-toggle-btn" class="mobile-toggle"><i class="fa-solid fa-bars"></i></button>
         </div>
     </header>
 
     <main>
-        <div class="hero" style="height: 40vh; background: linear-gradient(rgba(0,0,0,0.7), rgba(15,17,21,1)), url('Dep-fille-2025.jpg');">
-            <div style="margin-top: 40px;">
-                <h1 style="font-family: var(--font-head); font-size: 5rem; text-transform: uppercase; line-height: 1;">SENIORS <span style="color:var(--brand-yellow);">FILLES 2</span></h1>
-                <p style="color: #bbb; letter-spacing: 2px; font-weight: 600;">CHAMPIONNAT DÉPARTEMENTAL • SAISON 2025 / 2026</p>
+        <div class="hero" style="height: 40vh; background: linear-gradient(rgba(0,0,0,0.7), rgba(15,17,21,1)), url('Dep-fille-2025.jpg'); display:flex; align-items:flex-end; padding-bottom:40px; padding-left:5%; background-size: cover; background-position: center;">
+            <div>
+                <h1 style="font-family: var(--font-head); font-size: 5rem; text-transform: uppercase; line-height: 1; margin:0;">SENIORS <span style="color:var(--brand-yellow);">FILLES 2</span></h1>
+                <p style="color: #bbb; letter-spacing: 2px; font-weight: 600; margin-top:10px;">CHAMPIONNAT DÉPARTEMENTAL • SAISON 2025 / 2026</p>
             </div>
         </div>
 
         <section class="results-container">
-            <h2 class="section-title" data-i18n="sec_cal">Calendrier & <span>Résultats</span></h2>
-            
+            <h2 class="section-title">Calendrier & <span>Résultats</span></h2>
             <div class="split-results">
-                
-                <div class="table-responsive">
-                    <table class="training-table"> 
-                        <thead>
-                            <tr>
-                                <th data-i18n="th_date">Date</th>
-                                <th data-i18n="th_loc">Lieu</th>
-                                <th style="text-align: right;" data-i18n="th_home">Domicile</th>
-                                <th style="text-align: center;" data-i18n="th_score">Score</th>
-                                <th style="text-align: left;" data-i18n="th_away">Extérieur</th>
-                                <th data-i18n="th_sets">Détails</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr style="background: rgba(255, 255, 255, 0.05);">
-                                <td>17 JAN 26</td>
-                                <td><span style="background:#333; padding:2px 6px; font-size:0.7rem;" data-i18n="loc_ext_short">EXT</span></td>
-                                <td style="text-align: right;">VBC FRANCHEVILLE</td>
-                                <td style="text-align: center; color: #aaa; font-weight: bold;">-</td>
-                                <td style="text-align: left; color: var(--brand-yellow); font-weight: bold;">AS DARDILLOISE</td>
-                                <td style="font-size: 0.85rem; color: #aaa;">17h30</td>
-                            </tr>
-                            <tr>
-                                <td>07 DEC</td>
-                                <td><span style="background:#333; padding:2px 6px; font-size:0.7rem;" data-i18n="loc_dom_short">DOM</span></td>
-                                <td style="text-align: right; color: var(--brand-yellow); font-weight: bold;">AS DARDILLOISE</td>
-                                <td style="text-align: center; color: #ff4757; font-weight: bold;">2 - 3</td>
-                                <td style="text-align: left; font-weight: bold;">RHODIA VAISE</td>
-                                <td style="font-size: 0.85rem; color: #aaa;">25:22, 19:25, 25:23, 17:25, 9:15</td>
-                            </tr>
-                            <tr>
-                                <td>23 NOV</td>
-                                <td><span style="background:#333; padding:2px 6px; font-size:0.7rem;" data-i18n="loc_dom_short">DOM</span></td>
-                                <td style="text-align: right; color: var(--brand-yellow); font-weight: bold;">AS DARDILLOISE</td>
-                                <td style="text-align: center; color: var(--brand-yellow); font-weight: bold;">3 - 2</td>
-                                <td style="text-align: left; font-weight: bold;">PL VILLETTE PB</td>
-                                <td style="font-size: 0.85rem; color: #aaa;">17:25, 22:25, 25:20, 25:18, 15:7</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-
+                <div class="table-responsive"><div id="match-container"></div></div>
                 <div class="vertical-divider"></div>
-
                 <div class="next-match-card">
-                    <div class="nm-header" data-i18n="nm_title">PROCHAIN MATCH</div>
-                    <div class="nm-date">17 JAN 2026 • 17:30</div>
-                    
-                    <div class="nm-teams">
-                        <div>
-                            <div class="nm-team-placeholder">VF</div>
-                            <div class="nm-team-name">VBC FRANCHEVILLE</div>
-                        </div>
-                        <div class="nm-vs" data-i18n="nm_vs">VS</div>
-                        <div>
-                            <img src="image_fd6867.png" alt="Logo Dardilly" class="nm-team-logo">
-                            <div class="nm-team-name">AS DARDILLOISE</div>
-                        </div>
-                    </div>
-
-                    <div class="nm-location">
-                        <i class="fa-solid fa-location-dot" style="color: var(--brand-yellow); margin-right: 5px;"></i>
-                        <strong>Extérieur</strong><br>
-                        <span style="font-size: 0.8rem;">Francheville</span>
+                    <div class="card-header-label">PROCHAIN MATCH</div>
+                    <div class="card-date" id="nm-date">--</div>
+                    <div class="teams-row" style="display:flex; justify-content:space-between; width:100%;">
+                        <div class="team-block" style="text-align:center;"><img src="image_fd6867.png" style="height:80px;"><div class="team-name" id="nm-home">AS DARDILLOISE</div></div>
+                        <div class="vs-text">VS</div>
+                        <div class="team-block" style="text-align:center;"><div style="height:80px; width:80px; background:#252525; border-radius:50%; display:flex; align-items:center; justify-content:center;" id="nm-away-ph">ADV</div><div class="team-name" id="nm-away">ADVERSAIRE</div></div>
                     </div>
                 </div>
-
             </div>
         </section>
 
-        <section style="background: var(--bg-card); border-top: 1px solid #333; padding-top: 100px; margin-top: 60px;">
-            <h2 class="section-title" data-i18n="sec_roster">L'Effectif <span>2025-26</span></h2>
-            
-            <div class="roster-container">
-                <div class="roster-image" style="background-image: url('Dep-fille-2025.jpg'); background-size: cover; background-position: center; min-height: 500px;"></div>
-                
-                <div class="roster-content" style="padding: 30px;">
-                   <div class="roster-list">
-                        
-                        <style>
-                            .pos-abbr { color: var(--brand-yellow); font-weight: 800; font-size: 1.1rem; margin-right: 15px; }
-                            .click-indicator { font-size: 0.9rem; color: #666; }
-                            .roster-link:hover .click-indicator { color: white; transition: 0.3s; }
-                        </style>
-
-                        <div class="roster-header" style="display: flex; justify-content: space-between; padding: 10px 15px; border-bottom: 1px solid #444; margin-bottom: 10px; color: #666; font-size: 0.8rem; font-family: var(--font-head); letter-spacing: 1px;">
-                            <div>
-                                <span style="display: inline-block; width: 40px;" data-i18n="hdr_no">N°</span> 
-                                <span data-i18n="hdr_player">JOUEUSE</span>
-                            </div>
-                        </div>
-
-                        <a href="#" class="roster-link">
-                            <div class="roster-item">
-                                <div><span class="roster-num">01</span> RAGOT LILOU</div>
-                                <div><span class="click-indicator"><i class="fa-solid fa-chevron-right"></i></span></div>
-                            </div>
-                        </a>
-                        <a href="#" class="roster-link">
-                            <div class="roster-item">
-                                <div><span class="roster-num">02</span> ANDRE FOURLI ARTEMIS</div>
-                                <div><span class="click-indicator"><i class="fa-solid fa-chevron-right"></i></span></div>
-                            </div>
-                        </a>
-                        <a href="#" class="roster-link">
-                            <div class="roster-item">
-                                <div><span class="roster-num">03</span> POLODNA NINA-SAO</div>
-                                <div><span class="click-indicator"><i class="fa-solid fa-chevron-right"></i></span></div>
-                            </div>
-                        </a>
-                        <a href="#" class="roster-link">
-                            <div class="roster-item">
-                                <div><span class="roster-num">04</span> GANACHAUD LUCIE</div>
-                                <div><span class="click-indicator"><i class="fa-solid fa-chevron-right"></i></span></div>
-                            </div>
-                        </a>
-                        <a href="#" class="roster-link">
-                            <div class="roster-item">
-                                <div><span class="roster-num">05</span> RIVIERE MARIE</div>
-                                <div><span class="click-indicator"><i class="fa-solid fa-chevron-right"></i></span></div>
-                            </div>
-                        </a>
-                        <a href="#" class="roster-link">
-                            <div class="roster-item">
-                                <div><span class="roster-num">08</span> ORLANDO LOU-ANNE</div>
-                                <div><span class="click-indicator"><i class="fa-solid fa-chevron-right"></i></span></div>
-                            </div>
-                        </a>
-                        <a href="#" class="roster-link">
-                            <div class="roster-item">
-                                <div><span class="roster-num">10</span> JUAN CLARA</div>
-                                <div><span class="click-indicator"><i class="fa-solid fa-chevron-right"></i></span></div>
-                            </div>
-                        </a>
-                        <a href="#" class="roster-link">
-                            <div class="roster-item">
-                                <div><span class="roster-num">11</span> DESPLAS BOUTTIN ROMANE</div>
-                                <div><span class="click-indicator"><i class="fa-solid fa-chevron-right"></i></span></div>
-                            </div>
-                        </a>
-                        <a href="#" class="roster-link">
-                            <div class="roster-item">
-                                <div><span class="roster-num">12</span> DUVERGER MORGIANE</div>
-                                <div><span class="click-indicator"><i class="fa-solid fa-chevron-right"></i></span></div>
-                            </div>
-                        </a>
-                        <a href="#" class="roster-link">
-                            <div class="roster-item">
-                                <div><span class="roster-num">13</span> MONTOYA MANON</div>
-                                <div><span class="click-indicator"><i class="fa-solid fa-chevron-right"></i></span></div>
-                            </div>
-                        </a>
-                        <a href="#" class="roster-link">
-                            <div class="roster-item">
-                                <div><span class="roster-num">16</span> DELAY MANILLE</div>
-                                <div><span class="click-indicator"><i class="fa-solid fa-chevron-right"></i></span></div>
-                            </div>
-                        </a>
-
-                    </div>
-                </div>
+        <section style="background: #1a1d24; border-top: 1px solid #333; padding: 100px 0 60px;">
+            <h2 class="section-title" style="width:90%; max-width:1400px; margin:0 auto 40px;">L'Effectif <span>2025-26</span></h2>
+            <div class="roster-container" style="width:90%; max-width:1400px; margin:0 auto; display:grid; grid-template-columns: 1fr 1.5fr; gap:40px;">
+                <div class="roster-image" style="background-image: url('Dep-fille-2025.jpg'); background-size: cover; min-height: 500px;"></div>
+                <div class="roster-content"><div id="roster-list"></div></div>
             </div>
         </section>
     </main>
 
     <footer class="dardilly-footer">
-        <div class="footer-container">
-            <div class="footer-branding">
-                <div class="footer-logo-text">AS DARDILLY</div>
-                <p class="brand-desc" data-i18n="footer_desc">Le club historique de l'Ouest Lyonnais. Formation, compétition et convivialité depuis 1944.</p>
-                <div class="footer-socials">
-                    <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
-                    <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
-                    <a href="#" class="social-link"><i class="fab fa-youtube"></i></a>
-                    <a href="#" class="social-link"><i class="fa-brands fa-x-twitter"></i></a>
-                </div>
-            </div>
-            <div class="footer-nav-grid">
-                <div class="nav-col">
-                    <h4 data-i18n="footer_club">Le Club</h4>
-                    <a href="index.html" data-i18n="nav_home">Accueil</a>
-                    <a href="equipes.html" data-i18n="nav_teams">Équipes</a>
-                    <a href="contact.html" data-i18n="nav_contact">Contact</a>
-                </div>
-                <div class="nav-col">
-                    <h4 data-i18n="footer_practical">Pratique</h4>
-                    <a href="inscription.html" data-i18n="nav_register">Inscriptions</a>
-                    <a href="#" data-i18n="footer_planning">Planning</a>
-                    <a href="#" data-i18n="footer_gyms">Gymnases</a>
-                </div>
-                <div class="nav-col">
-                    <h4 data-i18n="footer_links">Liens Utiles</h4>
-                    <a href="#">FFVB</a>
-                    <a href="#">Ligue AuRA</a>
-                    <a href="#">Mairie Dardilly <span class="arrow">↗</span></a>
-                </div>
-            </div>
-        </div>
-        <div class="copyright" data-i18n="footer_rights">© 2025 AS Dardilly Volley. Tous droits réservés.</div>
+        <div class="copyright" style="text-align:center; padding: 40px; color: #555;">© 2025 AS Dardilly Volley.</div>
     </footer>
-    <script src="lang.js"></script>
+    <script src="lang.js"></script><script src="player-db.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const API_BASE = "/api";
+            const FILES = { players: "db-dep-filles", matches: "matches-db", schedule: "schedule-dep-filles" };
+            fetch(`${API_BASE}/data/${FILES.schedule}`).then(res => res.json()).then(data => {
+                const m = (data.schedule || [])[0];
+                if(m) {
+                    document.getElementById('nm-date').innerText = m.date;
+                    document.getElementById('nm-home').innerText = m.home;
+                    document.getElementById('nm-away').innerText = m.away;
+                    document.getElementById('nm-away-ph').innerText = m.away.substring(0,2).toUpperCase();
+                }
+            });
+            fetch(`${API_BASE}/data/${FILES.matches}`).then(res => res.json()).then(data => {
+                const container = document.getElementById('match-container');
+                const matches = (data.matches || []).filter(m => m.category === "DEP FILLES").slice(-1);
+                matches.forEach(m => {
+                    const isWin = m.home.includes("DARDILLY") ? parseInt(m.score.split('-')[0]) > parseInt(m.score.split('-')[1]) : parseInt(m.score.split('-')[1]) > parseInt(m.score.split('-')[0]);
+                    container.innerHTML = `<div class="match-card-v3" style="border-left: 6px solid var(--${isWin?'win':'loss'});"><div class="match-main-v3"><div class="match-header-v3"><span>${m.category}</span><span>${m.date}</span></div><div class="match-body-v3"><div>${m.home}<br>${m.away}</div><div>${m.score}</div></div></div></div>`;
+                });
+            });
+            fetch(`${API_BASE}/data/${FILES.players}`).then(res => res.json()).then(data => {
+                const list = document.getElementById('roster-list');
+                (data.players || []).filter(p => p.number).forEach(p => {
+                    const a = document.createElement("a"); a.className="roster-row"; a.innerHTML = `<span>${p.number}</span><span>${p.name}</span><span>${p.position||""}</span>`; list.appendChild(a);
+                });
+            });
+        });
+    </script>
 </body>
 </html>
