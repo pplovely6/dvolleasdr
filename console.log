@@ -1,0 +1,29 @@
+async function submitUpdate() {
+    const matchId = document.getElementById('matchId').value;
+    const score = document.getElementById('score').value;
+    const sets = document.getElementById('sets').value;
+
+    if(!matchId || !score || !sets) {
+        alert("Please fill all fields");
+        return;
+    }
+
+    const data = {
+        matchId: matchId,
+        newScore: score,
+        newSets: sets.split(',').map(s => s.trim())
+    };
+
+    try {
+        const response = await fetch('/api/matches/update', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+        });
+        const result = await response.json();
+        alert(result.message);
+    } catch (error) {
+        console.error("Error:", error);
+        alert("Failed to connect to server");
+    }
+}

@@ -1,0 +1,67 @@
+{
+  "matches": [
+    {
+      "id": "SMBA002",
+      "home": "AS ARBENT VB",
+      "away": "AS DARDILLY",
+      "score": "0 - 3",
+      "date": "11/10/25",
+      "sets": [
+        "29:31",
+        "13:25",
+        "17:25"
+      ],
+      "category": "CHAMPIONNAT"
+    },
+    {
+      "id": "M-1767023450267",
+      "home": "AS DARDILLY",
+      "away": "VV SAÔNE",
+      "score": "3 - 2",
+      "date": "6/12/2025",
+      "sets": [
+        "27:29",
+        "28:26",
+        "25:16",
+        "25:27",
+        "15:6"
+      ]
+    },
+    {
+      "id": "M-1767025266105",
+      "home": "AS DARDILLY",
+      "away": "VBALL",
+      "score": "0-3",
+      "date": "18/10/25",
+      "sets": [
+        "19:25",
+        "13:25",
+        "23:25"
+      ]
+    },
+    {
+      "id": "M-1767025528940",
+      "home": "AS DARDILLY",
+      "away": "PL VILLETTE PB",
+      "score": "3 - P",
+      "date": "22/11/25",
+      "sets": [
+        "25:0",
+        "25:0",
+        "25:0"
+      ]
+    },
+    {
+      "id": "M-1767025816291",
+      "home": "ST MAURICE COTIERE VOLLEY",
+      "away": "AS DARDILLY",
+      "score": "0 - 3",
+      "date": "29/11/25",
+      "sets": [
+        "14:25",
+        "21:25",
+        "17:25"
+      ]
+    }
+  ]
+}

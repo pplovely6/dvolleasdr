@@ -1,0 +1,64 @@
+{
+  "season": "2025-2026",
+  "matches": [
+    {
+      "id": "JM5A004",
+      "date": "15/11/25",
+      "category": "M18 Garçons",
+      "home": "PL VILLETTE PB",
+      "away": "AS DARDILLY",
+      "score": "0 - 3",
+      "sets": [
+        "11:25",
+        "19:25",
+        "13:25"
+      ],
+      "result": "win",
+      "location": "EXT"
+    },
+    {
+      "id": "JM5A012",
+      "home": "CISGO VB 2",
+      "away": "AS DARDILLY",
+      "score": "3 - 2",
+      "date": "29/11/25",
+      "sets": [
+        "25:22",
+        "20:25",
+        "18:25",
+        "26:24",
+        "17:15"
+      ],
+      "category": "CHAMPIONNAT"
+    },
+    {
+      "id": "JM5A014",
+      "date": "06/12/25",
+      "category": "M18 Garçons",
+      "home": "RHÔDIA-VAISE",
+      "away": "AS DARDILLY",
+      "score": "1 - 3",
+      "sets": [
+        "11:25",
+        "25:18",
+        "18:25",
+        "26:28"
+      ],
+      "result": "win",
+      "location": "EXT"
+    },
+    {
+      "id": "JM5A019",
+      "home": "AL ST PRIEST",
+      "away": "AS DARDILLY",
+      "score": "0 - 3",
+      "date": "14/12/25",
+      "sets": [
+        "30:32",
+        "15:25",
+        "20:25"
+      ],
+      "category": "CHAMPIONNAT"
+    }
+  ]
+}

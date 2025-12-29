@@ -1,0 +1,27 @@
+{
+  "team": "M18 Garçons",
+  "pool": "JM5",
+  "season": "2025-2026",
+  "matches": [
+    {
+      "date": "2025-12-13",
+      "competition": "JM5",
+      "home": "AL ST PRIEST",
+      "away": "AS DARDILLY",
+      "score": "0-3",
+      "sets": ["30-32", "15-25", "20-25"],
+      "result": "win",
+      "ref": "065:082"
+    },
+    {
+      "date": "2025-12-15",
+      "competition": "LCD",
+      "home": "TASSIN 4",
+      "away": "DARDILLY 2",
+      "score": "3-0",
+      "sets": ["25-17", "25-11", "25-12"],
+      "result": "loss",
+      "ref": "075:040"
+    }
+  ]
+}

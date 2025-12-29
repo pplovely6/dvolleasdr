@@ -1,0 +1,102 @@
+{
+  "team": "M18 Garçons",
+  "players": [
+    {
+      "number": 1,
+      "name": "BASSET NOA",
+      "position": "OP",
+      "profile": "player-m18-01.html",
+      "captain": true
+    },
+    {
+      "number": 4,
+      "name": "TERRASSON BASTIEN",
+      "position": "OH",
+      "profile": "player-m18-04.html",
+      "captain": false
+    },
+    {
+      "number": 5,
+      "name": "QUENEY MAXANCE",
+      "position": "MB",
+      "profile": "player-m18-05.html",
+      "captain": false
+    },
+    {
+      "number": 6,
+      "name": "EYRAUD MARTIN",
+      "position": "OH",
+      "profile": "player-m18-06.html",
+      "captain": false
+    },
+    {
+      "number": 7,
+      "name": "LEBOURGEOIS CLOVIS",
+      "position": "MB",
+      "profile": "player-m18-07.html",
+      "captain": false
+    },
+    {
+      "number": 8,
+      "name": "PERRAUD NATHAN",
+      "position": "S",
+      "profile": "player-m18-08.html",
+      "captain": false
+    },
+    {
+      "number": 9,
+      "name": "REYNAERT ELOI",
+      "position": "S",
+      "profile": "player-m18-09.html",
+      "captain": false
+    },
+    {
+      "number": 11,
+      "name": "RIEU LENZO",
+      "position": "MB",
+      "profile": "player-m18-11.html",
+      "captain": false
+    },
+    {
+      "number": 12,
+      "name": "RICHARD AXEL",
+      "position": "OH",
+      "profile": "player-m18-12.html",
+      "captain": false
+    },
+    {
+      "number": 14,
+      "name": "ROUILLÉ ELOHAN",
+      "position": "MB",
+      "profile": "player-m18-14.html",
+      "captain": false
+    },
+    {
+      "number": 15,
+      "name": "JANTANA SIRADANAI",
+      "position": "S",
+      "profile": "player-m18-15.html",
+      "captain": false
+    },
+    {
+      "number": 10,
+      "name": "ARNUAD ALBON",
+      "position": "OH",
+      "profile": "player-m18-garcons-10.html"
+    },
+    {
+      "number": 16,
+      "name": "MATTEO -",
+      "position": "OH",
+      "profile": "player-m18-16.html",
+      "captain": false
+    },
+    {
+      "number": 13,
+      "name": "WISNIEWSKI EDEN",
+      "position": "L",
+      "profile": "#player-m18-13",
+      "captain": false
+    }
+  ]
+}

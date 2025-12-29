@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dardilly Admin</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root { --bg: #0f0f0f; --panel: #1a1d24; --brand: #fce300; --text: #fff; --sub: #aaa; --border: #333; }
+        body { font-family: 'Outfit', sans-serif; background: var(--bg); color: var(--text); margin: 0; display: flex; height: 100vh; overflow: hidden; }
+        
+        .sidebar { width: 260px; background: var(--panel); border-right: 1px solid var(--border); display: flex; flex-direction: column; padding-top: 25px; }
+        .brand { padding: 0 30px 40px; color: var(--brand); font-weight: 800; font-size: 1.4rem; text-transform: uppercase; }
+        .nav-item { padding: 16px 30px; cursor: pointer; color: var(--sub); font-weight: 500; display: flex; gap: 15px; transition: 0.2s; }
+        .nav-item:hover, .nav-item.active { background: #2a2d35; color: white; border-left: 4px solid var(--brand); }
+        
+        .main { flex: 1; padding: 40px; overflow-y: auto; }
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
+        h1 { margin: 0; font-size: 2rem; font-weight: 700; }
+        
+        .controls { background: var(--panel); padding: 25px; border-radius: 12px; border: 1px solid var(--border); margin-bottom: 30px; display: flex; gap: 20px; align-items: center; }
+        label { text-transform: uppercase; font-size: 0.8rem; font-weight: 600; color: var(--sub); display: block; margin-bottom: 8px; }
+        select { width: 100%; padding: 12px; background: #0f0f0f; border: 1px solid var(--border); color: white; border-radius: 6px; }
+        
+        .btn { padding: 12px 24px; background: var(--brand); color: black; border: none; border-radius: 6px; font-weight: 700; cursor: pointer; text-transform: uppercase; }
+        .btn-icon { width: 45px; display: flex; justify-content: center; }
+        
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 25px; }
+        .card { background: var(--panel); border: 1px solid var(--border); border-radius: 12px; padding: 20px; transition: 0.2s; }
+        .card:hover { transform: translateY(-3px); border-color: #555; }
+        .card-header { display: flex; justify-content: space-between; margin-bottom: 10px; }
+        .badge { background: #333; padding: 4px 8px; border-radius: 4px; font-size: 0.85rem; color: var(--brand); font-weight: 700; }
+        .actions { margin-top: 15px; padding-top: 15px; border-top: 1px solid var(--border); display: flex; justify-content: flex-end; gap: 10px; }
+        .icon-action { width: 35px; height: 35px; background: #252525; border-radius: 6px; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+        .icon-action:hover { background: white; color: black; }
+        .icon-action.del:hover { background: #ff4e45; color: white; }
+
+        .modal { position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.9); display: none; justify-content: center; align-items: center; z-index: 1000; backdrop-filter: blur(5px); }
+        .modal-box { background: var(--panel); width: 500px; padding: 40px; border-radius: 16px; border: 1px solid var(--border); }
+        .form-row { display: flex; gap: 20px; margin-bottom: 20px; }
+        .form-group { margin-bottom: 20px; }
+        input, select { width: 100%; padding: 12px; background: #0f0f0f; border: 1px solid var(--border); color: white; border-radius: 6px; box-sizing: border-box; }
+        
+        .section { display: none; }
+        .section.active { display: block; }
+    </style>
+</head>
+<body>
+
+    <aside class="sidebar">
+        <div class="brand"><i class="fa-solid fa-volleyball"></i> ADMIN PANEL</div>
+        <div class="nav-item active" onclick="switchTab('planning')"><i class="fa-solid fa-calendar-days"></i> Planning</div>
+        <div class="nav-item" onclick="switchTab('matches')"><i class="fa-solid fa-trophy"></i> Résultats</div>
+        <div class="nav-item" onclick="switchTab('players')"><i class="fa-solid fa-users"></i> Joueurs</div>
+        <div class="nav-item" style="margin-top:auto; border-top:1px solid #333" onclick="window.open('index.html')"><i class="fa-solid fa-arrow-up-right-from-square"></i> Voir le Site</div>
+    </aside>
+
+    <main class="main">
+        
+        <section id="sec-planning" class="section active">
+            <div class="header"><h1>Matchs à Venir</h1> <button class="btn" onclick="editPlan()">+ Ajouter</button></div>
+            <div class="controls">
+                <div style="flex:1">
+                    <label>Sélectionner l'équipe</label>
+                    <select id="plan-db" onchange="loadPlanning()">
+                        <option value="schedule-dep-garcons">DEP Garçons</option>
+                        <option value="schedule-m18-garcons">M18 Garçons</option>
+                        <option value="schedule-m18-filles-1">M18 Filles 1</option>
+                        <option value="schedule-m18-filles-2">M18 Filles 2</option>
+                        <option value="schedule-senior-filles-1">Senior Filles 1</option>
+                        <option value="schedule-senior-filles-2">Senior Filles 2</option>
+                        <option value="schedule-m15-filles">M15 Filles</option>
+                        <option value="schedule-m13-mixte">M13 Mixte</option>
+                    </select>
+                </div>
+                <button class="btn btn-icon" onclick="loadPlanning()"><i class="fa-solid fa-rotate"></i></button>
+            </div>
+            <div id="grid-planning" class="grid"></div>
+        </section>
+
+        <section id="sec-matches" class="section">
+            <div class="header"><h1>Résultats Passés</h1> <button class="btn" onclick="editMatch()">+ Ajouter</button></div>
+            <div class="controls">
+                <div style="flex:1">
+                    <label>Sélectionner l'équipe</label>
+                    <select id="match-db" onchange="loadMatches()">
+                        <option value="matches-dep-garcons">DEP Garçons</option>
+                        <option value="matches-db">M18 Garçons</option>
+                        <option value="matches-m18-filles-1">M18 Filles 1</option>
+                        <option value="matches-m18-filles-2">M18 Filles 2</option>
+                        <option value="matches-senior-filles-1">Senior Filles 1</option>
+                        <option value="matches-senior-filles-2">Senior Filles 2</option>
+                        <option value="matches-m15-filles">M15 Filles</option>
+                        <option value="matches-m13-mixte">M13 Mixte</option>
+                    </select>
+                </div>
+                <button class="btn btn-icon" onclick="loadMatches()"><i class="fa-solid fa-rotate"></i></button>
+            </div>
+            <div id="grid-matches" class="grid"></div>
+        </section>
+
+        <section id="sec-players" class="section">
+            <div class="header"><h1>Effectif Joueurs</h1> <button class="btn" onclick="editPlayer()">+ Ajouter</button></div>
+            <div class="controls">
+                <div style="flex:1">
+                    <label>Sélectionner l'équipe</label>
+                    <select id="player-db" onchange="loadPlayers()">
+                        <option value="db-dep-garcons">DEP Garçons</option>
+                        <option value="db-m18-garcons">M18 Garçons</option>
+                        <option value="db-m18-filles-1">M18 Filles 1</option>
+                        <option value="db-m18-filles-2">M18 Filles 2</option>
+                        <option value="db-senior-filles-1">Senior Filles 1</option>
+                        <option value="db-senior-filles-2">Senior Filles 2</option>
+                        <option value="db-m15-filles">M15 Filles</option>
+                        <option value="db-m13-mixte">M13 Mixte</option>
+                    </select>
+                </div>
+                <button class="btn btn-icon" onclick="loadPlayers()"><i class="fa-solid fa-rotate"></i></button>
+            </div>
+            <div id="grid-players" class="grid"></div>
+        </section>
+
+    </main>
+
+    <div id="modal-plan" class="modal">
+        <div class="modal-box">
+            <h2>Programmer un Match</h2>
+            <input type="hidden" id="pl-id">
+            <div class="form-row">
+                <div style="flex:1"><label>Date (ex: 10 JAN)</label><input type="text" id="pl-date"></div>
+                <div style="flex:1"><label>Heure (ex: 20:30)</label><input type="text" id="pl-time"></div>
+            </div>
+            <div class="form-row">
+                <div style="flex:1"><label>Domicile</label><input type="text" id="pl-home" value="AS DARDILLY"></div>
+                <div style="flex:1"><label>Extérieur</label><input type="text" id="pl-away"></div>
+            </div>
+            <div class="form-group"><label>Lieu</label><input type="text" id="pl-loc" value="Gymnase Roland Guillaud"></div>
+            <div class="form-row" style="margin-top:30px">
+                <button class="btn" style="flex:2" onclick="savePlan()">Enregistrer</button>
+                <button class="btn" style="flex:1; background:#333;" onclick="closeModals()">Annuler</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal-match" class="modal">
+        <div class="modal-box">
+            <h2>Résultat de Match</h2>
+            <input type="hidden" id="mt-id">
+            <div class="form-row">
+                <div style="flex:1"><label>Domicile</label><input type="text" id="mt-home" value="AS DARDILLY"></div>
+                <div style="flex:1"><label>Extérieur</label><input type="text" id="mt-away"></div>
+            </div>
+            <div class="form-row">
+                <div style="flex:1"><label>Score (ex: 3 - 0)</label><input type="text" id="mt-score"></div>
+                <div style="flex:1"><label>Date</label><input type="text" id="mt-date"></div>
+            </div>
+            <div class="form-group"><label>Sets (ex: 25:20, 25:15...)</label><input type="text" id="mt-sets"></div>
+            <div class="form-row" style="margin-top:30px">
+                <button class="btn" style="flex:2" onclick="saveMatch()">Enregistrer</button>
+                <button class="btn" style="flex:1; background:#333;" onclick="closeModals()">Annuler</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal-player" class="modal">
+        <div class="modal-box">
+            <h2>Joueur</h2>
+            <div class="form-row">
+                <div style="width:100px"><label>N°</label><input type="number" id="py-number"></div>
+                <div style="flex:1"><label>Nom</label><input type="text" id="py-name"></div>
+            </div>
+            <div class="form-group">
+                <label>Poste</label>
+                <select id="py-pos">
+                    <option value="S">Passeur</option><option value="OH">Récep/Attaq</option>
+                    <option value="MB">Central</option><option value="OP">Pointu</option>
+                    <option value="L">Libero</option>
+                </select>
+            </div>
+            <div class="form-group"><label>Lien Profil</label><input type="text" id="py-profile"></div>
+            <div class="form-group"><label style="display:flex;align-items:center;gap:10px"><input type="checkbox" id="py-captain" style="width:auto"> Capitaine</label></div>
+            <div class="form-row" style="margin-top:30px">
+                <button class="btn" style="flex:2" onclick="savePlayer()">Enregistrer</button>
+                <button class="btn" style="flex:1; background:#333;" onclick="closeModals()">Annuler</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API = "http://localhost:3000/api";
+        // GLOBAL DATA STORE (Fixes "Edit" quote issues)
+        let _planning = [];
+        let _matches = [];
+        let _players = [];
+
+        function switchTab(tab) {
+            document.querySelectorAll('.nav-item').forEach(e => e.classList.remove('active'));
+            document.querySelectorAll('.section').forEach(e => e.classList.remove('active'));
+            event.currentTarget.classList.add('active');
+            document.getElementById(`sec-${tab}`).classList.add('active');
+            if(tab==='planning') loadPlanning();
+            if(tab==='matches') loadMatches();
+            if(tab==='players') loadPlayers();
+        }
+
+        function closeModals() { document.querySelectorAll('.modal').forEach(m => m.style.display='none'); }
+
+        // --- PLANNING ---
+        async function loadPlanning() {
+            const db = document.getElementById('plan-db').value;
+            const res = await fetch(`${API}/data/${db}`);
+            const data = await res.json();
+            _planning = data.schedule || [];
+            
+            document.getElementById('grid-planning').innerHTML = _planning.map(m => `
+                <div class="card">
+                    <div class="card-header"><span class="badge" style="color:white;border-color:var(--brand)">${m.date}</span><span>${m.time}</span></div>
+                    <div style="font-size:1.2rem; font-weight:700; margin:10px 0">${m.home} <span style="color:var(--brand)">vs</span> ${m.away}</div>
+                    <div style="color:#888; font-size:0.9rem"><i class="fa-solid fa-location-dot"></i> ${m.location}</div>
+                    <div class="actions">
+                        <div class="icon-action" onclick="editPlan('${m.id}')"><i class="fa-solid fa-pen"></i></div>
+                        <div class="icon-action del" onclick="del('${db}', '${m.id}', 'schedule')"><i class="fa-solid fa-trash"></i></div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function editPlan(id) {
+            const m = id ? _planning.find(x => x.id === id) : null;
+            document.getElementById('pl-id').value = m ? m.id : "S-" + Date.now();
+            document.getElementById('pl-date').value = m ? m.date : "";
+            document.getElementById('pl-time').value = m ? m.time : "";
+            document.getElementById('pl-home').value = m ? m.home : "AS DARDILLY";
+            document.getElementById('pl-away').value = m ? m.away : "";
+            document.getElementById('pl-loc').value = m ? m.location : "Gymnase Roland Guillaud";
+            document.getElementById('modal-plan').style.display = 'flex';
+        }
+
+        async function savePlan() {
+            await fetch(`${API}/schedule/update`, {
+                method: 'POST', headers: {'Content-Type':'application/json'},
+                body: JSON.stringify({
+                    dbName: document.getElementById('plan-db').value,
+                    scheduleData: {
+                        id: document.getElementById('pl-id').value,
+                        date: document.getElementById('pl-date').value,
+                        time: document.getElementById('pl-time').value,
+                        home: document.getElementById('pl-home').value,
+                        away: document.getElementById('pl-away').value,
+                        location: document.getElementById('pl-loc').value
+                    }
+                })
+            });
+            closeModals(); loadPlanning();
+        }
+
+        // --- MATCHES ---
+        async function loadMatches() {
+            const db = document.getElementById('match-db').value;
+            const res = await fetch(`${API}/data/${db}`);
+            const data = await res.json();
+            _matches = (data.matches || []).reverse();
+            
+            document.getElementById('grid-matches').innerHTML = _matches.map(m => `
+                <div class="card">
+                    <div class="card-header"><span class="badge">${m.date}</span></div>
+                    <div style="font-size:1.2rem; font-weight:700; margin:10px 0">${m.home} <span style="color:var(--brand)">${m.score}</span> ${m.away}</div>
+                    <div style="color:#888;">${m.sets ? m.sets.join(' | ') : ''}</div>
+                    <div class="actions">
+                        <div class="icon-action" onclick="editMatch('${m.id}')"><i class="fa-solid fa-pen"></i></div>
+                        <div class="icon-action del" onclick="del('${db}', '${m.id}', 'match')"><i class="fa-solid fa-trash"></i></div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function editMatch(id) {
+            const m = id ? _matches.find(x => x.id === id) : null;
+            document.getElementById('mt-id').value = m ? m.id : "M-" + Date.now();
+            document.getElementById('mt-home').value = m ? m.home : "AS DARDILLY";
+            document.getElementById('mt-away').value = m ? m.away : "";
+            document.getElementById('mt-score').value = m ? m.score : "";
+            document.getElementById('mt-date').value = m ? m.date : "";
+            document.getElementById('mt-sets').value = m && m.sets ? m.sets.join(', ') : "";
+            document.getElementById('modal-match').style.display = 'flex';
+        }
+
+        async function saveMatch() {
+            await fetch(`${API}/matches/update`, {
+                method: 'POST', headers: {'Content-Type':'application/json'},
+                body: JSON.stringify({
+                    dbName: document.getElementById('match-db').value,
+                    matchData: {
+                        id: document.getElementById('mt-id').value,
+                        home: document.getElementById('mt-home').value,
+                        away: document.getElementById('mt-away').value,
+                        score: document.getElementById('mt-score').value,
+                        date: document.getElementById('mt-date').value,
+                        sets: document.getElementById('mt-sets').value.split(',').map(s=>s.trim())
+                    }
+                })
+            });
+            closeModals(); loadMatches();
+        }
+
+        // --- PLAYERS ---
+        async function loadPlayers() {
+            const db = document.getElementById('player-db').value;
+            const res = await fetch(`${API}/data/${db}`);
+            const data = await res.json();
+            _players = (data.players || []).sort((a,b)=>a.number-b.number);
+            
+            document.getElementById('grid-players').innerHTML = _players.map(p => `
+                <div class="card" style="border-left:4px solid ${p.captain?'var(--brand)':'#333'}">
+                    <div class="card-header"><span class="badge" style="color:white;border-color:#555">#${p.number}</span>${p.captain?'<span class="badge" style="background:var(--brand);color:black;border:none">CAP</span>':''}</div>
+                    <div style="font-size:1.2rem; font-weight:700">${p.name}</div>
+                    <div style="color:var(--brand); font-weight:700">${p.position||''}</div>
+                    <div class="actions">
+                        <div class="icon-action" onclick="editPlayer(${p.number})"><i class="fa-solid fa-pen"></i></div>
+                        <div class="icon-action del" onclick="del('${db}', '${p.number}', 'player')"><i class="fa-solid fa-trash"></i></div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function editPlayer(num) {
+            const p = num ? _players.find(x => x.number === num) : null;
+            document.getElementById('py-number').value = p ? p.number : "";
+            document.getElementById('py-name').value = p ? p.name : "";
+            document.getElementById('py-pos').value = p ? p.position : "S";
+            document.getElementById('py-profile').value = p ? p.profile : "#";
+            document.getElementById('py-captain').checked = p ? p.captain : false;
+            document.getElementById('modal-player').style.display = 'flex';
+        }
+
+        async function savePlayer() {
+            await fetch(`${API}/players/update`, {
+                method: 'POST', headers: {'Content-Type':'application/json'},
+                body: JSON.stringify({
+                    team: document.getElementById('player-db').value.replace('db-',''),
+                    playerInfo: {
+                        number: parseInt(document.getElementById('py-number').value),
+                        name: document.getElementById('py-name').value,
+                        position: document.getElementById('py-pos').value,
+                        profile: document.getElementById('py-profile').value,
+                        captain: document.getElementById('py-captain').checked
+                    }
+                })
+            });
+            closeModals(); loadPlayers();
+        }
+
+        async function del(file, id, type) {
+            if(!confirm("Supprimer ?")) return;
+            let target = file;
+            if(type === 'player' && !file.startsWith('db-')) target = 'db-' + file;
+            await fetch(`${API}/delete/${target}/${id}`, { method: 'DELETE' });
+            if(type==='schedule') loadPlanning();
+            else if(type==='match') loadMatches();
+            else loadPlayers();
+        }
+
+        window.onload = () => switchTab('planning');
+    </script>
+</body>
+</html>

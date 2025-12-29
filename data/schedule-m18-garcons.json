@@ -1,0 +1,20 @@
+{
+  "schedule": [
+    {
+      "id": "S-1767020176785",
+      "date": "10 JAN 2026",
+      "time": "14:00",
+      "home": "AS DARDILLY",
+      "away": "ASV GARON",
+      "location": "Gymnase Roland Guillaud"
+    },
+    {
+      "id": "S-1767021977855",
+      "date": "25 JAN",
+      "time": "09:30",
+      "home": "VC BELLEVILLE 2",
+      "away": "AS DARDILLY",
+      "location": "Salle Sport Villié Morgon"
+    }
+  ]
+}

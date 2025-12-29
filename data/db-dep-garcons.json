@@ -1,0 +1,47 @@
+{
+  "team": "DEP Garçons",
+  "players": [
+    {
+      "number": 2,
+      "name": "JOUEUR 2",
+      "position": "MB",
+      "profile": "#",
+      "captain": false
+    },
+    {
+      "number": 3,
+      "name": "JOUEUR 3",
+      "position": "S",
+      "profile": "#",
+      "captain": false
+    },
+    {
+      "number": 4,
+      "name": "JOUEUR 4",
+      "position": "OP",
+      "profile": "#",
+      "captain": false
+    },
+    {
+      "number": 5,
+      "name": "JOUEUR 5",
+      "position": "L",
+      "profile": "#",
+      "captain": false
+    },
+    {
+      "number": 6,
+      "name": "JOUEUR 6",
+      "position": "OH",
+      "profile": "#",
+      "captain": false
+    },
+    {
+      "number": 1,
+      "name": "DURIEUX CLEMENT",
+      "position": "OH",
+      "profile": "player-dep-garcons-1.html",
+      "captain": true
+    }
+  ]
+}

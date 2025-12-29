@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>M15 Filles | AS Dardilly</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .results-container {
+            width: 90%; 
+            max-width: 1400px;
+            margin: 60px auto 0;
+        }
+
+        .split-results {
+            display: grid;
+            grid-template-columns: 1.2fr 1px 1fr; 
+            gap: 0; 
+            align-items: stretch;
+            width: 100%;
+        }
+
+        .table-responsive {
+            margin: 0 !important;
+            width: 100%;
+            padding-right: 40px;
+        }
+
+        .vertical-divider {
+            width: 1px;
+            background: #333;
+            height: 100%;
+            opacity: 0.5;
+        }
+
+        .next-match-card {
+            background: #1a1a1a;
+            border: 1px solid #333;
+            border-radius: 8px;
+            padding: 30px;
+            text-align: center;
+            margin: 0 !important;
+            margin-left: 40px !important;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .nm-header {
+            color: var(--brand-yellow);
+            font-family: var(--font-head);
+            font-size: 2rem;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+        }
+        .nm-date {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 30px;
+            color: #fff;
+            background: #333;
+            display: inline-block;
+            padding: 8px 20px;
+            border-radius: 4px;
+        }
+        .nm-teams {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding: 0 20px;
+        }
+        .nm-team-logo {
+            width: 100px;
+            height: 100px;
+            object-fit: contain;
+            margin-bottom: 10px;
+        }
+        .nm-team-placeholder {
+            width: 100px;
+            height: 100px;
+            background: #333;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: var(--font-head);
+            font-size: 2rem;
+            color: #777;
+            margin: 0 auto 10px;
+        }
+        .nm-team-name {
+            font-weight: bold;
+            font-size: 1.1rem;
+            text-transform: uppercase;
+        }
+        .nm-vs {
+            font-family: var(--font-head);
+            font-size: 3rem;
+            color: #444;
+            font-weight: bold;
+        }
+        .nm-location {
+            border-top: 1px solid #333;
+            padding-top: 20px;
+            color: #aaa;
+            font-size: 1rem;
+        }
+        
+        /* --- MOBILE STACK FIXES --- */
+        @media (max-width: 1100px) {
+            .results-container {
+                width: 100%;
+                padding: 0 15px;
+                margin-top: 30px;
+            }
+
+            .split-results { 
+                grid-template-columns: 1fr !important; 
+                gap: 40px;
+            }
+            .vertical-divider { display: none !important; }
+            
+            .next-match-card { 
+                order: -1 !important; 
+                margin-left: 0 !important;
+                width: 100% !important;
+                margin-bottom: 20px;
+                padding: 20px 10px;
+            } 
+            
+            .nm-teams {
+                padding: 0;
+                justify-content: space-around;
+            }
+            .nm-team-logo, .nm-team-placeholder {
+                width: 70px;
+                height: 70px;
+                font-size: 1.5rem;
+            }
+            .nm-vs {
+                font-size: 1.8rem;
+            }
+            .nm-team-name {
+                font-size: 0.9rem;
+            }
+
+            .table-responsive {
+                padding-right: 0 !important;
+            }
+            
+            .hero h1 {
+                font-size: 3rem !important;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="brand"><a href="index.html"><img src="image_fd6867.png" alt="Logo"></a></div>
+        <nav id="main-nav">
+            <ul>
+                <li><a href="index.html" data-i18n="nav_home">Accueil</a></li>
+                <li><a href="equipes.html" data-i18n="nav_teams">Les Équipes</a></li>
+                <li><a href="beach-dardilly.html" data-i18n="nav_beach">Beach Volley</a></li>
+                <li><a href="inscription.html" data-i18n="nav_register">S'inscrire</a></li>
+                <li><a href="contact.html" data-i18n="nav_contact">Contact</a></li>
+            </ul>
+        </nav>
+        <div style="display:flex; align-items:center; gap: 15px;">
+            <a href="inscription.html" class="btn-join" data-i18n="btn_join">Rejoindre</a>
+            <button id="lang-switch" class="lang-btn">EN</button>
+            <button id="mobile-toggle-btn" class="mobile-toggle">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+        </div>
+    </header>
+
+    <main>
+        <div class="hero" style="height: 40vh; background: linear-gradient(rgba(0,0,0,0.7), rgba(15,17,21,1)), url('m15f-photo.jpg');">
+            <div style="margin-top: 40px;">
+                <h1 style="font-family: var(--font-head); font-size: 5rem; text-transform: uppercase; line-height: 1;">M15 <span style="color:var(--brand-yellow);">FILLES</span></h1>
+                <p style="color: #bbb; letter-spacing: 2px; font-weight: 600;">SAISON 2025 / 2026 • POULE MFBA</p>
+            </div>
+        </div>
+
+        <section class="ranking-section" style="padding-bottom: 0;">
+            <h2 class="section-title">Classement <span>Poule MFBA</span></h2>
+            <div class="table-responsive">
+                <table class="ranking-table">
+                    <thead>
+                        <tr>
+                            <th style="width: 50px;">#</th>
+                            <th data-i18n="rk_team">Équipe</th>
+                            <th data-i18n="rk_pts">Pts</th>
+                            <th data-i18n="rk_played">Joués</th>
+                            <th data-i18n="rk_won">Gagnés</th>
+                            <th data-i18n="rk_lost">Perdus</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>1</td><td>SAIN BEL VOLLEY 1</td><td>10</td><td>5</td><td>5</td><td>0</td></tr>
+                        <tr><td>2</td><td>US MEYZIEU VB</td><td>9</td><td>5</td><td>4</td><td>1</td></tr>
+                        <tr><td>3</td><td>AS CALUIRE</td><td>8</td><td>5</td><td>3</td><td>2</td></tr>
+                        <tr><td>4</td><td>VV SAÔNE 1</td><td>7</td><td>4</td><td>3</td><td>1</td></tr>
+                        <tr style="background: rgba(252, 227, 0, 0.1); border: 2px solid var(--brand-yellow);"><td>5</td><td style="color: var(--brand-yellow);">AS DARDILLY</td><td>7</td><td>5</td><td>2</td><td>3</td></tr>
+                        <tr><td>6</td><td>ASV GARON</td><td>6</td><td>5</td><td>1</td><td>4</td></tr>
+                        <tr><td>7</td><td>VB VILLEFRANCHE 2</td><td>5</td><td>4</td><td>1</td><td>3</td></tr>
+                        <tr><td>8</td><td>CO ST FONS</td><td>5</td><td>5</td><td>0</td><td>5</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section class="results-container">
+            <h2 class="section-title" data-i18n="sec_cal">Calendrier & <span>Résultats</span></h2>
+            <div class="split-results">
+                <div class="table-responsive">
+                    <table class="training-table"> 
+                        <thead>
+                            <tr>
+                                <th data-i18n="th_date">Date</th>
+                                <th data-i18n="th_loc">Lieu</th>
+                                <th style="text-align: right;" data-i18n="th_home">Domicile</th>
+                                <th style="text-align: center;" data-i18n="th_score">Score</th>
+                                <th style="text-align: left;" data-i18n="th_away">Extérieur</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr style="background: rgba(255, 255, 255, 0.05);">
+                                <td>17 JAN 26</td>
+                                <td><span style="background:#333; padding:2px 6px; font-size:0.7rem;" data-i18n="loc_dom_short">DOM</span></td>
+                                <td style="text-align: right; color: var(--brand-yellow); font-weight: bold;">AS DARDILLY</td>
+                                <td style="text-align: center; color: #aaa; font-weight: bold;">-</td>
+                                <td style="text-align: left; font-weight: bold;">ASV GARON</td>
+                            </tr>
+                            <tr>
+                                <td>13 DEC 25</td>
+                                <td><span style="background:#333; padding:2px 6px; font-size:0.7rem;" data-i18n="loc_dom_short">DOM</span></td>
+                                <td style="text-align: right; font-weight: bold; color: var(--brand-yellow);">AS DARDILLY</td>
+                                <td style="text-align: center; color: #ff4757; font-weight: bold;">0 - 3</td>
+                                <td style="text-align: left;">SAIN BEL VOLLEY 1</td>
+                            </tr>
+                            <tr>
+                                <td>29 NOV 25</td>
+                                <td><span style="background:#333; padding:2px 6px; font-size:0.7rem;" data-i18n="loc_ext_short">EXT</span></td>
+                                <td style="text-align: right;">US MEYZIEU VB</td>
+                                <td style="text-align: center; color: #ff4757; font-weight: bold;">3 - 1</td>
+                                <td style="text-align: left; color: var(--brand-yellow); font-weight: bold;">DARDILLY</td>
+                            </tr>
+                            <tr>
+                                <td>22 NOV 25</td>
+                                <td><span style="background:#333; padding:2px 6px; font-size:0.7rem;" data-i18n="loc_dom_short">DOM</span></td>
+                                <td style="text-align: right; font-weight: bold; color: var(--brand-yellow);">AS DARDILLY</td>
+                                <td style="text-align: center; color: var(--brand-yellow); font-weight: bold;">3 - 1</td>
+                                <td style="text-align: left;">CO ST FONS</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="vertical-divider"></div>
+
+                <div class="next-match-card">
+                    <div class="nm-header" data-i18n="nm_title">PROCHAIN MATCH</div>
+                    <div class="nm-date">17 JAN 2026 • 15:00</div>
+                    <div class="nm-teams">
+                        <div>
+                            <img src="image_fd6867.png" alt="Logo Dardilly" class="nm-team-logo">
+                            <div class="nm-team-name">AS DARDILLY</div>
+                        </div>
+                        <div class="nm-vs" data-i18n="nm_vs">VS</div>
+                        <div>
+                            <div class="nm-team-placeholder">AG</div>
+                            <div class="nm-team-name">ASV GARON</div>
+                        </div>
+                    </div>
+                    <div class="nm-location">
+                        <i class="fa-solid fa-location-dot" style="color: var(--brand-yellow); margin-right: 5px;"></i>
+                        <strong data-i18n="gym_roland">Gymnase Roland Guillaud</strong><br>
+                        <span style="font-size: 0.8rem;">Dardilly (Domicile)</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section style="background: var(--bg-card); border-top: 1px solid #333; padding-top: 100px; margin-top: 60px;">
+            <h2 class="section-title">L'Effectif <span>2025-26</span></h2>
+            <div class="roster-container">
+                <div class="roster-image" style="background-image: url('m15f-photo.jpg');"></div>
+                <div class="roster-content" style="padding: 30px;">
+                   <div class="roster-list">
+                        <div class="roster-header" style="display: flex; justify-content: space-between; padding: 10px 15px; border-bottom: 1px solid #444; margin-bottom: 10px; color: #666; font-size: 0.8rem; font-family: var(--font-head); letter-spacing: 1px;">
+                            <div>
+                                <span style="display: inline-block; width: 40px;" data-i18n="hdr_no">N°</span> 
+                                <span data-i18n="hdr_player">JOUEUSE</span>
+                            </div>
+                            <div style="padding-right: 25px;">POSTE</div>
+                        </div>
+
+                        <div class="roster-item"><div><span class="roster-num">01</span> BORET CHLOE</div><div><span style="color:var(--brand-yellow); font-weight:800;">OH</span></div></div>
+                        <div class="roster-item"><div><span class="roster-num">02</span> CECILLON JULIA</div><div><span style="color:var(--brand-yellow); font-weight:800;">S</span></div></div>
+                        <div class="roster-item"><div><span class="roster-num">04</span> BRUN VALENTINE</div><div><span style="color:var(--brand-yellow); font-weight:800;">OH</span></div></div>
+                        <div class="roster-item"><div><span class="roster-num">06</span> ALESSANDRI VICKY</div><div><span style="color:var(--brand-yellow); font-weight:800;">MB</span></div></div>
+                        <div class="roster-item"><div><span class="roster-num">07</span> DE GENNARO AMELIE</div><div><span style="color:var(--brand-yellow); font-weight:800;">MB</span></div></div>
+                        <div class="roster-item"><div><span class="roster-num">08</span> GRIOTTO ALEXANDRA</div><div><span style="color:var(--brand-yellow); font-weight:800;">OP</span></div></div>
+                        <div class="roster-item"><div><span class="roster-num">09</span> CHARMASSON APOLLINE</div><div><span style="color:var(--brand-yellow); font-weight:800;">S</span></div></div>
+                        <div class="roster-item"><div><span class="roster-num">10</span> GONCALVES DE MOURA V.</div><div><span style="color:var(--brand-yellow); font-weight:800;">OH</span></div></div>
+                        <div class="roster-item"><div><span class="roster-num">13</span> LEVASSEUR BESSON M.</div><div><span style="color:var(--brand-yellow); font-weight:800;">LIB</span></div></div>
+                        <div class="roster-item"><div><span class="roster-num">14</span> DAVID ELISE</div><div><span style="color:var(--brand-yellow); font-weight:800;">MB</span></div></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="dardilly-footer">
+        <div class="copyright" data-i18n="footer_rights">© 2025 AS Dardilly Volley.</div>
+    </footer>
+    <script src="lang.js"></script>
+</body>
+</html>

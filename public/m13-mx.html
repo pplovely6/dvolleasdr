@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>M13 Mixte | AS Dardilly</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .results-container {
+            width: 90%; 
+            max-width: 1400px;
+            margin: 60px auto 0;
+        }
+
+        .split-results {
+            display: grid;
+            grid-template-columns: 1.2fr 1px 1fr; 
+            gap: 0; 
+            align-items: stretch;
+            width: 100%;
+        }
+
+        .table-responsive {
+            margin: 0 !important;
+            width: 100%;
+            padding-right: 40px;
+        }
+
+        .vertical-divider {
+            width: 1px;
+            background: #333;
+            height: 100%;
+            opacity: 0.5;
+        }
+
+        .next-match-card {
+            background: #1a1a1a;
+            border: 1px solid #333;
+            border-radius: 8px;
+            padding: 30px;
+            text-align: center;
+            margin: 0 !important;
+            margin-left: 40px !important;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .nm-header {
+            color: var(--brand-yellow);
+            font-family: var(--font-head);
+            font-size: 2rem;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+        }
+        .nm-date {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 30px;
+            color: #fff;
+            background: #333;
+            display: inline-block;
+            padding: 8px 20px;
+            border-radius: 4px;
+        }
+        .nm-teams {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding: 0 20px;
+        }
+        .nm-team-logo {
+            width: 80px;
+            height: 80px;
+            object-fit: contain;
+            margin-bottom: 10px;
+        }
+        .nm-team-placeholder {
+            width: 80px;
+            height: 80px;
+            background: #333;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: var(--font-head);
+            font-size: 1.8rem;
+            color: #777;
+            margin: 0 auto 10px;
+        }
+        .nm-team-name {
+            font-weight: bold;
+            font-size: 1rem;
+            text-transform: uppercase;
+        }
+        .nm-vs {
+            font-family: var(--font-head);
+            font-size: 2.5rem;
+            color: #444;
+            font-weight: bold;
+        }
+
+        @media (max-width: 1100px) {
+            .results-container {
+                width: 100%;
+                padding: 0 15px;
+                margin-top: 30px;
+            }
+            .split-results { 
+                grid-template-columns: 1fr !important; 
+                gap: 40px;
+            }
+            .vertical-divider { display: none !important; }
+            .next-match-card { 
+                order: -1 !important; 
+                margin-left: 0 !important;
+                width: 100% !important;
+                margin-bottom: 20px;
+            } 
+            .table-responsive { padding-right: 0 !important; }
+            .hero h1 { font-size: 3rem !important; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="brand"><a href="index.html"><img src="image_fd6867.png" alt="Logo"></a></div>
+        <nav id="main-nav">
+            <ul>
+                <li><a href="index.html" data-i18n="nav_home">Accueil</a></li>
+                <li><a href="equipes.html" data-i18n="nav_teams">Les Équipes</a></li>
+                <li><a href="beach-dardilly.html" data-i18n="nav_beach">Beach Volley</a></li>
+                <li><a href="inscription.html" data-i18n="nav_register">S'inscrire</a></li>
+                <li><a href="contact.html" data-i18n="nav_contact">Contact</a></li>
+            </ul>
+        </nav>
+        <div style="display:flex; align-items:center; gap: 15px;">
+            <a href="inscription.html" class="btn-join" data-i18n="btn_join">Rejoindre</a>
+            <button id="lang-switch" class="lang-btn">EN</button>
+            <button id="mobile-toggle-btn" class="mobile-toggle">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+        </div>
+    </header>
+
+    <main>
+        <div class="hero" style="height: 40vh; background: linear-gradient(rgba(0,0,0,0.7), rgba(15,17,21,1)), url('m13mx-photo.jpg');">
+            <div style="margin-top: 40px;">
+                <h1 style="font-family: var(--font-head); font-size: 5rem; text-transform: uppercase; line-height: 1;">M13 <span style="color:var(--brand-yellow);">MIXTE</span></h1>
+                <p style="color: #bbb; letter-spacing: 2px; font-weight: 600;">SAISON 2025 / 2026 • POULE BM3A</p>
+            </div>
+        </div>
+
+        <section class="ranking-section" style="padding-bottom: 0;">
+            <h2 class="section-title">Classement <span>Poule BM3A</span></h2>
+            <div class="table-responsive">
+                <table class="ranking-table">
+                    <thead>
+                        <tr>
+                            <th style="width: 50px;">#</th>
+                            <th data-i18n="rk_team">Équipe</th>
+                            <th data-i18n="rk_pts">Pts</th>
+                            <th data-i18n="rk_played">Joués</th>
+                            <th data-i18n="rk_won">Gagnés</th>
+                            <th data-i18n="rk_lost">Perdus</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr style="background: rgba(252, 227, 0, 0.1); border: 2px solid var(--brand-yellow);">
+                            <td>1</td><td style="color: var(--brand-yellow);">DARDILLY MX</td><td>12</td><td>6</td><td>6</td><td>0</td>
+                        </tr>
+                        <tr><td>2</td><td>DECINES F</td><td>11</td><td>6</td><td>5</td><td>1</td></tr>
+                        <tr><td>3</td><td>FRANCHEVILLE F1</td><td>10</td><td>6</td><td>4</td><td>2</td></tr>
+                        <tr><td>4</td><td>CRAPONNE F</td><td>9</td><td>6</td><td>3</td><td>3</td></tr>
+                        <tr><td>5</td><td>VBALL F2</td><td>9</td><td>6</td><td>3</td><td>3</td></tr>
+                        <tr><td>6</td><td>ASUL F1</td><td>8</td><td>6</td><td>2</td><td>4</td></tr>
+                        <tr><td>7</td><td>ST FONS F</td><td>8</td><td>6</td><td>2</td><td>4</td></tr>
+                        <tr><td>8</td><td>SAIN BEL MX</td><td>7</td><td>6</td><td>1</td><td>5</td></tr>
+                        <tr><td>9</td><td>VILLEFRANCHE F2</td><td>7</td><td>6</td><td>1</td><td>5</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section class="results-container">
+            <h2 class="section-title">Calendrier & <span>Résultats</span></h2>
+            <div class="split-results">
+                <div class="table-responsive">
+                    <table class="training-table"> 
+                        <thead>
+                            <tr>
+                                <th data-i18n="th_date">Date</th>
+                                <th style="text-align: right;">Domicile</th>
+                                <th style="text-align: center;">Score</th>
+                                <th style="text-align: left;">Extérieur</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>06 DEC</td>
+                                <td style="text-align: right; font-weight: bold; color: var(--brand-yellow);">DARDILLY MX</td>
+                                <td style="text-align: center; font-weight: bold; color: var(--brand-yellow);">2 - 1</td>
+                                <td style="text-align: left;">FRANCHEVILLE F1</td>
+                            </tr>
+                            <tr>
+                                <td>06 DEC</td>
+                                <td style="text-align: right; font-weight: bold; color: var(--brand-yellow);">DARDILLY MX</td>
+                                <td style="text-align: center; font-weight: bold; color: var(--brand-yellow);">2 - 0</td>
+                                <td style="text-align: left;">VBALL F2</td>
+                            </tr>
+                            <tr>
+                                <td>29 NOV</td>
+                                <td style="text-align: right; font-weight: bold; color: var(--brand-yellow);">DARDILLY MX</td>
+                                <td style="text-align: center; font-weight: bold; color: var(--brand-yellow);">2 - 0</td>
+                                <td style="text-align: left;">ST FONS F</td>
+                            </tr>
+                            <tr>
+                                <td>30 NOV</td>
+                                <td style="text-align: right; font-weight: bold; color: var(--brand-yellow);">DARDILLY MX</td>
+                                <td style="text-align: center; font-weight: bold; color: var(--brand-yellow);">2 - 1</td>
+                                <td style="text-align: left;">ASUL F1</td>
+                            </tr>
+                            <tr>
+                                <td>16 NOV</td>
+                                <td style="text-align: right; font-weight: bold; color: var(--brand-yellow);">DARDILLY MX</td>
+                                <td style="text-align: center; font-weight: bold; color: var(--brand-yellow);">2 - 0</td>
+                                <td style="text-align: left;">VILLEFRANCHE F2</td>
+                            </tr>
+                            <tr>
+                                <td>16 NOV</td>
+                                <td style="text-align: right;">SAIN BEL MX</td>
+                                <td style="text-align: center; font-weight: bold; color: var(--brand-yellow);">1 - 2</td>
+                                <td style="text-align: left; font-weight: bold; color: var(--brand-yellow);">DARDILLY MX</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="vertical-divider"></div>
+
+                <div class="next-match-card">
+                    <div class="nm-header">PROCHAIN PLATEAU</div>
+                    <div class="nm-date">JANVIER 2026 • JOURNÉE 04</div>
+                    <div class="nm-teams">
+                        <div>
+                            <img src="image_fd6867.png" alt="Logo Dardilly" class="nm-team-logo">
+                            <div class="nm-team-name">DARDILLY MX</div>
+                        </div>
+                        <div class="nm-vs">VS</div>
+                        <div>
+                            <div class="nm-team-placeholder">DF</div>
+                            <div class="nm-team-name">DECINES F</div>
+                        </div>
+                    </div>
+                    <div class="nm-location">
+                        <i class="fa-solid fa-location-dot" style="color: var(--brand-yellow); margin-right: 5px;"></i>
+                        <strong>Lieu à confirmer</strong><br>
+                        <span style="font-size: 0.8rem;">Consultez le planning pour les détails du plateau</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section style="background: var(--bg-card); border-top: 1px solid #333; padding-top: 100px; margin-top: 60px;">
+            <h2 class="section-title">L'Effectif <span>M13</span></h2>
+            <div class="roster-container">
+                <div class="roster-image" style="background-image: url('m13mx-photo.jpg');"></div>
+                <div class="roster-content" style="padding: 30px;">
+                   <div class="roster-list">
+                        <div class="roster-header" style="display: flex; justify-content: space-between; padding: 10px 15px; border-bottom: 1px solid #444; margin-bottom: 10px; color: #666; font-size: 0.8rem;">
+                            <div>N° JOUEUR</div>
+                            <div>POSTE</div>
+                        </div>
+                        <div class="roster-item"><div><span class="roster-num">--</span> EFFECTIF</div><div>POLYVALENT</div></div>
+                        <p style="font-size: 0.9rem; color: #888; margin-top: 20px;">L'effectif M13 est composé de jeunes joueurs et joueuses en cours d'apprentissage des fondamentaux du 4x4 mixte.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="dardilly-footer">
+        <div class="copyright">© 2025 AS Dardilly Volley.</div>
+    </footer>
+    <script src="lang.js"></script>
+</body>
+</html>

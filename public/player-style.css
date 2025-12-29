@@ -1,0 +1,402 @@
+* --- IMPORT FONTS (Google Fonts) --- */
+/* Using Barlow & Barlow Condensed - sporty, readable, and fits the layout better than Poppins */
+@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800&family=Barlow:wght@300;400;500;600&display=swap');
+
+/* --- RESET & VARIABLES --- */
+:root {
+    --brand-yellow: #fce300; 
+    --brand-black: #000000;
+    --bg-dark: #0f1115;
+    --bg-card: #1a1d24;
+    --text-white: #ffffff;
+    --text-gray: #b0b0b0;
+    
+    /* DEFINING THE FONTS - BARLOW (New) */
+    --font-head: 'Barlow Condensed', sans-serif; /* Condensed for Titles */
+    --font-body: 'Barlow', sans-serif;           /* Standard for Text */
+}
+
+/* --- HERO SECTION (Keeping the cutout style) --- */
+.player-hero {
+    position: relative;
+    min-height: 70vh; /* Slightly shorter to show stats sooner */
+    background: linear-gradient(180deg, var(--vw-bg) 0%, #000 100%);
+    display: flex;
+    align-items: flex-end; /* Align bottom */
+    justify-content: center;
+    overflow: hidden;
+    padding-top: 80px; 
+}
+
+.player-hero::before {
+    content: attr(data-number);
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 25rem;
+    font-family: var(--font-head);
+    color: rgba(255, 255, 255, 0.03);
+    font-weight: 900;
+    z-index: 0;
+}
+
+.player-image-container {
+    z-index: 2;
+    height: 85%;
+    position: relative;
+}
+
+.player-image-container img {
+    height: 100%;
+    width: auto;
+    mask-image: linear-gradient(to bottom, black 80%, transparent 100%);
+    filter: drop-shadow(0 0 30px rgba(0,0,0,0.8));
+}
+
+/* --- PLAYER NAME HEADER --- */
+.player-header {
+    text-align: center;
+    margin-top: -60px; /* Pull up over the faded image bottom */
+    position: relative;
+    z-index: 3;
+    margin-bottom: 40px;
+}
+
+.player-number-display {
+    font-size: 4rem;
+    font-weight: 900;
+    color: var(--brand-yellow); /* The "Pink" in your reference is now Yellow */
+    line-height: 1;
+    font-family: var(--font-head);
+}
+
+.player-lastname {
+    font-size: 3.5rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin: 5px 0;
+    line-height: 1;
+}
+
+.player-fullname {
+    font-size: 1.2rem;
+    color: var(--vw-text-gray);
+    font-weight: 400;
+}
+
+/* --- SECTIONS COMMON STYLES --- */
+.vw-section-title {
+    text-align: center;
+    font-size: 0.9rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: white;
+    margin-bottom: 15px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+}
+
+.vw-section-title::before, .vw-section-title::after {
+    content: '';
+    height: 1px;
+    width: 60px;
+    background: var(--vw-divider);
+}
+
+.vw-container {
+    max-width: 1100px;
+    margin: 0 auto 60px auto;
+    padding: 0 20px;
+}
+
+/* --- STATS CARD (The Dark Box) --- */
+.vw-card {
+    background: var(--vw-card-bg);
+    border-radius: 8px;
+    padding: 25px;
+    border: 1px solid #333;
+}
+
+/* --- TOP BIO GRID --- */
+.bio-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    text-align: center;
+}
+
+.bio-item {
+    position: relative;
+}
+
+/* Vertical dividers between items */
+.bio-item:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 10%;
+    height: 80%;
+    width: 1px;
+    background: var(--vw-divider);
+}
+
+.bio-label {
+    color: var(--brand-yellow); /* Accent color */
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+    display: block;
+}
+
+.bio-value {
+    font-size: 1.2rem;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+/* --- BOTTOM STATS GRID --- */
+.stats-grid {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr 1fr 1fr; /* First col wider for Total */
+}
+
+.stat-group {
+    padding: 0 20px;
+    position: relative;
+    text-align: center;
+}
+
+.stat-group:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 10%;
+    height: 80%;
+    width: 1px;
+    background: var(--vw-divider);
+}
+
+/* Total Points Column */
+.total-points-box h3 {
+    color: var(--brand-yellow);
+    font-size: 0.9rem;
+    margin-bottom: 10px;
+}
+
+.total-score {
+    font-size: 3.5rem;
+    font-weight: 700;
+    line-height: 1;
+    margin-bottom: 15px;
+}
+
+.avg-match {
+    border-top: 1px solid var(--vw-divider);
+    padding-top: 10px;
+}
+
+.avg-match span { display: block; }
+.avg-label { font-size: 0.75rem; color: var(--vw-text-gray); }
+.avg-value { font-size: 1.2rem; font-weight: 700; margin-top: 2px; }
+
+/* Action Columns (Attack, Block, Serve) */
+.stat-header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.stat-icon {
+    font-size: 1.5rem;
+    color: var(--brand-yellow);
+}
+
+.stat-title {
+    color: var(--brand-yellow);
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.stat-main-value {
+    font-size: 2.2rem;
+    font-weight: 700;
+    margin-bottom: 15px;
+}
+
+.sub-stats {
+    display: flex;
+    justify-content: space-around;
+    border-top: 1px solid var(--vw-divider);
+    padding-top: 10px;
+}
+
+.sub-stat-item {
+    text-align: center;
+}
+
+.sub-label { font-size: 0.7rem; color: var(--vw-text-gray); display: block; margin-bottom: 2px; }
+.sub-val { font-size: 1rem; font-weight: 700; }
+/* ===== ROSTER RESET ===== */
+
+.roster-section {
+  background: var(--bg-card);
+  border-top: 1px solid #333;
+  padding: 80px 0;
+}
+
+.roster-wrapper {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 40px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.roster-image {
+  min-height: 480px;
+  background-size: cover;
+  background-position: center;
+  border-radius: 8px;
+}
+
+.roster-table {
+  display: flex;
+  flex-direction: column;
+}
+
+.roster-head,
+.roster-row {
+  display: grid;
+  grid-template-columns: 60px 1fr 80px 24px;
+  align-items: center;
+  padding: 12px 10px;
+}
+
+.roster-head {
+  font-family: var(--font-head);
+  font-size: 0.8rem;
+  letter-spacing: 1px;
+  color: #666;
+  border-bottom: 1px solid #444;
+}
+
+.roster-row {
+  text-decoration: none;
+  color: inherit;
+  border-bottom: 1px solid #333;
+}
+
+.roster-row:hover {
+  background: rgba(255,255,255,0.04);
+}
+
+.roster-row .num {
+  font-weight: 800;
+}
+
+.roster-row .pos {
+  color: var(--brand-yellow);
+  font-weight: 800;
+}
+
+.captain {
+  margin-left: 8px;
+  font-size: 0.7rem;
+  color: var(--brand-yellow);
+  text-transform: uppercase;
+}
+
+@media (max-width: 900px) {
+  .roster-wrapper {
+    grid-template-columns: 1fr;
+  }
+}
+/* New Match History Design */
+.match-history-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.match-item-card {
+    background: #1a1d24;
+    border: 1px solid #333;
+    border-radius: 8px;
+    display: grid;
+    grid-template-columns: 8px 100px 1fr 120px 60px;
+    align-items: center;
+    overflow: hidden;
+    transition: transform 0.2s;
+}
+
+.match-item-card:hover {
+    border-color: var(--brand-yellow);
+}
+
+.res-indicator { height: 100%; }
+.res-win { background: #2ed573; }
+.res-loss { background: #ff4757; }
+
+.m-date-v2 {
+    font-family: var(--font-head);
+    font-weight: 700;
+    text-align: center;
+    color: #888;
+}
+
+.m-info-v2 { padding-left: 10px; }
+.m-opp-v2 { font-weight: 800; text-transform: uppercase; font-size: 1.1rem; }
+.m-sets-v2 { font-size: 0.8rem; color: #666; }
+
+.m-score-v2 {
+    font-family: var(--font-head);
+    font-weight: 800;
+    text-align: center;
+    font-size: 1.2rem;
+}
+
+.m-pts-v2 {
+    background: #222;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+}
+.match-card-row {
+    background: #1a1d24;
+    border: 1px solid #333;
+    border-radius: 8px;
+    display: grid;
+    grid-template-columns: 8px 90px 1fr 100px 75px;
+    align-items: center;
+    margin-bottom: 12px;
+    height: 75px;
+    overflow: hidden;
+}
+.win-indicator { background: #2ed573; }
+.loss-indicator { background: #ff4757; }
+.m-opp-v2 { font-weight: 800; text-transform: uppercase; color: #fff; }
+.m-score-v2 { color: #fce300; font-weight: 900; text-align: center; }
+.m-pts-badge { background: #222; height: 100%; text-align: center; display: flex; flex-direction: column; justify-content: center; }
+
+.m-pts-v2 span { font-size: 0.7rem; color: var(--brand-yellow); text-transform: uppercase; }
+.m-pts-v2 strong { font-size: 1.4rem; }
+/* Responsive */
+@media (max-width: 768px) {
+    .bio-grid { grid-template-columns: 1fr 1fr; gap: 20px; }
+    .bio-item:not(:last-child)::after { display: none; }
+    
+    .stats-grid { grid-template-columns: 1fr; gap: 30px; }
+    .stat-group:not(:last-child)::after { display: none; }
+    .stat-group { border-bottom: 1px solid var(--vw-divider); padding-bottom: 20px; }
+}

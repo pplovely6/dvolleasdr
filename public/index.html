@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Accueil | AS Dardilly Volley</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="player-style.css"> <style>
+        :root {
+            --font-head: 'Outfit', sans-serif;
+            --font-body: 'Outfit', sans-serif;
+            --brand-yellow: #fce300;
+            --bg-dark: #0f0f0f;
+            --bg-card: #1a1a1a;
+        }
+        
+        body {
+            font-family: var(--font-body);
+            background-color: var(--bg-dark);
+            color: white;
+            margin: 0;
+        }
+
+        /* Hero Text Override */
+        .hero h1 {
+            font-weight: 800; /* Bold like Planning page */
+            text-transform: uppercase;
+            letter-spacing: -1px;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="brand"><a href="index.html"><img src="image_fd6867.png" alt="Logo"></a></div>
+        
+        <nav id="main-nav">
+            <ul>
+                <li><a href="index.html" data-i18n="nav_home" class="active">Accueil</a></li>
+                <li><a href="equipes.html" data-i18n="nav_teams">Les Équipes</a></li>
+                <li><a href="planning.html" data-i18n="planning_title">PLANNING</a></li>
+                <li><a href="results.html" data-i18n="matches_title">RÉSULTATS</a></li>
+                <li><a href="contact.html" data-i18n="nav_contact">Contact</a></li>
+            </ul>
+        </nav>
+
+        <div style="display:flex; align-items:center; gap: 15px;">
+            <a href="inscription.html" class="btn-join" data-i18n="btn_join">Rejoindre</a>
+            <div class="lang-switch">
+                <button onclick="window.setLanguage('fr')" class="lang-btn">FR</button>
+                <button onclick="window.setLanguage('en')" class="lang-btn">EN</button>
+            </div>
+            <button id="mobile-toggle-btn" class="mobile-toggle">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+        </div>
+    </header>
+
+    <main>
+        <div class="hero" style="height: 85vh; background: linear-gradient(rgba(15,17,21,0.5), rgba(15,17,21,1)), url('index-bg-spike.png'); background-size: cover; background-position: center;">
+            <div>
+                <h1 style="font-family: var(--font-head); line-height: 0.9;" data-i18n="hero_title">
+                    Un Club,<br><span style="color: var(--brand-yellow);">Une Passion</span>
+                </h1>
+                <p style="margin: 20px 0; font-size: 1.4rem; color: #ddd; font-weight: 600;" data-i18n="hero_subtitle">AS Dardilly Volley-Ball • Depuis 1944</p>
+                <a href="equipes.html" class="btn-join" data-i18n="hero_btn">Voir les Équipes</a>
+            </div>
+        </div>
+
+        <section style="background: var(--bg-card);">
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 60px; width:90%; max-width:1200px; margin:0 auto;">
+                <div>
+                    <h2 class="section-title" data-i18n="section_history" style="font-family:var(--font-head); font-weight:800; text-transform:uppercase;">Notre <span style="color:var(--brand-yellow)">Histoire</span></h2>
+                    <ul style="list-style: none; padding: 0; font-size: 1.1rem; line-height: 1.8; color: #ccc;">
+                        <li style="margin-bottom: 20px; border-left: 3px solid var(--brand-yellow); padding-left: 15px;" data-i18n="hist_1944">
+                            <strong>1944</strong> : Création du club par des jeunes dardillois passionnés.
+                        </li>
+                        <li style="margin-bottom: 20px; border-left: 3px solid #444; padding-left: 15px;" data-i18n="hist_50s">
+                            <strong>Années 50</strong> : Titre de Champion de France de Nationale 2.
+                        </li>
+                        <li style="margin-bottom: 20px; border-left: 3px solid #444; padding-left: 15px;" data-i18n="hist_90s">
+                            <strong>Années 90</strong> : Le club atteint la 36ème place nationale.
+                        </li>
+                        <li style="margin-bottom: 20px; border-left: 3px solid #444; padding-left: 15px;" data-i18n="hist_2000s">
+                            <strong>Années 2000</strong> : Équipes phares en N2 (Filles) et R1 (Garçons).
+                        </li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h2 class="section-title" data-i18n="section_gyms" style="font-family:var(--font-head); font-weight:800; text-transform:uppercase;">Nos <span style="color:var(--brand-yellow)">Terrains</span></h2>
+                    <div style="margin-bottom: 20px; background: #222; padding: 20px; border-radius: 4px;">
+                        <h4 style="color: var(--brand-yellow); margin:0 0 5px 0; font-family: var(--font-head); font-weight:700; font-size: 1.2rem;" data-i18n="gym_roland">Gymnase Roland Guillaud</h4>
+                        <p style="color: #aaa; margin:0;" data-i18n="loc_dodin"><i class="fa-solid fa-location-dot"></i> Chemin du Dodin (Lycée Rabelais)</p>
+                    </div>
+                    <div style="margin-bottom: 20px; background: #222; padding: 20px; border-radius: 4px;">
+                        <h4 style="color: var(--brand-yellow); margin:0 0 5px 0; font-family: var(--font-head); font-weight:700; font-size: 1.2rem;" data-i18n="gym_moulin">Complexe Moulin Carron</h4>
+                        <p style="color: #aaa; margin:0;" data-i18n="loc_moulin"><i class="fa-solid fa-location-dot"></i> Chemin du Moulin Carron</p>
+                    </div>
+                    <div style="background: #222; padding: 20px; border-radius: 4px;">
+                        <h4 style="color: var(--brand-yellow); margin:0 0 5px 0; font-family: var(--font-head); font-weight:700; font-size: 1.2rem;" data-i18n="gym_beach">Beach Volley</h4>
+                        <p style="color: #aaa; margin:0;" data-i18n="loc_broc"><i class="fa-solid fa-location-dot"></i> Chemin de la Brocardière</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <div style="width:90%; max-width:1200px; margin:0 auto;">
+                <h2 class="section-title" data-i18n="section_news" style="font-family:var(--font-head); font-weight:800; text-transform:uppercase;">Actualités</h2>
+                <div class="team-grid">
+                    <div class="card">
+                        <div class="card-image" style="background-image: url('https://images.unsplash.com/photo-1541534741688-6078c6bfb5c5?w=600');"></div>
+                        <div class="card-content">
+                            <span class="card-tag">Tournoi</span>
+                            <h3 class="card-title" data-i18n="card_tournoi_title">Tournoi Interne Mixte</h3>
+                            <p style="font-size: 1rem; color: #aaa;" data-i18n="card_tournoi_desc">Rejoignez-nous ce juillet pour le grand tournoi d'été.</p>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-image" style="background-image: url('https://images.unsplash.com/photo-1592656094267-764a45160876?w=600');"></div>
+                        <div class="card-content">
+                            <span class="card-tag">Club</span>
+                            <h3 class="card-title" data-i18n="card_inscript_title">Inscriptions 2025</h3>
+                            <p style="font-size: 1rem; color: #aaa;" data-i18n="card_inscript_desc">Les créneaux se remplissent vite. Inscrivez-vous maintenant.</p>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-image" style="background-image: url('https://images.unsplash.com/photo-1626245550596-f6d3301cb4d6?w=600');"></div>
+                        <div class="card-content">
+                            <span class="card-tag">Beach</span>
+                            <h3 class="card-title" data-i18n="card_beach_title">Saison de Beach Volley</h3>
+                            <p style="font-size: 1rem; color: #aaa;" data-i18n="card_beach_desc">Profitez de nos terrains extérieurs dès le mois de mai.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="dardilly-footer">
+        <div class="footer-container">
+            <div class="footer-branding">
+                <div class="footer-logo-text">AS DARDILLY</div>
+                <p class="brand-desc" data-i18n="footer_desc">Le club historique de l'Ouest Lyonnais. Formation, compétition et convivialité depuis 1944.</p>
+                <div class="footer-socials">
+                    <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-youtube"></i></a>
+                    <a href="#" class="social-link"><i class="fa-brands fa-x-twitter"></i></a>
+                </div>
+            </div>
+            <div class="footer-nav-grid">
+                <div class="nav-col">
+                    <h4 data-i18n="footer_club">Le Club</h4>
+                    <a href="index.html" data-i18n="nav_home">Accueil</a>
+                    <a href="equipes.html" data-i18n="nav_teams">Équipes</a>
+                    <a href="contact.html" data-i18n="nav_contact">Contact</a>
+                </div>
+                <div class="nav-col">
+                    <h4 data-i18n="footer_practical">Pratique</h4>
+                    <a href="inscription.html" data-i18n="nav_register">Inscriptions</a>
+                    <a href="#" data-i18n="footer_planning">Planning</a>
+                    <a href="#" data-i18n="footer_gyms">Gymnases</a>
+                </div>
+                <div class="nav-col">
+                    <h4 data-i18n="footer_links">Liens Utiles</h4>
+                    <a href="#">FFVB</a>
+                    <a href="#">Ligue AuRA</a>
+                    <a href="#">Mairie Dardilly <span class="arrow">↗</span></a>
+                </div>
+            </div>
+        </div>
+        <div class="copyright" data-i18n="footer_rights">© 2025 AS Dardilly Volley. Tous droits réservés.</div>
+    </footer>
+
+    <script src="lang.js"></script>
+</body>
+</html>
