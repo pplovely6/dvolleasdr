@@ -181,45 +181,136 @@
             <button id="mobile-toggle-btn" class="mobile-toggle"><i class="fa-solid fa-bars"></i></button>
         </div>
     </header>
-    <div class="match-detail-container">
-        <div id="loading" class="loading">Chargement du match...</div>
+    <!-- MATCH HEADER -->
+    <div class="vw-match-header">
+        <div class="vw-header-overlay"></div>
+        <div class="vw-header-content">
+            <div class="vw-match-info">
+                <span class="vw-league">Ligue AuRA - Poule A</span> • <span class="vw-date" id="matchDate">Date</span> •
+                <span class="vw-venue" id="matchVenue">Lieu</span>
+            </div>
 
-        <div id="content" style="display:none;">
-            <div class="scoreboard-box">
-                <div class="team-names">
-                    <span id="homeName">Domicile</span>
-                    <span style="font-size:1rem; color:#888;">VS</span>
-                    <span id="awayName">Extérieur</span>
+            <div class="vw-scoreboard">
+                <div class="vw-team home">
+                    <img src="image_fd6867.png" class="vw-team-logo" id="homeLogo">
+                    <div class="vw-team-name" id="homeName">HOME</div>
                 </div>
-                <div class="score-display" id="scoreValue">0 - 0</div>
-                <div class="sets-info" id="setsValue"></div>
-            </div>
 
-            <h2>6 de Départ</h2>
-            <p style="margin-bottom:20px;">Positionnement sur le terrain</p>
+                <div class="vw-score-center">
+                    <div class="vw-main-score" id="matchScore">0 - 0</div>
+                    <div class="vw-set-scores" id="setScores">0-0, 0-0, 0-0</div>
+                    <div class="vw-match-status">TERMINÉ</div>
+                </div>
 
-            <div class="court-wrapper">
-                <div class="net-area"></div>
-                <div class="attack-line"></div>
-
-                <div class="player-dot p4"><span class="player-pos-num">P4</span><span class="player-name"
-                        id="disp-p4">?</span></div>
-                <div class="player-dot p3"><span class="player-pos-num">P3</span><span class="player-name"
-                        id="disp-p3">?</span></div>
-                <div class="player-dot p2"><span class="player-pos-num">P2</span><span class="player-name"
-                        id="disp-p2">?</span></div>
-                <div class="player-dot p5"><span class="player-pos-num">P5</span><span class="player-name"
-                        id="disp-p5">?</span></div>
-                <div class="player-dot p6"><span class="player-pos-num">P6</span><span class="player-name"
-                        id="disp-p6">?</span></div>
-                <div class="player-dot p1"><span class="player-pos-num">P1</span><span class="player-name"
-                        id="disp-p1">?</span></div>
-            </div>
-
-            <div class="libero-box">
-                Libéro : <span id="disp-libero" style="color:#d32f2f;">-</span>
+                <div class="vw-team away">
+                    <img src="https://via.placeholder.com/100?text=ADV" class="vw-team-logo" id="awayLogo">
+                    <div class="vw-team-name" id="awayName">AWAY</div>
+                </div>
             </div>
         </div>
+    </div>
+
+    <!-- TABS NAVIGATION -->
+    <div class="vw-tabs-container">
+        <div class="vw-tabs">
+            <div class="vw-tab active" onclick="switchMatchTab('stats')">Statistiques</div>
+            <div class="vw-tab" onclick="switchMatchTab('rosters')">Effectifs</div>
+            <div class="vw-tab" onclick="switchMatchTab('court')">Terrain</div>
+        </div>
+    </div>
+
+    <!-- TAB CONTENTS -->
+    <div class="match-detail-container">
+
+        <div id="loading" class="loading">Chargement du match...</div>
+
+        <!-- STATS TAB -->
+        <div id="tab-stats" class="vw-tab-content active" style="display:none;">
+            <div class="vw-section-title">Statistiques du Match</div>
+
+            <!-- Home Stats -->
+            <div class="vw-box">
+                <h3 class="vw-box-title" id="tableHomeName">Domicile</h3>
+                <div class="table-responsive">
+                    <table class="vw-table" id="homeStatsTable">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th style="text-align:left">Joueur</th>
+                                <th>Pts</th>
+                                <th>Att</th>
+                                <th>Blk</th>
+                                <th>Ace</th>
+                            </tr>
+                        </thead>
+                        <tbody><!-- JS Injected --></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Away Stats -->
+            <div class="vw-box" style="margin-top:30px">
+                <h3 class="vw-box-title" id="tableAwayName">Extérieur</h3>
+                <div class="table-responsive">
+                    <table class="vw-table" id="awayStatsTable">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th style="text-align:left">Joueur</th>
+                                <th>Pts</th>
+                                <th>Att</th>
+                                <th>Blk</th>
+                                <th>Ace</th>
+                            </tr>
+                        </thead>
+                        <tbody><!-- JS Injected --></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- ROSTERS TAB -->
+        <div id="tab-rosters" class="vw-tab-content" style="display:none;">
+            <div class="vw-section-title">Composition des équipes</div>
+            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:30px;">
+                <div class="vw-box">
+                    <h3 class="vw-box-title">Domicile</h3>
+                    <ul class="vw-roster-list" id="homeRosterList"></ul>
+                </div>
+                <div class="vw-box">
+                    <h3 class="vw-box-title">Extérieur</h3>
+                    <ul class="vw-roster-list" id="awayRosterList"></ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- COURT TAB (Existing Court Visu) -->
+        <div id="tab-court" class="vw-tab-content" style="display:none;">
+            <div class="scoreboard-box">
+                <h2>6 de Départ</h2>
+                <p>Positionnement sur le terrain</p>
+                <div class="court-wrapper">
+                    <div class="net-area"></div>
+                    <div class="attack-line"></div>
+                    <div class="player-dot p4"><span class="player-pos-num">P4</span><span class="player-name"
+                            id="disp-p4">?</span></div>
+                    <div class="player-dot p3"><span class="player-pos-num">P3</span><span class="player-name"
+                            id="disp-p3">?</span></div>
+                    <div class="player-dot p2"><span class="player-pos-num">P2</span><span class="player-name"
+                            id="disp-p2">?</span></div>
+                    <div class="player-dot p5"><span class="player-pos-num">P5</span><span class="player-name"
+                            id="disp-p5">?</span></div>
+                    <div class="player-dot p6"><span class="player-pos-num">P6</span><span class="player-name"
+                            id="disp-p6">?</span></div>
+                    <div class="player-dot p1"><span class="player-pos-num">P1</span><span class="player-name"
+                            id="disp-p1">?</span></div>
+                </div>
+                <div class="libero-box">
+                    Libéro : <span id="disp-libero" style="color:#d32f2f;">-</span>
+                </div>
+            </div>
+        </div>
+
     </div>
 
     <footer>
@@ -242,13 +333,20 @@
                 if (!req.ok) throw new Error('Match introuvable');
                 const match = await req.json();
 
-                // Fill Data
+                // Fill Header Data
                 document.getElementById('homeName').innerText = match.home;
                 document.getElementById('awayName').innerText = match.away;
-                document.getElementById('scoreValue').innerText = match.score || "0 - 0";
-                document.getElementById('setsValue').innerText = match.sets ? match.sets.join(', ') : "";
 
-                // Fill Lineup
+                // For tables titles
+                document.getElementById('tableHomeName').innerText = match.home;
+                document.getElementById('tableAwayName').innerText = match.away;
+
+                document.getElementById('matchScore').innerText = match.score || "0 - 0";
+                document.getElementById('setScores').innerText = match.sets ? match.sets.join(', ') : "0-0, 0-0, 0-0";
+                document.getElementById('matchDate').innerText = match.date || "Date inconnue";
+                // document.getElementById('matchVenue').innerText = match.location || "Gymnase Roland Guillaud"; // Location often not in match obj but schedule.
+
+                // Fill Lineup (Court)
                 if (match.lineup) {
                     document.getElementById('disp-p1').innerText = match.lineup.p1 || "-";
                     document.getElementById('disp-p2').innerText = match.lineup.p2 || "-";
@@ -259,13 +357,76 @@
                     document.getElementById('disp-libero').innerText = match.lineup.libero || "-";
                 }
 
+                // Fill Stats Tables (Mock/Actual Data)
+                // Assuming match object has 'stats' = { home: [...], away: [...] }
+                // If not, we generate placeholders or empty state
+                renderStats(document.querySelector('#homeStatsTable tbody'), match.stats?.home || []);
+                renderStats(document.querySelector('#awayStatsTable tbody'), match.stats?.away || []);
+
+                // Fill Rosters (Mock/Actual Data)
+                renderRoster('homeRosterList', match.roster?.home || []);
+                renderRoster('awayRosterList', match.roster?.away || []);
+
                 document.getElementById('loading').style.display = 'none';
                 document.getElementById('content').style.display = 'block';
+                // Explicitly show the first tab contents (Stats is default active in HTML, need to show it)
+                document.getElementById('tab-stats').style.display = 'block';
 
             } catch (e) {
                 document.getElementById('loading').innerText = "Erreur : " + e.message;
             }
         }
+
+        function renderStats(tbody, players) {
+            if (!players || players.length === 0) {
+                tbody.innerHTML = "<tr><td colspan='6' style='padding:20px; color:#666;'>Aucune statistique disponible</td></tr>";
+                return;
+            }
+            tbody.innerHTML = players.map(p => `
+                <tr>
+                    <td>${p.number}</td>
+                    <td style="text-align:left; font-weight:700;">${p.name}</td>
+                    <td><b>${p.points || 0}</b></td>
+                    <td>${p.attacks || 0}</td>
+                    <td>${p.blocks || 0}</td>
+                    <td>${p.aces || 0}</td>
+                </tr>
+            `).join('');
+        }
+
+        function renderRoster(listId, players) {
+            const list = document.getElementById(listId);
+            if (!players || players.length === 0) {
+                list.innerHTML = "<li style='color:#666'>Effectif non disponible</li>";
+                return;
+            }
+            list.innerHTML = players.map(p => `
+                <li>
+                    <div class="vw-roster-img" style="background:${p.img ? 'url(' + p.img + ')' : '#333'} center/cover"></div>
+                    <div class="vw-roster-num">${p.number}</div>
+                    <div class="vw-roster-name">${p.name}</div>
+                </li>
+            `).join('');
+        }
+
+        function switchMatchTab(tabName) {
+            // Hide all
+            document.querySelectorAll('.vw-tab-content').forEach(el => el.style.display = 'none');
+            document.querySelectorAll('.vw-tab').forEach(el => el.classList.remove('active'));
+
+            // Show Target
+            document.getElementById('tab-' + tabName).style.display = 'block';
+
+            // Highlight Tab
+            // Find the tab element that was clicked (approximate or just loop)
+            // Easier: add 'active' to the specific one. But here we can find by valid onclick. 
+            // Better to pass 'event' or just select by index. For now simple toggle:
+            const tabs = document.querySelectorAll('.vw-tab');
+            if (tabName === 'stats') tabs[0].classList.add('active');
+            if (tabName === 'rosters') tabs[1].classList.add('active');
+            if (tabName === 'court') tabs[2].classList.add('active');
+        }
+
         init();
     </script>
     <script src="lang.js"></script>

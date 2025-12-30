@@ -1,66 +1,267 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dardilly Admin</title>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <style>
-        :root { --bg: #0f0f0f; --panel: #1a1d24; --brand: #fce300; --text: #fff; --sub: #aaa; --border: #333; }
-        body { font-family: 'Outfit', sans-serif; background: var(--bg); color: var(--text); margin: 0; display: flex; height: 100vh; overflow: hidden; }
-        
-        .sidebar { width: 260px; background: var(--panel); border-right: 1px solid var(--border); display: flex; flex-direction: column; padding-top: 25px; }
-        .brand { padding: 0 30px 40px; color: var(--brand); font-weight: 800; font-size: 1.4rem; text-transform: uppercase; }
-        .nav-item { padding: 16px 30px; cursor: pointer; color: var(--sub); font-weight: 500; display: flex; gap: 15px; transition: 0.2s; }
-        .nav-item:hover, .nav-item.active { background: #2a2d35; color: white; border-left: 4px solid var(--brand); }
-        
-        .main { flex: 1; padding: 40px; overflow-y: auto; }
-        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
-        h1 { margin: 0; font-size: 2rem; font-weight: 700; }
-        
-        .controls { background: var(--panel); padding: 25px; border-radius: 12px; border: 1px solid var(--border); margin-bottom: 30px; display: flex; gap: 20px; align-items: center; }
-        label { text-transform: uppercase; font-size: 0.8rem; font-weight: 600; color: var(--sub); display: block; margin-bottom: 8px; }
-        select { width: 100%; padding: 12px; background: #0f0f0f; border: 1px solid var(--border); color: white; border-radius: 6px; }
-        
-        .btn { padding: 12px 24px; background: var(--brand); color: black; border: none; border-radius: 6px; font-weight: 700; cursor: pointer; text-transform: uppercase; }
-        .btn-icon { width: 45px; display: flex; justify-content: center; }
-        
-        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 25px; }
-        .card { background: var(--panel); border: 1px solid var(--border); border-radius: 12px; padding: 20px; transition: 0.2s; }
-        .card:hover { transform: translateY(-3px); border-color: #555; }
-        .card-header { display: flex; justify-content: space-between; margin-bottom: 10px; }
-        .badge { background: #333; padding: 4px 8px; border-radius: 4px; font-size: 0.85rem; color: var(--brand); font-weight: 700; }
-        .actions { margin-top: 15px; padding-top: 15px; border-top: 1px solid var(--border); display: flex; justify-content: flex-end; gap: 10px; }
-        .icon-action { width: 35px; height: 35px; background: #252525; border-radius: 6px; display: flex; align-items: center; justify-content: center; cursor: pointer; }
-        .icon-action:hover { background: white; color: black; }
-        .icon-action.del:hover { background: #ff4e45; color: white; }
 
-        .modal { position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.9); display: none; justify-content: center; align-items: center; z-index: 1000; backdrop-filter: blur(5px); }
-        .modal-box { background: var(--panel); width: 500px; padding: 40px; border-radius: 16px; border: 1px solid var(--border); }
-        .form-row { display: flex; gap: 20px; margin-bottom: 20px; }
-        .form-group { margin-bottom: 20px; }
-        input, select { width: 100%; padding: 12px; background: #0f0f0f; border: 1px solid var(--border); color: white; border-radius: 6px; box-sizing: border-box; }
-        
-        .section { display: none; }
-        .section.active { display: block; }
+    <style>
+        :root {
+            --bg: #0f0f0f;
+            --panel: #1a1d24;
+            --brand: #fce300;
+            --text: #fff;
+            --sub: #aaa;
+            --border: #333;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            margin: 0;
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .sidebar {
+            width: 260px;
+            background: var(--panel);
+            border-right: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            padding-top: 25px;
+        }
+
+        .brand {
+            padding: 0 30px 40px;
+            color: var(--brand);
+            font-weight: 800;
+            font-size: 1.4rem;
+            text-transform: uppercase;
+        }
+
+        .nav-item {
+            padding: 16px 30px;
+            cursor: pointer;
+            color: var(--sub);
+            font-weight: 500;
+            display: flex;
+            gap: 15px;
+            transition: 0.2s;
+        }
+
+        .nav-item:hover,
+        .nav-item.active {
+            background: #2a2d35;
+            color: white;
+            border-left: 4px solid var(--brand);
+        }
+
+        .main {
+            flex: 1;
+            padding: 40px;
+            overflow-y: auto;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 2rem;
+            font-weight: 700;
+        }
+
+        .controls {
+            background: var(--panel);
+            padding: 25px;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            margin-bottom: 30px;
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        label {
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--sub);
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        select {
+            width: 100%;
+            padding: 12px;
+            background: #0f0f0f;
+            border: 1px solid var(--border);
+            color: white;
+            border-radius: 6px;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            background: var(--brand);
+            color: black;
+            border: none;
+            border-radius: 6px;
+            font-weight: 700;
+            cursor: pointer;
+            text-transform: uppercase;
+        }
+
+        .btn-icon {
+            width: 45px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 25px;
+        }
+
+        .card {
+            background: var(--panel);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 20px;
+            transition: 0.2s;
+        }
+
+        .card:hover {
+            transform: translateY(-3px);
+            border-color: #555;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .badge {
+            background: #333;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            color: var(--brand);
+            font-weight: 700;
+        }
+
+        .actions {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+
+        .icon-action {
+            width: 35px;
+            height: 35px;
+            background: #252525;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        .icon-action:hover {
+            background: white;
+            color: black;
+        }
+
+        .icon-action.del:hover {
+            background: #ff4e45;
+            color: white;
+        }
+
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-box {
+            background: var(--panel);
+            width: 500px;
+            padding: 40px;
+            border-radius: 16px;
+            border: 1px solid var(--border);
+        }
+
+        .form-row {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 12px;
+            background: #0f0f0f;
+            border: 1px solid var(--border);
+            color: white;
+            border-radius: 6px;
+            box-sizing: border-box;
+        }
+
+        .section {
+            display: none;
+        }
+
+        .section.active {
+            display: block;
+        }
     </style>
 </head>
+
 <body>
 
     <aside class="sidebar">
         <div class="brand"><i class="fa-solid fa-volleyball"></i> ADMIN PANEL</div>
-        <div class="nav-item active" onclick="switchTab('planning')"><i class="fa-solid fa-calendar-days"></i> Planning</div>
+        <div class="nav-item active" onclick="switchTab('planning')"><i class="fa-solid fa-calendar-days"></i> Planning
+        </div>
         <div class="nav-item" onclick="switchTab('matches')"><i class="fa-solid fa-trophy"></i> Résultats</div>
         <div class="nav-item" onclick="switchTab('players')"><i class="fa-solid fa-users"></i> Joueurs</div>
-        <div class="nav-item" style="margin-top:auto; border-top:1px solid #333" onclick="window.open('index.html')"><i class="fa-solid fa-arrow-up-right-from-square"></i> Voir le Site</div>
+        <div class="nav-item" style="margin-top:auto; border-top:1px solid #333" onclick="window.open('index.html')"><i
+                class="fa-solid fa-arrow-up-right-from-square"></i> Voir le Site</div>
     </aside>
 
     <main class="main">
-        
+
         <section id="sec-planning" class="section active">
-            <div class="header"><h1>Matchs à Venir</h1> <button class="btn" onclick="editPlan()">+ Ajouter</button></div>
+            <div class="header">
+                <h1>Matchs à Venir</h1> <button class="btn" onclick="editPlan()">+ Ajouter</button>
+            </div>
             <div class="controls">
                 <div style="flex:1">
                     <label>Sélectionner l'équipe</label>
@@ -81,7 +282,9 @@
         </section>
 
         <section id="sec-matches" class="section">
-            <div class="header"><h1>Résultats Passés</h1> <button class="btn" onclick="editMatch()">+ Ajouter</button></div>
+            <div class="header">
+                <h1>Résultats Passés</h1> <button class="btn" onclick="editMatch()">+ Ajouter</button>
+            </div>
             <div class="controls">
                 <div style="flex:1">
                     <label>Sélectionner l'équipe</label>
@@ -102,7 +305,9 @@
         </section>
 
         <section id="sec-players" class="section">
-            <div class="header"><h1>Effectif Joueurs</h1> <button class="btn" onclick="editPlayer()">+ Ajouter</button></div>
+            <div class="header">
+                <h1>Effectif Joueurs</h1> <button class="btn" onclick="editPlayer()">+ Ajouter</button>
+            </div>
             <div class="controls">
                 <div style="flex:1">
                     <label>Sélectionner l'équipe</label>
@@ -136,7 +341,8 @@
                 <div style="flex:1"><label>Domicile</label><input type="text" id="pl-home" value="AS DARDILLY"></div>
                 <div style="flex:1"><label>Extérieur</label><input type="text" id="pl-away"></div>
             </div>
-            <div class="form-group"><label>Lieu</label><input type="text" id="pl-loc" value="Gymnase Roland Guillaud"></div>
+            <div class="form-group"><label>Lieu</label><input type="text" id="pl-loc" value="Gymnase Roland Guillaud">
+            </div>
             <div class="form-row" style="margin-top:30px">
                 <button class="btn" style="flex:2" onclick="savePlan()">Enregistrer</button>
                 <button class="btn" style="flex:1; background:#333;" onclick="closeModals()">Annuler</button>
@@ -174,150 +380,236 @@
             <div class="form-group">
                 <label>Poste</label>
                 <select id="py-pos">
-                    <option value="S">Passeur</option><option value="OH">Récep/Attaq</option>
-                    <option value="MB">Central</option><option value="OP">Pointu</option>
+                    <option value="S">Passeur</option>
+                    <option value="OH">Récep/Attaq</option>
+                    <option value="MB">Central</option>
+                    <option value="OP">Pointu</option>
                     <option value="L">Libero</option>
                 </select>
             </div>
             <div class="form-group"><label>Lien Profil</label><input type="text" id="py-profile"></div>
-            <div class="form-group"><label style="display:flex;align-items:center;gap:10px"><input type="checkbox" id="py-captain" style="width:auto"> Capitaine</label></div>
+            <div class="form-group"><label style="display:flex;align-items:center;gap:10px"><input type="checkbox"
+                        id="py-captain" style="width:auto"> Capitaine</label></div>
             <div class="form-row" style="margin-top:30px">
                 <button class="btn" style="flex:2" onclick="savePlayer()">Enregistrer</button>
                 <button class="btn" style="flex:1; background:#333;" onclick="closeModals()">Annuler</button>
             </div>
         </div>
         <div class="admin-section" style="margin-top:50px; border-top:2px solid #eee; padding-top:20px;">
-    <h2>Gestion des Matchs (Score & Compo)</h2>
-    
-    <div style="margin-bottom: 20px;">
-        <label><b>Choisir un match :</b></label>
-        <select id="adminMatchSelect" style="padding:10px; width:100%; max-width:400px;">
-            <option value="">Chargement...</option>
-        </select>
-        <button onclick="loadMatchForEdit()" style="padding:10px; background:#333; color:white; border:none; cursor:pointer;">Charger</button>
-    </div>
+            <h2>Gestion des Matchs (Score & Compo)</h2>
 
-    <div id="editZone" style="display:none; background:#f9f9f9; padding:20px; border-radius:8px;">
-        <h3 id="editMatchTitle"></h3>
-        
-        <div style="margin-bottom:15px;">
-            <label>Score (ex: 3 - 1)</label><br>
-            <input type="text" id="editScore" style="padding:8px; width:100px;">
+            <div style="margin-bottom: 20px;">
+                <label><b>Choisir un match :</b></label>
+                <select id="adminMatchSelect" style="padding:10px; width:100%; max-width:400px;">
+                    <option value="">Chargement...</option>
+                </select>
+                <button onclick="loadMatchForEdit()"
+                    style="padding:10px; background:#333; color:white; border:none; cursor:pointer;">Charger</button>
+            </div>
+
+            <div id="editZone" style="display:none; background:#f9f9f9; padding:20px; border-radius:8px;">
+                <h3 id="editMatchTitle"></h3>
+
+                <div style="margin-bottom:15px; display:flex; gap:20px;">
+                    <div>
+                        <label>Score (ex: 3 - 1)</label><br>
+                        <input type="text" id="editScore" style="padding:8px; width:100px;">
+                    </div>
+                    <div style="flex:1">
+                        <label>Détail Sets (ex: 25:20, 25:18)</label><br>
+                        <input type="text" id="editSets" style="padding:8px; width:100%;">
+                    </div>
+                </div>
+
+                <button onclick="toggleSection('lineupSec')" class="btn"
+                    style="background:#555; font-size:0.8rem; margin-bottom:10px;">Modifier 6 de départ</button>
+                <div id="lineupSec" style="display:none; margin-bottom:20px; border:1px solid #ddd; padding:10px;">
+                    <h4>6 de Départ (Noms/Numéros)</h4>
+                    <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; max-width:500px;">
+                        <input type="text" id="editP4" placeholder="Pos 4">
+                        <input type="text" id="editP3" placeholder="Pos 3">
+                        <input type="text" id="editP2" placeholder="Pos 2">
+                        <input type="text" id="editP5" placeholder="Pos 5">
+                        <input type="text" id="editP6" placeholder="Pos 6">
+                        <input type="text" id="editP1" placeholder="Pos 1">
+                    </div>
+                    <div style="margin-top:10px;">
+                        <input type="text" id="editLibero" placeholder="Libéro" style="width:100%;">
+                    </div>
+                </div>
+
+                <button onclick="toggleSection('statsSec')" class="btn"
+                    style="background:#555; font-size:0.8rem; margin-bottom:10px;">Modifier Stats Joueurs</button>
+                <div id="statsSec" style="display:block; margin-bottom:20px;">
+                    <h4>Statistiques Joueurs (Domicile)</h4>
+                    <table class="vw-table" style="color:black; width:100%;">
+                        <thead>
+                            <tr style="background:#ddd; color:black;">
+                                <th>#</th>
+                                <th>Nom</th>
+                                <th>Pts</th>
+                                <th>Att</th>
+                                <th>Blk</th>
+                                <th>Ace</th>
+                            </tr>
+                        </thead>
+                        <tbody id="statRowsHome"></tbody>
+                    </table>
+                    <button onclick="addStatRow('home')" style="margin-top:5px; padding:5px;">+ Joueur</button>
+
+                    <h4 style="margin-top:20px;">Statistiques Joueurs (Extérieur)</h4>
+                    <table class="vw-table" style="color:black; width:100%;">
+                        <thead>
+                            <tr style="background:#ddd; color:black">
+                                <th>#</th>
+                                <th>Nom</th>
+                                <th>Pts</th>
+                                <th>Att</th>
+                                <th>Blk</th>
+                                <th>Ace</th>
+                            </tr>
+                        </thead>
+                        <tbody id="statRowsAway"></tbody>
+                    </table>
+                    <button onclick="addStatRow('away')" style="margin-top:5px; padding:5px;">+ Joueur</button>
+                </div>
+
+                <button onclick="saveMatchData()"
+                    style="margin-top:20px; padding:12px 24px; background:#d32f2f; color:white; border:none; font-size:1rem; cursor:pointer;">Enregistrer
+                    TOUT</button>
+                <div id="saveMsg" style="margin-top:10px; font-weight:bold;"></div>
+            </div>
         </div>
 
-        <div style="margin-bottom:15px;">
-            <label>Détail Sets (ex: 25:20, 25:18)</label><br>
-            <input type="text" id="editSets" style="padding:8px; width:100%;">
-        </div>
+        <script>
+            // --- ADD THIS SCRIPT TO YOUR EXISTING ADMIN SCRIPT BLOCK ---
 
-        <h4>6 de Départ (Noms des joueurs)</h4>
-        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; max-width:500px;">
-            <input type="text" id="editP4" placeholder="Pos 4 (Avant-Gauche)">
-            <input type="text" id="editP3" placeholder="Pos 3 (Avant-Centre)">
-            <input type="text" id="editP2" placeholder="Pos 2 (Avant-Droit)">
-            <input type="text" id="editP5" placeholder="Pos 5 (Arrière-Gauche)">
-            <input type="text" id="editP6" placeholder="Pos 6 (Arrière-Centre)">
-            <input type="text" id="editP1" placeholder="Pos 1 (Arrière-Droit)">
-        </div>
-        <div style="margin-top:10px;">
-            <input type="text" id="editLibero" placeholder="Libéro" style="width:100%;">
-        </div>
-
-        <button onclick="saveMatchData()" style="margin-top:20px; padding:12px 24px; background:#d32f2f; color:white; border:none; font-size:1rem; cursor:pointer;">Enregistrer les modifications</button>
-        <div id="saveMsg" style="margin-top:10px; font-weight:bold;"></div>
-    </div>
-</div>
-
-<script>
-    // --- ADD THIS SCRIPT TO YOUR EXISTING ADMIN SCRIPT BLOCK ---
-    
-    // 1. Fetch all matches to populate the dropdown
-    async function initMatchAdmin() {
-        // We reuse your existing API or generic fetch if you have one.
-        // Assuming your existing logic loads matches from JSON files via JS,
-        // we can fetch them via the new server capability.
-        // Note: For simplicity, we will fetch 'matches-db.json' via backend if you expose it,
-        // OR we just iterate common known files.
-        // Ideally, you should add a generic 'GET /api/matches' to server.js if not present.
-        // For now, let's try to fetch standard schedule files manually or check matches-db.json
-        
-        // Let's add a quick helper to get matches if you don't have a global API yet.
-        // You can add this route to server.js: app.get('/api/all-matches', ...)
-        // Or we rely on manual ID input if list is hard to get.
-        
-        // For this demo, I will populate the list assuming you have a list available or
-        // the user enters the ID manually.
-        const select = document.getElementById('adminMatchSelect');
-        
-        // Example: If you have a way to get all matches, loop here.
-        // Otherwise, allow Manual Entry:
-        select.innerHTML = '<option value="">-- Entrer ID manuellement --</option>';
-        // (If you want a full list, we need to add app.get('/api/matches') to server.js)
-    }
-
-    let currentMatchId = null;
-
-    async function loadMatchForEdit() {
-        // If dropdown is empty/manual, ask user or use input
-        let id = document.getElementById('adminMatchSelect').value;
-        if(!id) id = prompt("Entrez l'ID du match (ex: SMBA002) :");
-        if(!id) return;
-
-        const res = await fetch('/api/match/' + id);
-        if(res.ok) {
-            const m = await res.json();
-            currentMatchId = m.id;
-            document.getElementById('editMatchTitle').innerText = m.home + " vs " + m.away;
-            document.getElementById('editScore').value = m.score || "";
-            document.getElementById('editSets').value = m.sets ? m.sets.join(', ') : "";
-            
-            if(m.lineup) {
-                document.getElementById('editP1').value = m.lineup.p1 || "";
-                document.getElementById('editP2').value = m.lineup.p2 || "";
-                document.getElementById('editP3').value = m.lineup.p3 || "";
-                document.getElementById('editP4').value = m.lineup.p4 || "";
-                document.getElementById('editP5').value = m.lineup.p5 || "";
-                document.getElementById('editP6').value = m.lineup.p6 || "";
-                document.getElementById('editLibero').value = m.lineup.libero || "";
+            function toggleSection(id) {
+                const el = document.getElementById(id);
+                el.style.display = (el.style.display === 'none') ? 'block' : 'none';
             }
-            document.getElementById('editZone').style.display = 'block';
-        } else {
-            alert("Match introuvable ! Vérifiez l'ID.");
-        }
-    }
 
-    async function saveMatchData() {
-        if(!currentMatchId) return;
-
-        const payload = {
-            score: document.getElementById('editScore').value,
-            sets: document.getElementById('editSets').value.split(',').map(s => s.trim()),
-            lineup: {
-                p1: document.getElementById('editP1').value,
-                p2: document.getElementById('editP2').value,
-                p3: document.getElementById('editP3').value,
-                p4: document.getElementById('editP4').value,
-                p5: document.getElementById('editP5').value,
-                p6: document.getElementById('editP6').value,
-                libero: document.getElementById('editLibero').value
+            async function initMatchAdmin() {
+                // Reuse same init logic or just let user enter ID manually for now as implemented before
+                const select = document.getElementById('adminMatchSelect');
+                select.innerHTML = '<option value="">-- Entrer ID manuellement --</option>';
             }
-        };
 
-        const res = await fetch('/api/match/' + currentMatchId, {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify(payload)
-        });
+            let currentMatchId = null;
 
-        const json = await res.json();
-        if(json.success) {
-            document.getElementById('saveMsg').innerText = "Sauvegardé avec succès !";
-            document.getElementById('saveMsg').style.color = "green";
-        } else {
-            document.getElementById('saveMsg').innerText = "Erreur.";
-        }
-    }
-</script>
+            function addStatRow(team, data = null) {
+                const tbody = document.getElementById(team === 'home' ? 'statRowsHome' : 'statRowsAway');
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+            <td><input type="number" class="st-num" style="width:40px; padding:5px;" value="${data ? data.number : ''}" placeholder="#"></td>
+            <td><input type="text" class="st-name" style="width:120px; padding:5px;" value="${data ? data.name : ''}" placeholder="Nom"></td>
+            <td><input type="number" class="st-pts" style="width:50px; padding:5px;" value="${data ? data.points : 0}"></td>
+            <td><input type="number" class="st-att" style="width:50px; padding:5px;" value="${data ? data.attacks : 0}"></td>
+            <td><input type="number" class="st-blk" style="width:50px; padding:5px;" value="${data ? data.blocks : 0}"></td>
+            <td><input type="number" class="st-ace" style="width:50px; padding:5px;" value="${data ? data.aces : 0}"></td>
+            <td><button onclick="this.closest('tr').remove()" style="color:red;">x</button></td>
+        `;
+                tbody.appendChild(tr);
+            }
+
+            async function loadMatchForEdit() {
+                let id = document.getElementById('adminMatchSelect').value;
+                if (!id) id = prompt("Entrez l'ID du match (ex: SMBA002) :");
+                if (!id) return;
+
+                const res = await fetch('/api/match/' + id);
+                if (res.ok) {
+                    const m = await res.json();
+                    currentMatchId = m.id;
+                    document.getElementById('editMatchTitle').innerText = m.home + " vs " + m.away;
+                    document.getElementById('editScore').value = m.score || "";
+                    document.getElementById('editSets').value = m.sets ? m.sets.join(', ') : "";
+
+                    if (m.lineup) {
+                        document.getElementById('editP1').value = m.lineup.p1 || "";
+                        document.getElementById('editP2').value = m.lineup.p2 || "";
+                        document.getElementById('editP3').value = m.lineup.p3 || "";
+                        document.getElementById('editP4').value = m.lineup.p4 || "";
+                        document.getElementById('editP5').value = m.lineup.p5 || "";
+                        document.getElementById('editP6').value = m.lineup.p6 || "";
+                        document.getElementById('editLibero').value = m.lineup.libero || "";
+                    }
+
+                    // Load Stats
+                    document.getElementById('statRowsHome').innerHTML = "";
+                    document.getElementById('statRowsAway').innerHTML = "";
+
+                    if (m.stats && m.stats.home) m.stats.home.forEach(p => addStatRow('home', p));
+                    if (m.stats && m.stats.away) m.stats.away.forEach(p => addStatRow('away', p));
+
+                    // Add at least one empty row if empty
+                    if (!m.stats || !m.stats.home || m.stats.home.length === 0) addStatRow('home');
+                    if (!m.stats || !m.stats.away || m.stats.away.length === 0) addStatRow('away');
+
+                    document.getElementById('editZone').style.display = 'block';
+                } else {
+                    alert("Match introuvable ! Vérifiez l'ID.");
+                }
+            }
+
+            function getStatsFromTable(tbodyId) {
+                const rows = document.querySelectorAll(`#${tbodyId} tr`);
+                const data = [];
+                rows.forEach(tr => {
+                    const num = tr.querySelector('.st-num').value;
+                    const name = tr.querySelector('.st-name').value;
+                    if (num && name) {
+                        data.push({
+                            number: parseInt(num),
+                            name: name,
+                            points: parseInt(tr.querySelector('.st-pts').value) || 0,
+                            attacks: parseInt(tr.querySelector('.st-att').value) || 0,
+                            blocks: parseInt(tr.querySelector('.st-blk').value) || 0,
+                            aces: parseInt(tr.querySelector('.st-ace').value) || 0
+                        });
+                    }
+                });
+                return data;
+            }
+
+            async function saveMatchData() {
+                if (!currentMatchId) return;
+
+                const payload = {
+                    score: document.getElementById('editScore').value,
+                    sets: document.getElementById('editSets').value.split(',').map(s => s.trim()),
+                    lineup: {
+                        p1: document.getElementById('editP1').value,
+                        p2: document.getElementById('editP2').value,
+                        p3: document.getElementById('editP3').value,
+                        p4: document.getElementById('editP4').value,
+                        p5: document.getElementById('editP5').value,
+                        p6: document.getElementById('editP6').value,
+                        libero: document.getElementById('editLibero').value
+                    },
+                    stats: {
+                        home: getStatsFromTable('statRowsHome'),
+                        away: getStatsFromTable('statRowsAway')
+                    }
+                    // Note: Roster lists could be derived from stats lists or separate. 
+                    // For now, let's assume roster = stats list for simplicity.
+                };
+
+                const res = await fetch('/api/match/' + currentMatchId, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                const json = await res.json();
+                if (json.success) {
+                    document.getElementById('saveMsg').innerText = "Sauvegardé avec succès !";
+                    document.getElementById('saveMsg').style.color = "green";
+                } else {
+                    document.getElementById('saveMsg').innerText = "Erreur.";
+                }
+            }
+        </script>
     </div>
 
     <script>
@@ -332,12 +624,12 @@
             document.querySelectorAll('.section').forEach(e => e.classList.remove('active'));
             event.currentTarget.classList.add('active');
             document.getElementById(`sec-${tab}`).classList.add('active');
-            if(tab==='planning') loadPlanning();
-            if(tab==='matches') loadMatches();
-            if(tab==='players') loadPlayers();
+            if (tab === 'planning') loadPlanning();
+            if (tab === 'matches') loadMatches();
+            if (tab === 'players') loadPlayers();
         }
 
-        function closeModals() { document.querySelectorAll('.modal').forEach(m => m.style.display='none'); }
+        function closeModals() { document.querySelectorAll('.modal').forEach(m => m.style.display = 'none'); }
 
         // --- PLANNING ---
         async function loadPlanning() {
@@ -345,7 +637,7 @@
             const res = await fetch(`${API}/data/${db}`);
             const data = await res.json();
             _planning = data.schedule || [];
-            
+
             document.getElementById('grid-planning').innerHTML = _planning.map(m => `
                 <div class="card">
                     <div class="card-header"><span class="badge" style="color:white;border-color:var(--brand)">${m.date}</span><span>${m.time}</span></div>
@@ -372,7 +664,7 @@
 
         async function savePlan() {
             await fetch(`${API}/schedule/update`, {
-                method: 'POST', headers: {'Content-Type':'application/json'},
+                method: 'POST', headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     dbName: document.getElementById('plan-db').value,
                     scheduleData: {
@@ -394,7 +686,7 @@
             const res = await fetch(`${API}/data/${db}`);
             const data = await res.json();
             _matches = (data.matches || []).reverse();
-            
+
             document.getElementById('grid-matches').innerHTML = _matches.map(m => `
                 <div class="card">
                     <div class="card-header"><span class="badge">${m.date}</span></div>
@@ -421,7 +713,7 @@
 
         async function saveMatch() {
             await fetch(`${API}/matches/update`, {
-                method: 'POST', headers: {'Content-Type':'application/json'},
+                method: 'POST', headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     dbName: document.getElementById('match-db').value,
                     matchData: {
@@ -430,7 +722,7 @@
                         away: document.getElementById('mt-away').value,
                         score: document.getElementById('mt-score').value,
                         date: document.getElementById('mt-date').value,
-                        sets: document.getElementById('mt-sets').value.split(',').map(s=>s.trim())
+                        sets: document.getElementById('mt-sets').value.split(',').map(s => s.trim())
                     }
                 })
             });
@@ -442,13 +734,13 @@
             const db = document.getElementById('player-db').value;
             const res = await fetch(`${API}/data/${db}`);
             const data = await res.json();
-            _players = (data.players || []).sort((a,b)=>a.number-b.number);
-            
+            _players = (data.players || []).sort((a, b) => a.number - b.number);
+
             document.getElementById('grid-players').innerHTML = _players.map(p => `
-                <div class="card" style="border-left:4px solid ${p.captain?'var(--brand)':'#333'}">
-                    <div class="card-header"><span class="badge" style="color:white;border-color:#555">#${p.number}</span>${p.captain?'<span class="badge" style="background:var(--brand);color:black;border:none">CAP</span>':''}</div>
+                <div class="card" style="border-left:4px solid ${p.captain ? 'var(--brand)' : '#333'}">
+                    <div class="card-header"><span class="badge" style="color:white;border-color:#555">#${p.number}</span>${p.captain ? '<span class="badge" style="background:var(--brand);color:black;border:none">CAP</span>' : ''}</div>
                     <div style="font-size:1.2rem; font-weight:700">${p.name}</div>
-                    <div style="color:var(--brand); font-weight:700">${p.position||''}</div>
+                    <div style="color:var(--brand); font-weight:700">${p.position || ''}</div>
                     <div class="actions">
                         <div class="icon-action" onclick="editPlayer(${p.number})"><i class="fa-solid fa-pen"></i></div>
                         <div class="icon-action del" onclick="del('${db}', '${p.number}', 'player')"><i class="fa-solid fa-trash"></i></div>
@@ -469,9 +761,9 @@
 
         async function savePlayer() {
             await fetch(`${API}/players/update`, {
-                method: 'POST', headers: {'Content-Type':'application/json'},
+                method: 'POST', headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    team: document.getElementById('player-db').value.replace('db-',''),
+                    team: document.getElementById('player-db').value.replace('db-', ''),
                     playerInfo: {
                         number: parseInt(document.getElementById('py-number').value),
                         name: document.getElementById('py-name').value,
@@ -485,16 +777,17 @@
         }
 
         async function del(file, id, type) {
-            if(!confirm("Supprimer ?")) return;
+            if (!confirm("Supprimer ?")) return;
             let target = file;
-            if(type === 'player' && !file.startsWith('db-')) target = 'db-' + file;
+            if (type === 'player' && !file.startsWith('db-')) target = 'db-' + file;
             await fetch(`${API}/delete/${target}/${id}`, { method: 'DELETE' });
-            if(type==='schedule') loadPlanning();
-            else if(type==='match') loadMatches();
+            if (type === 'schedule') loadPlanning();
+            else if (type === 'match') loadMatches();
             else loadPlayers();
         }
 
         window.onload = () => switchTab('planning');
     </script>
 </body>
+
 </html>
