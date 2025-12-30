@@ -2,10 +2,8 @@ const express = require('express');
 const fs = require('fs');
 const path = require('path');
 const cors = require('cors');
-// Allow the server to understand JSON data sent in POST requests
-app.use(express.json());
+
 const app = express();
-// Change const PORT = 3000; to:
 const PORT = 5000;
 const HOST = '0.0.0.0';
 
