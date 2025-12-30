@@ -60,13 +60,13 @@
       ],
       "category": "CHAMPIONNAT",
       "lineup": {
-        "p1": "",
-        "p2": "",
-        "p3": "",
-        "p4": "",
-        "p5": "",
-        "p6": "",
-        "libero": ""
+        "p1": "9",
+        "p2": "10",
+        "p3": "14",
+        "p4": "8",
+        "p5": "12",
+        "p6": "11",
+        "libero": "13"
       },
       "statsHome": [
         {
@@ -106,24 +106,31 @@
             "name": "EYRAUD MARTIN"
           },
           {
-            "number": "7",
-            "name": "LEBOURGEOIS CLOVIS"
-          },
-          {
             "number": "8",
             "name": "PERRAUD NATHAN"
           },
           {
             "number": "9",
             "name": "REYNAERT ELOI"
+          },
+          {
+            "number": "15",
+            "name": "JANTANA SIRADANAI"
+          },
+          {
+            "number": "14",
+            "name": "ROUILLÉ ELOHAN"
+          },
+          {
+            "number": "13",
+            "name": "WISNIEWSKI EDEN"
+          },
+          {
+            "number": "11",
+            "name": "RIEU LENZO"
           }
         ],
-        "away": [
-          {
-            "number": "1",
-            "name": "BRiZARD ANTOINE"
-          }
-        ]
+        "away": []
       }
     }
   ]
