@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <%- include('partials/head', { title: 'Inscriptions | AS Dardilly Volley' }) %>
+</head>
+
+<body>
+    <%- include('partials/header') %>
+
+        <main>
+            <section
+                style="padding: 60px 5%; background: var(--bg-card); border-bottom: 2px solid var(--brand-yellow);">
+                <h1 class="section-title" data-i18n="join_title">Rejoindre <br><span>Le Club</span></h1>
+                <p style="max-width: 800px; font-size: 1.2rem; margin-top: 20px;" data-i18n="join_warning">
+                    <strong>Attention :</strong> Les groupes étant en cours de constitution, merci de contacter le club
+                    pour
+                    valider la disponibilité avant de commencer la procédure.
+                </p>
+            </section>
+
+            <section>
+                <h2 class="section-title" data-i18n="proc_title">La Procédure <span>Étape par Étape</span></h2>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px;"
+                    class="steps-container">
+
+                    <div class="card" style="padding: 30px;">
+                        <div
+                            style="font-family: var(--font-head); font-size: 3rem; color: var(--brand-yellow); line-height: 1; margin-bottom: 10px;">
+                            01</div>
+                        <h3 style="font-family: var(--font-head); font-size: 1.5rem; text-transform: uppercase;"
+                            data-i18n="step1_t">Portail FFVB</h3>
+                        <p data-i18n="step1_d">Créez votre espace licencié sur my.ffvolley.org. Vérifiez votre photo et
+                            pièce d'identité.</p>
+                        <a href="https://my.ffvolley.org" target="_blank"
+                            style="color: var(--brand-yellow); text-decoration: underline; font-weight: bold; margin-top:10px; display:block;"
+                            data-i18n="btn_ffvb">Accès FFVB &rarr;</a>
+                    </div>
+
+                    <div class="card" style="padding: 30px;">
+                        <div
+                            style="font-family: var(--font-head); font-size: 3rem; color: var(--brand-yellow); line-height: 1; margin-bottom: 10px;">
+                            02</div>
+                        <h3 style="font-family: var(--font-head); font-size: 1.5rem; text-transform: uppercase;"
+                            data-i18n="step2_t">Choix du Club</h3>
+                        <p data-i18n="step2_d">Sélectionnez <strong>ASS SPORTIVE DARDILLOISE</strong>. Cochez les
+                            licences (Volley, Beach) en une seule fois.</p>
+                    </div>
+
+                    <div class="card" style="padding: 30px;">
+                        <div
+                            style="font-family: var(--font-head); font-size: 3rem; color: var(--brand-yellow); line-height: 1; margin-bottom: 10px;">
+                            03</div>
+                        <h3 style="font-family: var(--font-head); font-size: 1.5rem; text-transform: uppercase;"
+                            data-i18n="step3_t">Santé & Validation</h3>
+                        <p data-i18n="step3_d">Remplissez le questionnaire de santé. Répondez au droit à l'image et
+                            signez la demande en ligne.</p>
+                    </div>
+
+                    <div class="card" style="padding: 30px;">
+                        <div
+                            style="font-family: var(--font-head); font-size: 3rem; color: var(--brand-yellow); line-height: 1; margin-bottom: 10px;">
+                            04</div>
+                        <h3 style="font-family: var(--font-head); font-size: 1.5rem; text-transform: uppercase;"
+                            data-i18n="step4_t">Paiement</h3>
+                        <p data-i18n="step4_d">Remettez le règlement au coach lors du premier entraînement pour valider
+                            la licence.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section style="background: var(--bg-card); padding: 50px 5%;">
+                <h2 class="section-title" data-i18n="info_title">Infos <span>Pratiques</span></h2>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px;"
+                    class="steps-container">
+
+                    <div class="card" style="padding: 30px;">
+                        <i class="fa-solid fa-wallet"
+                            style="font-size: 2rem; color: var(--brand-yellow); margin-bottom: 15px;"></i>
+                        <h3 style="font-family: var(--font-head); font-size: 1.3rem; margin-bottom: 10px;"
+                            data-i18n="pay_title">Moyens de Paiement</h3>
+                        <ul style="list-style-type: none; padding: 0; line-height: 1.8;">
+                            <li><i class="fa-solid fa-check" style="color:var(--brand-yellow); margin-right:8px;"></i>
+                                <span data-i18n="pay_chk">Chèque / Espèces</span></li>
+                            <li><i class="fa-solid fa-check" style="color:var(--brand-yellow); margin-right:8px;"></i>
+                                <span data-i18n="pay_vir">Virement Bancaire</span></li>
+                            <li><i class="fa-solid fa-check" style="color:var(--brand-yellow); margin-right:8px;"></i>
+                                <span data-i18n="pay_ancv">Chèques Vacances</span></li>
+                        </ul>
+                    </div>
+
+                    <div class="card" style="padding: 30px;">
+                        <i class="fa-solid fa-tags"
+                            style="font-size: 2rem; color: var(--brand-yellow); margin-bottom: 15px;"></i>
+                        <h3 style="font-family: var(--font-head); font-size: 1.3rem; margin-bottom: 10px;"
+                            data-i18n="disc_title">Réductions</h3>
+                        <ul style="list-style-type: none; padding: 0; line-height: 1.8;">
+                            <li><strong>-30€</strong> <span data-i18n="disc_region">Lycéens (Pass Région)</span></li>
+                            <li><strong>-35€</strong> <span data-i18n="disc_sport">Collégiens (Pass Sport
+                                    Culture)</span></li>
+                            <li style="margin-top: 10px; font-size: 0.9em; opacity: 0.8;" data-i18n="disc_note">Familles
+                                nombreuses : Nous consulter.</li>
+                        </ul>
+                    </div>
+
+                    <div class="card" style="padding: 30px;">
+                        <i class="fa-solid fa-file-pdf"
+                            style="font-size: 2rem; color: var(--brand-yellow); margin-bottom: 15px;"></i>
+                        <h3 style="font-family: var(--font-head); font-size: 1.3rem; margin-bottom: 10px;"
+                            data-i18n="doc_title">Documents</h3>
+                        <ul style="list-style-type: none; padding: 0; line-height: 1.8;">
+                            <li><a href="#" style="text-decoration: underline;" data-i18n="doc_code">Code de bonne
+                                    conduite</a></li>
+                            <li><a href="#" style="text-decoration: underline;" data-i18n="doc_fees">Grille des tarifs
+                                    2025-26</a></li>
+                            <li style="margin-top:10px;"><strong>Caution Maillot :</strong> 100€</li>
+                        </ul>
+                    </div>
+
+                </div>
+            </section>
+
+            <section style="text-align: center; padding: 80px 5%;">
+                <h2 style="font-family: var(--font-head); text-transform: uppercase; font-size: 3rem; margin-bottom: 20px;"
+                    data-i18n="ready_title">Prêt à jouer ?</h2>
+                <a href="mailto:dardillyvolley@hotmail.com" class="btn-join"
+                    style="font-size: 1.2rem; padding: 15px 40px;" data-i18n="btn_contact_club">Contacter le Club</a>
+            </section>
+        </main>
+
+        <%- include('partials/footer') %>
+</body>
+
+</html>

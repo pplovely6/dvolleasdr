@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <%- include('partials/head', { title: (player.name || 'Joueur' ) + ' | AS Dardilly' }) %>
+</head>
+
+<body>
+    <%- include('partials/header') %>
+
+        <main>
+            <section class="player-hero" data-number="<%= player.number %>">
+                <div class="player-image-container">
+                    <img src="/m18-photo-garcon2025.jpg" alt="Player Photo">
+                </div>
+            </section>
+
+            <div class="player-header">
+                <div class="player-number-display">
+                    <%= player.number %>
+                </div>
+                <div class="player-lastname">
+                    <%= (player.name || '' ).split(' ').pop() %></div>
+            <div class="player-fullname"><%= player.name %></div>
+
+            <div style="margin-top: 15px;">
+                <a href="/equipes" style="color: #666; text-decoration: none; font-size: 0.9rem; border: 1px solid #333; padding: 5px 15px; border-radius: 20px;" data-i18n="btn_back">
+                    <i class="fa-solid fa-arrow-left"></i> Retour Équipe
+                </a>
+            </div>
+        </div>
+
+        <div class="vw-container">
+            <div class="vw-section-title" data-i18n="sec_bio">Bio du Joueur</div>
+            <div class="vw-card">
+                <div class="bio-grid">
+                    <div class="bio-item">
+                        <span class="bio-label" data-i18n="bio_pos">Position</span>
+                        <span class="bio-value"><%= player.position || ' N/A' %></span>
+                </div>
+                <div class="bio-item">
+                    <span class="bio-label" data-i18n="bio_nat">Nationalité</span>
+                    <span class="bio-value">France</span>
+                </div>
+                <div class="bio-item">
+                    <span class="bio-label" data-i18n="bio_age">Age</span>
+                    <span class="bio-value">-</span>
+                </div>
+                <div class="bio-item">
+                    <span class="bio-label" data-i18n="bio_dob">Date Naissance</span>
+                    <span class="bio-value">-</span>
+                </div>
+                <div class="bio-item">
+                    <span class="bio-label" data-i18n="bio_hgt">Taille</span>
+                    <span class="bio-value">-</span>
+                </div>
+            </div>
+            </div>
+
+            <div class="vw-section-title" style="margin-top: 50px;" data-i18n="sec_stats">Statistiques de Compétition
+            </div>
+            <div class="vw-card">
+                <div class="stats-grid">
+                    <div class="stat-group total-points-box">
+                        <span class="bio-label" data-i18n="st_total">Total Points</span>
+                        <div class="total-score">0</div>
+                        <div class="avg-match">
+                            <span class="avg-label" data-i18n="st_avg">Moyenne par Match</span>
+                            <span class="avg-value">0</span>
+                        </div>
+                    </div>
+
+                    <div class="stat-group">
+                        <div class="stat-header"><i class="fa-solid fa-bolt stat-icon"></i><span class="stat-title"
+                                data-i18n="st_atk">Points Attaque</span></div>
+                        <div class="stat-main-value">0</div>
+                        <div class="sub-stats">
+                            <div class="sub-stat-item"><span class="sub-label" data-i18n="st_eff">Efficacité</span><span
+                                    class="sub-val">0%</span></div>
+                            <div class="sub-stat-item"><span class="sub-label" data-i18n="st_avg_pt">Pts
+                                    Moyens</span><span class="sub-val">0</span></div>
+                        </div>
+                    </div>
+
+                    <div class="stat-group">
+                        <div class="stat-header"><i class="fa-solid fa-hand stat-icon"></i><span class="stat-title"
+                                data-i18n="st_blk">Points Block</span></div>
+                        <div class="stat-main-value">0</div>
+                        <div class="sub-stats">
+                            <div class="sub-stat-item"><span class="sub-label" data-i18n="st_succ">Succès</span><span
+                                    class="sub-val">0%</span></div>
+                            <div class="sub-stat-item"><span class="sub-label" data-i18n="st_avg_pt">Pts
+                                    Moyens</span><span class="sub-val">0</span></div>
+                        </div>
+                    </div>
+
+                    <div class="stat-group">
+                        <div class="stat-header"><i class="fa-solid fa-bullseye stat-icon"></i><span class="stat-title"
+                                data-i18n="st_srv">Points Service</span></div>
+                        <div class="stat-main-value">0</div>
+                        <div class="sub-stats">
+                            <div class="sub-stat-item"><span class="sub-label" data-i18n="st_succ">Succès</span><span
+                                    class="sub-val">0%</span></div>
+                            <div class="sub-stat-item"><span class="sub-label" data-i18n="st_avg_pt">Pts
+                                    Moyens</span><span class="sub-val">0</span></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="vw-section-title" style="margin-top: 50px;" data-i18n="sec_matches">Last Matches Played
+                </div>
+
+                <div class="match-history-grid" data-match-container data-limit="3">
+                    <div style="text-align:center; padding:20px; color:#666;">Aucun match récent enregistré.</div>
+                </div>
+            </div>
+            </div>
+        </main>
+
+        <%- include('partials/footer') %>
+</body>
+
+</html>

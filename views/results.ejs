@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <%- include('partials/head', { title: 'Tous les Résultats | AS Dardilly' }) %>
+        <style>
+            .results-hero {
+                height: 35vh;
+                background: linear-gradient(rgba(0, 0, 0, 0.8), rgba(15, 17, 21, 1)), url('/index-bg-spike.png');
+                display: flex;
+                align-items: flex-end;
+                padding-bottom: 40px;
+                padding-left: 5%;
+                background-size: cover;
+                background-position: center;
+            }
+
+            .hero-title {
+                font-family: var(--font-head);
+                font-weight: 800;
+                font-size: 4.5rem;
+                text-transform: uppercase;
+                line-height: 1;
+                margin: 0;
+                letter-spacing: -1px;
+            }
+
+            .hero-sub {
+                color: #bbb;
+                font-weight: 600;
+                margin-top: 10px;
+                text-transform: uppercase;
+                font-size: 1.1rem;
+                letter-spacing: 2px;
+            }
+
+            .main-container {
+                width: 90%;
+                max-width: 1200px;
+                margin: 0 auto;
+                padding: 60px 0;
+            }
+
+            .filter-bar {
+                display: flex;
+                gap: 12px;
+                margin-bottom: 40px;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .filter-btn {
+                background: transparent;
+                border: 1px solid rgba(255, 255, 255, 0.4);
+                color: #ffffff !important;
+                padding: 12px 24px;
+                font-family: var(--font-head);
+                font-weight: 700;
+                font-size: 0.95rem;
+                text-transform: uppercase;
+                cursor: pointer;
+                transition: 0.2s;
+                border-radius: 6px;
+                letter-spacing: 0.5px;
+            }
+
+            .filter-btn:hover {
+                border-color: white;
+                background: rgba(255, 255, 255, 0.1);
+            }
+
+            .filter-btn.active {
+                background: var(--brand-yellow);
+                color: black !important;
+                border-color: var(--brand-yellow);
+                box-shadow: 0 0 15px rgba(252, 227, 0, 0.3);
+            }
+
+            .result-card {
+                background: var(--bg-card);
+                border: 1px solid var(--border);
+                margin-bottom: 20px;
+                padding: 25px;
+                display: grid;
+                grid-template-columns: 120px 1fr 1fr 1fr;
+                align-items: center;
+                transition: transform 0.2s;
+                position: relative;
+                overflow: hidden;
+                text-decoration: none;
+                color: inherit;
+            }
+
+            .result-card:hover {
+                transform: translateY(-3px);
+                border-color: #555;
+            }
+
+            .status-win {
+                border-left: 6px solid #2ba640;
+            }
+
+            .status-loss {
+                border-left: 6px solid #ff4e45;
+            }
+
+            .date-col {
+                text-align: center;
+                border-right: 1px solid var(--border);
+                padding-right: 20px;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+            }
+
+            .date-val {
+                font-weight: 800;
+                font-size: 1.1rem;
+                color: white;
+            }
+
+            .team-cat {
+                font-size: 0.8rem;
+                color: #888;
+                text-transform: uppercase;
+                margin-top: 5px;
+                font-weight: 600;
+            }
+
+            .team-col {
+                display: flex;
+                align-items: center;
+                gap: 15px;
+                font-weight: 700;
+                font-size: 1.1rem;
+                text-transform: uppercase;
+            }
+
+            .team-col.home {
+                justify-content: flex-end;
+                text-align: right;
+            }
+
+            .team-col.away {
+                justify-content: flex-start;
+                text-align: left;
+            }
+
+            .team-logo {
+                height: 50px;
+                width: auto;
+                object-fit: contain;
+            }
+
+            .logo-placeholder {
+                height: 40px;
+                width: 40px;
+                background: #252525;
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 0.8rem;
+                color: #555;
+            }
+
+            .score-col {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .final-score {
+                font-size: 2.5rem;
+                font-weight: 800;
+                color: white;
+                line-height: 1;
+            }
+
+            .score-sets {
+                font-size: 0.85rem;
+                color: #888;
+                margin-top: 5px;
+            }
+
+            .result-badge {
+                font-size: 0.7rem;
+                padding: 3px 8px;
+                border-radius: 3px;
+                text-transform: uppercase;
+                font-weight: 700;
+                margin-top: 5px;
+            }
+
+            .badge-win {
+                background: rgba(43, 166, 64, 0.2);
+                color: #2ba640;
+            }
+
+            .badge-loss {
+                background: rgba(255, 78, 69, 0.2);
+                color: #ff4e45;
+            }
+
+            .empty-state {
+                text-align: center;
+                padding: 60px;
+                color: #666;
+                font-size: 1.2rem;
+                border: 1px dashed #333;
+            }
+
+            @media (max-width: 900px) {
+                .hero-title {
+                    font-size: 3rem;
+                }
+
+                .result-card {
+                    grid-template-columns: 1fr;
+                    gap: 15px;
+                    text-align: center;
+                    padding: 30px 20px;
+                }
+
+                .date-col {
+                    border-right: none;
+                    border-bottom: 1px solid #333;
+                    padding-right: 0;
+                    padding-bottom: 15px;
+                }
+
+                .team-col {
+                    justify-content: center !important;
+                    text-align: center !important;
+                    flex-direction: column;
+                }
+
+                .final-score {
+                    font-size: 3rem;
+                    margin: 10px 0;
+                }
+
+                .status-win,
+                .status-loss {
+                    border-left: 1px solid var(--border);
+                    border-top: 6px solid;
+                }
+            }
+        </style>
+</head>
+
+<body>
+    <%- include('partials/header') %>
+
+        <div class="results-hero">
+            <div>
+                <h1 class="hero-title">TOUS LES <span style="color:var(--brand-yellow);">RÉSULTATS</span></h1>
+                <p class="hero-sub">SAISON 2025 / 2026</p>
+            </div>
+        </div>
+
+        <main class="main-container">
+            <div class="filter-bar">
+                <button class="filter-btn active" onclick="filterMatches('all')">Tout</button>
+                <button class="filter-btn" onclick="filterMatches('senior-m')">Senior Garçons</button>
+                <button class="filter-btn" onclick="filterMatches('senior-f')">Senior Filles</button>
+                <button class="filter-btn" onclick="filterMatches('m18-m')">M18 Garçons</button>
+                <button class="filter-btn" onclick="filterMatches('m18-f')">M18 Filles</button>
+                <button class="filter-btn" onclick="filterMatches('m15')">M15</button>
+                <button class="filter-btn" onclick="filterMatches('m13')">M13</button>
+            </div>
+
+            <div id="results-grid">
+                <% if (allMatches.length===0) { %>
+                    <div class="empty-state">Aucun résultat disponible pour le moment.</div>
+                    <% } else { %>
+                        <% allMatches.forEach(m=> {
+                            const scoreParts = (m.score || "0-0").split(/[-:]/).map(s => parseInt(s.trim()));
+                            const homeScore = scoreParts[0] || 0;
+                            const awayScore = scoreParts[1] || 0;
+                            const isHome = m.home.toUpperCase().includes("DARDILLY");
+                            const isWin = isHome ? (homeScore > awayScore) : (awayScore > homeScore);
+                            const statusClass = isWin ? "status-win" : "status-loss";
+                            const badgeClass = isWin ? "badge-win" : "badge-loss";
+                            const badgeText = isWin ? "VICTOIRE" : "DÉFAITE";
+                            %>
+                            <a href="/match.html?id=<%= m.id %>&tag=<%= m.tag %>" class="result-card <%= statusClass %>"
+                                data-tag="<%= m.tag %>">
+                                <div class="date-col">
+                                    <div class="date-val">
+                                        <%= m.date %>
+                                    </div>
+                                    <div class="team-cat">
+                                        <%= m.category %>
+                                    </div>
+                                </div>
+
+                                <div class="team-col home">
+                                    <span>
+                                        <%= m.home %>
+                                    </span>
+                                    <% if (isHome) { %>
+                                        <img src="/image_fd6867.png" class="team-logo">
+                                        <% } else { %>
+                                            <div class="logo-placeholder">
+                                                <%= m.home.substring(0,3).toUpperCase() %>
+                                            </div>
+                                            <% } %>
+                                </div>
+
+                                <div class="score-col">
+                                    <div class="final-score">
+                                        <%= m.score %>
+                                    </div>
+                                    <div class="score-sets">
+                                        <%= m.sets ? (Array.isArray(m.sets) ? m.sets.join(' | ') : m.sets) : '' %></div>
+                            <div class="result-badge <%= badgeClass %>"><%= badgeText %></div>
+                        </div>
+
+                        <div class="team-col away">
+                            <% if (!isHome) { %>
+                                <img src="/image_fd6867.png" class="team-logo">
+                            <% } else { %>
+                                <div class="logo-placeholder"><%= m.away.substring(0,3).toUpperCase() %></div>
+                            <% } %>
+                            <span><%= m.away %></span>
+                        </div>
+                    </a>
+                <% }) %>
+            <% } %>
+        </div>
+    </main>
+
+    <%- include(' partials/footer') %>
+
+                                            <script>
+                                                function filterMatches(tag) {
+                                                    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                                                    event.target.classList.add('active');
+
+                                                    document.querySelectorAll('.result-card').forEach(card => {
+                                                        card.style.display = (tag === 'all' || card.dataset.tag === tag) ? 'grid' : 'none';
+                                                    });
+                                                }
+                                            </script>
+</body>
+
+</html>

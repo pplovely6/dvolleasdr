@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <%- include('partials/head', { title: teamName + ' | AS Dardilly' }) %>
+        <style>
+            .results-container {
+                width: 90%;
+                max-width: 1400px;
+                margin: 60px auto 0;
+            }
+
+            .split-results {
+                display: grid;
+                grid-template-columns: 1.2fr 1px 1fr;
+                gap: 40px;
+                align-items: stretch;
+                width: 100%;
+            }
+
+            .vertical-divider {
+                width: 1px;
+                background: #333;
+                height: 100%;
+                opacity: 0.5;
+            }
+
+            .match-card-v3,
+            .next-match-card {
+                background: #1a1a1a;
+                border: 1px solid #333;
+                padding: 40px;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                height: 100%;
+                position: relative;
+                overflow: hidden;
+            }
+
+            .card-header-label {
+                color: var(--brand-yellow);
+                font-family: var(--font-head);
+                font-size: 2rem;
+                margin-bottom: 25px;
+                text-transform: uppercase;
+                z-index: 2;
+            }
+
+            .card-date {
+                font-size: 1.1rem;
+                font-weight: 700;
+                margin-bottom: 35px;
+                color: #fff;
+                background: #333;
+                padding: 8px 25px;
+                border-radius: 4px;
+                z-index: 2;
+            }
+
+            .teams-row {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                width: 100%;
+                margin-bottom: 20px;
+                z-index: 2;
+            }
+
+            .team-block {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                width: 35%;
+                text-align: center;
+            }
+
+            .team-logo {
+                height: 80px;
+                width: 80px;
+                object-fit: contain;
+                margin-bottom: 15px;
+            }
+
+            .team-placeholder {
+                height: 80px;
+                width: 80px;
+                background: #252525;
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-weight: bold;
+                color: #555;
+                margin-bottom: 15px;
+                font-size: 1.5rem;
+            }
+
+            .team-name {
+                font-weight: 700;
+                font-size: 1rem;
+                text-transform: uppercase;
+                color: #ddd;
+            }
+
+            .center-info {
+                width: 30%;
+                text-align: center;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .vs-text {
+                font-family: var(--font-head);
+                font-size: 3rem;
+                color: #444;
+            }
+
+            .m-score-main-v3 {
+                font-family: var(--font-head);
+                font-size: 4rem;
+                color: white;
+                line-height: 1;
+            }
+
+            .m-sets-v3 {
+                font-size: 0.9rem;
+                color: #999;
+                margin-top: 10px;
+            }
+
+            .match-location {
+                border-top: 1px solid #333;
+                padding-top: 20px;
+                color: #aaa;
+                font-size: 0.9rem;
+                width: 100%;
+                text-align: center;
+                margin-top: 20px;
+                z-index: 2;
+            }
+
+            .roster-row {
+                display: grid;
+                grid-template-columns: 60px 1fr 120px 24px;
+                padding: 20px 0;
+                border-bottom: 1px solid #333;
+                text-decoration: none;
+                color: white;
+                transition: 0.2s;
+                align-items: center;
+            }
+
+            .roster-row:hover {
+                background: rgba(255, 255, 255, 0.05);
+                padding-left: 10px;
+            }
+
+            .captain {
+                background: var(--brand-yellow);
+                color: black;
+                font-size: 0.7rem;
+                padding: 2px 5px;
+                border-radius: 3px;
+                font-weight: 800;
+                margin-left: 10px;
+            }
+
+            @media (max-width: 1100px) {
+                .split-results {
+                    grid-template-columns: 1fr;
+                }
+
+                .vertical-divider {
+                    display: none;
+                }
+            }
+        </style>
+</head>
+
+<body>
+    <%- include('partials/header') %>
+
+        <% function parseDate(s) { if (!s) return 0; const parts=s.split('/'); if (parts.length===3) { let
+            year=parseInt(parts[2]); if (year < 100) year +=2000; return new Date(year, parts[1] - 1,
+            parts[0]).getTime(); } return new Date(s).getTime() || 0; } const sortedMatches=[...matches].sort((a, b)=>
+            parseDate(b.date) - parseDate(a.date));
+            const latestMatch = sortedMatches[0];
+
+            const now = new Date(); now.setHours(0,0,0,0);
+            const sortedSchedule = [...schedule].sort((a,b) => parseDate(a.date) - parseDate(b.date));
+            let nextMatch = sortedSchedule.find(m => parseDate(m.date) >= now.getTime());
+            if (!nextMatch && sortedSchedule.length > 0) nextMatch = sortedSchedule[0];
+            %>
+
+            <main>
+                <div class="hero"
+                    style="height: 40vh; background: linear-gradient(rgba(0,0,0,0.7), rgba(15,17,21,1)), url('/<%= team.image %>'); display:flex; align-items:flex-end; padding-bottom:40px; padding-left:5%; background-size: cover; background-position: center;">
+                    <div>
+                        <h1
+                            style="font-family: var(--font-head); font-size: 5rem; text-transform: uppercase; line-height: 1; margin:0;">
+                            <%= teamName.split(' ')[0] %> <span style="color:var(--brand-yellow);"><%= teamName.split(' ').slice(1).join(' ') %></span>
+                </h1>
+                <p style="color: #bbb; letter-spacing: 2px; font-weight: 600; margin-top:10px;">SAISON 2025 / 2026</p>
+            </div>
+        </div>
+
+        <section class="results-container">
+            <h2 class="section-title">Calendrier & <span>Résultats</span></h2>
+            <div class="split-results">
+                <div class="match-card-v3">
+                    <div class="card-header-label">DERNIER RÉSULTAT</div>
+                    <% if (latestMatch) { %>
+                        <div class="card-date"><%= latestMatch.date %></div>
+                        <div class="teams-row">
+                            <div class="team-block">
+                                <% if (latestMatch.home.toUpperCase().includes(' DARDILLY')) { %>
+                                <img src="/image_fd6867.png" class="team-logo">
+                                <% } else { %>
+                                    <div class="team-placeholder">
+                                        <%= latestMatch.home.substring(0,3).toUpperCase() %>
+                                    </div>
+                                    <% } %>
+                                        <div class="team-name">
+                                            <%= latestMatch.home %>
+                                        </div>
+                    </div>
+                    <div class="center-info">
+                        <div class="m-score-main-v3">
+                            <%= latestMatch.score %>
+                        </div>
+                        <div class="m-sets-v3">
+                            <%= Array.isArray(latestMatch.sets) ? latestMatch.sets.join(' ') : latestMatch.sets %></div>
+                            </div>
+                            <div class="team-block">
+                                <% if (latestMatch.away.toUpperCase().includes(' DARDILLY')) { %>
+                                <img src="/image_fd6867.png" class="team-logo">
+                                <% } else { %>
+                                    <div class="team-placeholder">
+                                        <%= latestMatch.away.substring(0,3).toUpperCase() %>
+                                    </div>
+                                    <% } %>
+                                        <div class="team-name">
+                                            <%= latestMatch.away %>
+                                        </div>
+                        </div>
+                    </div>
+                    <% } else { %>
+                        <p style="color:#666;">Aucun résultat disponible.</p>
+                        <% } %>
+                </div>
+
+                <div class="vertical-divider"></div>
+
+                <div class="next-match-card">
+                    <div class="card-header-label">PROCHAIN MATCH</div>
+                    <% if (nextMatch) { %>
+                        <div class="card-date">
+                            <%= nextMatch.date %>
+                                <%= nextMatch.time ? ' • ' + nextMatch.time : '' %>
+                        </div>
+                        <div class="teams-row">
+                            <div class="team-block">
+                                <% if (nextMatch.home.toUpperCase().includes('DARDILLY')) { %>
+                                    <img src="/image_fd6867.png" class="team-logo">
+                                    <% } else { %>
+                                        <div class="team-placeholder">
+                                            <%= nextMatch.home.substring(0,3).toUpperCase() %>
+                                        </div>
+                                        <% } %>
+                                            <div class="team-name">
+                                                <%= nextMatch.home %>
+                                            </div>
+                            </div>
+                            <div class="center-info">
+                                <div class="vs-text">VS</div>
+                            </div>
+                            <div class="team-block">
+                                <% if (nextMatch.away.toUpperCase().includes('DARDILLY')) { %>
+                                    <img src="/image_fd6867.png" class="team-logo">
+                                    <% } else { %>
+                                        <div class="team-placeholder">
+                                            <%= nextMatch.away.substring(0,3).toUpperCase() %>
+                                        </div>
+                                        <% } %>
+                                            <div class="team-name">
+                                                <%= nextMatch.away %>
+                                            </div>
+                            </div>
+                        </div>
+                        <div class="match-location">
+                            <i class="fa-solid fa-location-dot"
+                                style="color: var(--brand-yellow); margin-right: 5px;"></i>
+                            <strong>
+                                <%= nextMatch.location %>
+                            </strong>
+                        </div>
+                        <% } else { %>
+                            <p style="color:#666;">Aucun match prévu.</p>
+                            <% } %>
+                </div>
+                </div>
+                </section>
+
+                <section
+                    style="background: #1a1d24; border-top: 1px solid #333; padding-top: 100px; margin-top: 60px; padding-bottom: 60px;">
+                    <h2 class="section-title" style="width:90%; max-width:1400px; margin:0 auto 40px;">L'Effectif
+                        <span>2025-26</span></h2>
+                    <div class="roster-container"
+                        style="width:90%; max-width:1400px; margin:0 auto; display:grid; grid-template-columns: 1fr 1.5fr; gap:40px;">
+                        <div class="roster-image"
+                            style="background-image: url('/<%= team.image %>'); background-size: cover; background-position: center; min-height: 500px; border-radius: 0;">
+                        </div>
+                        <div class="roster-content">
+                            <div class="roster-header"
+                                style="display:grid; grid-template-columns: 60px 1fr 120px 24px; padding: 15px 0; border-bottom: 1px solid #444; color:#888; font-weight:bold; font-size:0.85rem; text-transform:uppercase; letter-spacing:1px;">
+                                <span>N°</span><span>JOUEUR</span><span>POSTE</span><span></span>
+                            </div>
+                            <% roster.sort((a,b)=> a.number - b.number).forEach(p => { %>
+                                <a href="/player/<%= slug %>/<%= p.number %>" class="roster-row">
+                                    <span class="num">
+                                        <%= p.number %>
+                                    </span>
+                                    <span>
+                                        <%= p.name %>
+                                            <% if (p.captain) { %><span class="captain">C</span>
+                                                <% } %>
+                                    </span>
+                                    <span class="pos">
+                                        <%= p.position %>
+                                    </span>
+                                    <i class="fa-solid fa-chevron-right"></i>
+                                </a>
+                                <% }) %>
+                        </div>
+                    </div>
+                </section>
+            </main>
+
+            <%- include('partials/footer') %>
+</body>
+
+</html>

@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <%- include('partials/head', { title: 'Les Équipes | AS Dardilly Volley' }) %>
+        <style>
+            .team-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+                gap: 30px;
+                align-items: stretch;
+            }
+
+            .card {
+                display: flex;
+                flex-direction: column;
+                height: 100%;
+                position: relative;
+                background: var(--bg-card);
+                border: 1px solid #333;
+                border-radius: 8px;
+                overflow: hidden;
+                transition: transform 0.2s;
+            }
+
+            .card:hover {
+                transform: translateY(-5px);
+                border-color: #555;
+            }
+
+            .card-image {
+                height: 250px;
+                background-size: cover;
+                background-position: center;
+                position: relative;
+            }
+
+            .card-content {
+                display: flex;
+                flex-direction: column;
+                flex-grow: 1;
+                padding: 25px;
+            }
+
+            .card-tag {
+                display: inline-block;
+                background: #333;
+                color: var(--brand-yellow);
+                padding: 4px 8px;
+                border-radius: 4px;
+                font-size: 0.8rem;
+                font-weight: 700;
+                text-transform: uppercase;
+                margin-bottom: 10px;
+                align-self: flex-start;
+            }
+
+            .card-title {
+                font-family: var(--font-head);
+                font-size: 1.5rem;
+                font-weight: 700;
+                margin: 0 0 10px 0;
+                color: white;
+            }
+
+            .card-content .btn-join {
+                margin-top: auto;
+                background: var(--brand-yellow);
+                color: black;
+                text-align: center;
+                padding: 12px;
+                font-weight: 700;
+                text-transform: uppercase;
+                border-radius: 4px;
+                text-decoration: none;
+                transition: 0.2s;
+            }
+
+            .card-content .btn-join:hover {
+                background: white;
+            }
+
+            .rank-strip {
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                width: 100%;
+                padding: 8px;
+                background: var(--brand-yellow);
+                color: black;
+                font-weight: 800;
+                font-size: 0.85rem;
+                text-transform: uppercase;
+                text-align: center;
+                z-index: 2;
+                box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.3);
+                letter-spacing: 1px;
+            }
+
+            .schedule-section {
+                margin-top: 80px;
+                background: #151515;
+                padding: 60px 0;
+                border-top: 1px solid #333;
+            }
+
+            .training-table {
+                width: 100%;
+                border-collapse: collapse;
+                font-size: 0.95rem;
+            }
+
+            .training-table th {
+                text-align: left;
+                padding: 15px;
+                border-bottom: 2px solid var(--brand-yellow);
+                color: var(--brand-yellow);
+                text-transform: uppercase;
+                font-weight: 700;
+            }
+
+            .training-table td {
+                padding: 15px;
+                border-bottom: 1px solid #333;
+                color: #ddd;
+            }
+
+            .category-cell {
+                font-weight: 700;
+                color: white;
+                background: #1a1a1a;
+                border-right: 1px solid #333;
+            }
+
+            @media (max-width: 1000px) {
+                .team-grid {
+                    grid-template-columns: 1fr !important;
+                }
+
+                .training-table {
+                    font-size: 0.8rem;
+                }
+
+                .training-table th,
+                .training-table td {
+                    padding: 10px;
+                }
+            }
+
+            .container-wrapper {
+                width: 90%;
+                max-width: 1200px;
+                margin: 0 auto;
+                padding-top: 40px;
+            }
+        </style>
+</head>
+
+<body>
+    <%- include('partials/header') %>
+
+        <main>
+            <div class="container-wrapper">
+                <h1 class="section-title" data-i18n="team_page_title" style="font-size: 3rem; margin-bottom: 40px;">Nos
+                    <span>Équipes 2025</span>
+                </h1>
+
+                <h2 style="font-family: var(--font-head); font-weight: 800; font-size: 2rem; margin-bottom: 30px; color: white; text-transform: uppercase; border-left: 5px solid var(--brand-yellow); padding-left: 15px;"
+                    data-i18n="cat_seniors">Seniors</h2>
+
+                <div class="team-grid" style="margin-bottom: 60px; grid-template-columns: repeat(3, 1fr);">
+                    <div class="card">
+                        <div class="card-image" style="background-image: url('/reg-f2025.jpg');"></div>
+                        <div class="card-content">
+                            <span class="card-tag" data-i18n="card_reg">Régional</span>
+                            <h3 class="card-title" data-i18n="card_sf1_title">Seniors Filles 1</h3>
+                            <p style="margin-bottom: 20px; color: #ccc; font-size: 1rem;" data-i18n="card_sf1_desc">
+                                Équipe
+                                Compétition Régionale</p>
+                            <a href="/equipe/reg-filles" class="btn-join" data-i18n="btn_see_team">
+                                Voir l'Équipe <i class="fa-solid fa-arrow-right"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-image" style="background-image: url('/Dep-fille-2025.jpg');"></div>
+                        <div class="card-content">
+                            <span class="card-tag" data-i18n="card_dep">Départemental</span>
+                            <h3 class="card-title" data-i18n="card_sf2_title">Seniors Filles 2</h3>
+                            <p style="margin-bottom: 20px; color: #ccc; font-size: 1rem;" data-i18n="card_sf2_desc">
+                                Championnat Départemental</p>
+                            <a href="/equipe/dep-filles" class="btn-join" data-i18n="btn_see_team">
+                                Voir l'Équipe <i class="fa-solid fa-arrow-right"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-image" style="background-image: url('/dep-garcon-2025-1.jpeg');"></div>
+                        <div class="card-content">
+                            <span class="card-tag" data-i18n="card_dep">Départemental</span>
+                            <h3 class="card-title" data-i18n="card_sg_title">Seniors Garçons</h3>
+                            <p style="color: #aaa; font-size: 1rem; margin-bottom: 20px;" data-i18n="card_sf2_desc">
+                                Championnat Départemental</p>
+                            <a href="/equipe/dep-garcons" class="btn-join" data-i18n="btn_see_team">
+                                Voir l'Équipe <i class="fa-solid fa-arrow-right"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <h2 style="font-family: var(--font-head); font-weight: 800; font-size: 2rem; margin-bottom: 30px; color: white; text-transform: uppercase; border-left: 5px solid var(--brand-yellow); padding-left: 15px;"
+                    data-i18n="cat_youth">Filière Jeunes</h2>
+
+                <div class="team-grid" style="margin-bottom: 30px; grid-template-columns: repeat(2, 1fr);">
+                    <div class="card" style="border: 2px solid var(--brand-yellow);">
+                        <div class="card-image" style="background-image: url('/m18-photo-garcon2025.jpg');">
+                            <div class="rank-strip" data-i18n="tag_1st_jm5">1er POULE JM5</div>
+                        </div>
+                        <div class="card-content">
+                            <span class="card-tag" style="background: var(--brand-yellow); color: black;"
+                                data-i18n="tag_u18_21">M18 - M21</span>
+                            <h3 class="card-title" data-i18n="card_boys_comp">Garçons Compétition</h3>
+                            <p style="margin-bottom: 20px; color: #ccc; font-size: 1rem;" data-i18n="card_m18_desc">
+                                Retrouvez les résultats et l'effectif complet.</p>
+                            <a href="/equipe/m18" class="btn-join" data-i18n="btn_see_team">Voir l'Équipe <i
+                                    class="fa-solid fa-arrow-right"></i></a>
+                        </div>
+                    </div>
+
+                    <div class="card" style="border: 2px solid var(--brand-yellow);">
+                        <div class="card-image" style="background-image: url('/m18f-1-2.jpg');">
+                            <div class="rank-strip" data-i18n="tag_1st_jf4">1ère POULE JF4</div>
+                        </div>
+                        <div class="card-content">
+                            <span class="card-tag" style="background: var(--brand-yellow); color: black;"
+                                data-i18n="tag_u18_21">M18 - M21</span>
+                            <h3 class="card-title" data-i18n="card_m18f1_title">Filles 1 Compétition</h3>
+                            <p style="margin-bottom: 20px; color: #ccc; font-size: 1rem;" data-i18n="card_m18f1_desc">
+                                Championnat JF4 • Actuellement 1ère</p>
+                            <a href="/equipe/m18-filles-1" class="btn-join" data-i18n="btn_see_team">Voir l'Équipe <i
+                                    class="fa-solid fa-arrow-right"></i></a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="team-grid" style="margin-bottom: 60px; grid-template-columns: repeat(3, 1fr);">
+                    <div class="card">
+                        <div class="card-image" style="background-image: url('/m18-photo-fille.jpg');"></div>
+                        <div class="card-content">
+                            <span class="card-tag" data-i18n="tag_u18_21">M18 - M21</span>
+                            <h3 class="card-title">M18 Filles 2</h3>
+                            <p style="margin-bottom: 20px; color: #ccc; font-size: 1rem;" data-i18n="card_m18_desc">
+                                Retrouvez les résultats et l'effectif complet.</p>
+                            <a href="/equipe/m18-f-2" class="btn-join" data-i18n="btn_see_team">Voir l'Équipe <i
+                                    class="fa-solid fa-arrow-right"></i></a>
+                        </div>
+                    </div>
+
+                    <div class="card" style="border: 2px solid var(--brand-yellow);">
+                        <div class="card-image" style="background-image: url('/m13mx-photo.jpg');">
+                            <div class="rank-strip" data-i18n="tag_1st_bm3a">1er POULE BM3A</div>
+                        </div>
+                        <div class="card-content">
+                            <span class="card-tag" style="background: var(--brand-yellow); color: black;"
+                                data-i18n="tag_u13">M13</span>
+                            <h3 class="card-title">M13 Mixte</h3>
+                            <p style="margin-bottom: 20px; color: #ccc; font-size: 1rem;">Équipe invaincue • 6 matchs, 6
+                                victoires.</p>
+                            <a href="/equipe/m13-mx" class="btn-join" data-i18n="btn_see_team">Voir l'Équipe <i
+                                    class="fa-solid fa-arrow-right"></i></a>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-image" style="background-image: url('/m15f-photo.jpg');"></div>
+                        <div class="card-content">
+                            <span class="card-tag" data-i18n="tag_u15">M15</span>
+                            <h3 class="card-title">M15 Filles</h3>
+                            <p style="color: #aaa; font-size: 1rem; margin-bottom: 20px;" data-i18n="card_youth_champ">
+                                Championnat Jeunes</p>
+                            <a href="/equipe/m15-f" class="btn-join" data-i18n="btn_see_team">Voir l'Équipe <i
+                                    class="fa-solid fa-arrow-right"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <section class="schedule-section">
+                <div class="container-wrapper">
+                    <h2 class="section-title" data-i18n="sched_title" style="margin-bottom: 40px;">Planning
+                        <span>Entraînements</span>
+                    </h2>
+                    <div class="table-responsive">
+                        <table class="training-table">
+                            <thead>
+                                <tr>
+                                    <th style="width: 30%;" data-i18n="th_level">Niveau / Catégorie</th>
+                                    <th style="width: 15%;" data-i18n="th_days">Jours</th>
+                                    <th style="width: 25%;" data-i18n="th_hours">Horaires</th>
+                                    <th style="width: 30%;" data-i18n="th_gym">Gymnase</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td rowspan="2" class="category-cell" data-i18n="td_leisure">Loisirs & Compét'lib
+                                    </td>
+                                    <td data-i18n="mon">Lundi</td>
+                                    <td>20h30 - 22h30</td>
+                                    <td>Roland GUILLAUD</td>
+                                </tr>
+                                <tr>
+                                    <td data-i18n="wed">Mercredi</td>
+                                    <td>20h30 - 22h30</td>
+                                    <td>Roland GUILLAUD</td>
+                                </tr>
+                                <tr>
+                                    <td rowspan="2" class="category-cell" data-i18n="td_seniors">Séniors Compétition
+                                    </td>
+                                    <td data-i18n="tue">Mardi</td>
+                                    <td>20h30 - 22h30</td>
+                                    <td>Roland GUILLAUD</td>
+                                </tr>
+                                <tr>
+                                    <td data-i18n="thu">Jeudi</td>
+                                    <td>20h30 - 22h30</td>
+                                    <td>Roland GUILLAUD</td>
+                                </tr>
+                                <tr>
+                                    <td rowspan="2" class="category-cell" data-i18n="td_m18m">M18/21 Garçons</td>
+                                    <td data-i18n="tue">Mardi</td>
+                                    18h30 - 20h30</td>
+                                    <td>Moulin CARRON</td>
+                                </tr>
+                                <tr>
+                                    <td data-i18n="thu">Jeudi</td>
+                                    <td>18h30 - 20h30</td>
+                                    <td>Roland GUILLAUD</td>
+                                </tr>
+                                <!-- ... rest of table ... -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <%- include('partials/footer') %>
+</body>
+
+</html>

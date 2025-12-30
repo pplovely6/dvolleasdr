@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <%- include('partials/head', { title: 'Détails du Match - AS Dardilly' }) %>
+        <style>
+            .match-detail-container {
+                max-width: 900px;
+                margin: 40px auto;
+                padding: 20px;
+                text-align: center;
+            }
+
+            .scoreboard-box {
+                background: linear-gradient(135deg, #1a1d24 0%, #0f1115 100%);
+                border-radius: 15px;
+                padding: 40px;
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+                margin-bottom: 40px;
+                border: 1px solid #333;
+            }
+
+            .court-wrapper {
+                position: relative;
+                width: 400px;
+                height: 400px;
+                margin: 20px auto;
+                background-color: #fce300;
+                border: 6px solid #000;
+                box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
+                border-radius: 8px;
+            }
+
+            .net-area {
+                position: absolute;
+                top: 0;
+                width: 100%;
+                height: 8px;
+                background: #000;
+                z-index: 5;
+            }
+
+            .attack-line {
+                position: absolute;
+                top: 33%;
+                width: 100%;
+                height: 3px;
+                background: rgba(0, 0, 0, 0.3);
+            }
+
+            .player-dot {
+                position: absolute;
+                width: 80px;
+                height: 80px;
+                background: #14213d;
+                color: white;
+                border-radius: 50%;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                transform: translate(-50%, -50%);
+                border: 3px solid #000;
+                z-index: 10;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+                transition: all 0.3s ease;
+            }
+
+            .player-dot:hover {
+                transform: translate(-50%, -50%) scale(1.1);
+                border-color: #fce300;
+            }
+
+            .player-pos-num {
+                font-size: 0.7rem;
+                opacity: 0.6;
+                margin-bottom: 2px;
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+            }
+
+            .player-name {
+                font-weight: 800;
+                font-size: 0.85rem;
+                line-height: 1;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                max-width: 70px;
+                text-align: center;
+            }
+
+            .p4 {
+                top: 20%;
+                left: 20%;
+            }
+
+            .p3 {
+                top: 20%;
+                left: 50%;
+            }
+
+            .p2 {
+                top: 20%;
+                left: 80%;
+            }
+
+            .p5 {
+                top: 75%;
+                left: 20%;
+            }
+
+            .p6 {
+                top: 75%;
+                left: 50%;
+            }
+
+            .p1 {
+                top: 75%;
+                left: 80%;
+            }
+
+            .libero-box {
+                margin-top: 25px;
+                padding: 12px 20px;
+                background: #1a1d24;
+                display: inline-block;
+                border-radius: 8px;
+                font-weight: 700;
+                color: #fff;
+                border: 2px solid #333;
+            }
+
+            .libero-box span {
+                color: #fce300;
+                font-weight: 800;
+            }
+        </style>
+</head>
+
+<body>
+    <%- include('partials/header') %>
+
+        <% const isHomeDardilly=match.home.toUpperCase().includes('DARDILLY'); const
+            isAwayDardilly=match.away.toUpperCase().includes('DARDILLY'); const homeLogo=isHomeDardilly
+            ? '/image_fd6867.png' : 'https://via.placeholder.com/100?text=' + match.home.substring(0,3).toUpperCase();
+            const awayLogo=isAwayDardilly ? '/image_fd6867.png' : 'https://via.placeholder.com/100?text=' +
+            match.away.substring(0,3).toUpperCase(); const setsDisplay=Array.isArray(match.sets) ? match.sets.join(', ') : (match.sets || "0-0, 0-0, 0-0");
+    %>
+
+    <div class="vw-match-header">
+        <div class="vw-header-overlay"></div>
+        <div class="vw-header-content">
+            <div class="vw-match-info">
+                <span class="vw-league"><%= match.category || "CHAMPIONNAT" %></span> • 
+                <span class="vw-date"><%= match.date || "Date inconnue" %></span> •
+                <span class="vw-venue"><%= match.location || "Gymnase Roland Guillaud" %></span>
+            </div>
+
+            <div class="vw-scoreboard">
+                <div class="vw-team home">
+                    <img src="<%= homeLogo %>" class="vw-team-logo">
+                    <div class="vw-team-name"><%= match.home %></div>
+                </div>
+
+                <div class="vw-score-center">
+                    <div class="vw-main-score"><%= match.score || "0 - 0" %></div>
+                    <div class="vw-set-scores"><%= setsDisplay %></div>
+                    <div class="vw-match-status">TERMINÉ</div>
+                </div>
+
+                <div class="vw-team away">
+                    <img src="<%= awayLogo %>" class="vw-team-logo">
+                    <div class="vw-team-name"><%= match.away %></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="vw-tabs-container">
+        <div class="vw-tabs">
+            <div class="vw-tab active" onclick="switchMatchTab(' stats')">Statistiques</div>
+            <div class="vw-tab" onclick="switchMatchTab('rosters')">Effectifs</div>
+            <div class="vw-tab" onclick="switchMatchTab('court')">Terrain</div>
+            </div>
+            </div>
+
+            <div class="match-detail-container">
+                <div id="tab-stats" class="vw-tab-content active">
+                    <div class="vw-section-title">Statistiques du Match</div>
+                    <div class="vw-box">
+                        <h3 class="vw-box-title">
+                            <%= match.home %>
+                        </h3>
+                        <div class="table-responsive">
+                            <table class="vw-table">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th style="text-align:left">Joueur</th>
+                                        <th>Pts</th>
+                                        <th>Att</th>
+                                        <th>Blk</th>
+                                        <th>Ace</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <% if (match.stats && match.stats.home && match.stats.home.length> 0) { %>
+                                        <% match.stats.home.forEach(p=> { %>
+                                            <tr>
+                                                <td>
+                                                    <%= p.number %>
+                                                </td>
+                                                <td style="text-align:left; font-weight:700;">
+                                                    <%= p.name %>
+                                                </td>
+                                                <td><b>
+                                                        <%= p.points || 0 %>
+                                                    </b></td>
+                                                <td>
+                                                    <%= p.attacks || 0 %>
+                                                </td>
+                                                <td>
+                                                    <%= p.blocks || 0 %>
+                                                </td>
+                                                <td>
+                                                    <%= p.aces || 0 %>
+                                                </td>
+                                            </tr>
+                                            <% }) %>
+                                                <% } else { %>
+                                                    <tr>
+                                                        <td colspan='6' style='padding:20px; color:#666;'>Aucune
+                                                            statistique disponible</td>
+                                                    </tr>
+                                                    <% } %>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="vw-box" style="margin-top:30px">
+                        <h3 class="vw-box-title">
+                            <%= match.away %>
+                        </h3>
+                        <div class="table-responsive">
+                            <table class="vw-table">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th style="text-align:left">Joueur</th>
+                                        <th>Pts</th>
+                                        <th>Att</th>
+                                        <th>Blk</th>
+                                        <th>Ace</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <% if (match.stats && match.stats.away && match.stats.away.length> 0) { %>
+                                        <% match.stats.away.forEach(p=> { %>
+                                            <tr>
+                                                <td>
+                                                    <%= p.number %>
+                                                </td>
+                                                <td style="text-align:left; font-weight:700;">
+                                                    <%= p.name %>
+                                                </td>
+                                                <td><b>
+                                                        <%= p.points || 0 %>
+                                                    </b></td>
+                                                <td>
+                                                    <%= p.attacks || 0 %>
+                                                </td>
+                                                <td>
+                                                    <%= p.blocks || 0 %>
+                                                </td>
+                                                <td>
+                                                    <%= p.aces || 0 %>
+                                                </td>
+                                            </tr>
+                                            <% }) %>
+                                                <% } else { %>
+                                                    <tr>
+                                                        <td colspan='6' style='padding:20px; color:#666;'>Aucune
+                                                            statistique disponible</td>
+                                                    </tr>
+                                                    <% } %>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="tab-rosters" class="vw-tab-content" style="display:none;">
+                    <div class="vw-section-title">Composition des équipes</div>
+                    <div style="display:grid; grid-template-columns: 1fr 1fr; gap:30px;">
+                        <div class="vw-box">
+                            <h3 class="vw-box-title">Domicile</h3>
+                            <ul class="vw-roster-list">
+                                <% if (match.roster && match.roster.home && match.roster.home.length> 0) { %>
+                                    <% match.roster.home.forEach(p=> { %>
+                                        <li>
+                                            <div class="vw-roster-img" style="background:#333 center/cover"></div>
+                                            <div class="vw-roster-num">
+                                                <%= p.number %>
+                                            </div>
+                                            <div class="vw-roster-name">
+                                                <%= p.name %>
+                                            </div>
+                                        </li>
+                                        <% }) %>
+                                            <% } else { %>
+                                                <li style='color:#666'>Effectif non disponible</li>
+                                                <% } %>
+                            </ul>
+                        </div>
+                        <div class="vw-box">
+                            <h3 class="vw-box-title">Extérieur</h3>
+                            <ul class="vw-roster-list">
+                                <% if (match.roster && match.roster.away && match.roster.away.length> 0) { %>
+                                    <% match.roster.away.forEach(p=> { %>
+                                        <li>
+                                            <div class="vw-roster-img" style="background:#333 center/cover"></div>
+                                            <div class="vw-roster-num">
+                                                <%= p.number %>
+                                            </div>
+                                            <div class="vw-roster-name">
+                                                <%= p.name %>
+                                            </div>
+                                        </li>
+                                        <% }) %>
+                                            <% } else { %>
+                                                <li style='color:#666'>Effectif non disponible</li>
+                                                <% } %>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="tab-court" class="vw-tab-content" style="display:none;">
+                    <div class="scoreboard-box">
+                        <h2>6 de Départ</h2>
+                        <p>Positionnement sur le terrain</p>
+                        <div class="court-wrapper">
+                            <div class="net-area"></div>
+                            <div class="attack-line"></div>
+                            <% const lineup=match.lineup || {}; %>
+                                <div class="player-dot p4"><span class="player-pos-num">P4</span><span
+                                        class="player-name">
+                                        <%= lineup.p4 || "-" %>
+                                    </span></div>
+                                <div class="player-dot p3"><span class="player-pos-num">P3</span><span
+                                        class="player-name">
+                                        <%= lineup.p3 || "-" %>
+                                    </span></div>
+                                <div class="player-dot p2"><span class="player-pos-num">P2</span><span
+                                        class="player-name">
+                                        <%= lineup.p2 || "-" %>
+                                    </span></div>
+                                <div class="player-dot p5"><span class="player-pos-num">P5</span><span
+                                        class="player-name">
+                                        <%= lineup.p5 || "-" %>
+                                    </span></div>
+                                <div class="player-dot p6"><span class="player-pos-num">P6</span><span
+                                        class="player-name">
+                                        <%= lineup.p6 || "-" %>
+                                    </span></div>
+                                <div class="player-dot p1"><span class="player-pos-num">P1</span><span
+                                        class="player-name">
+                                        <%= lineup.p1 || "-" %>
+                                    </span></div>
+                        </div>
+                        <div class="libero-box">
+                            Libéro : <span style="color:#d32f2f;">
+                                <%= lineup.libero || "-" %>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <%- include('partials/footer') %>
+
+                <script>
+                    function switchMatchTab(tabName) {
+                        document.querySelectorAll('.vw-tab-content').forEach(el => el.style.display = 'none');
+                        document.querySelectorAll('.vw-tab').forEach(el => el.classList.remove('active'));
+                        document.getElementById('tab-' + tabName).style.display = 'block';
+                        const tabs = document.querySelectorAll('.vw-tab');
+                        if (tabName === 'stats') tabs[0].classList.add('active');
+                        if (tabName === 'rosters') tabs[1].classList.add('active');
+                        if (tabName === 'court') tabs[2].classList.add('active');
+                    }
+                </script>
+</body>
+
+</html>

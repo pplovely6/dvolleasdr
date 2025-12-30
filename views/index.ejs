@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <%- include('partials/head', { title: 'Accueil | AS Dardilly Volley' }) %>
+        <style>
+            /* Slider Styles for SSR */
+            .slider-card {
+                background: rgba(255, 255, 255, 0.03);
+                border: 1px solid #333;
+                border-radius: 8px;
+                padding: 20px;
+                text-decoration: none;
+                color: inherit;
+                transition: 0.3s;
+                display: flex;
+                flex-direction: column;
+                gap: 15px;
+                min-width: 280px;
+            }
+
+            .slider-card:hover {
+                border-color: var(--brand-yellow);
+                background: rgba(255, 255, 255, 0.05);
+            }
+
+            .slider-match-header {
+                display: flex;
+                justify-content: space-between;
+                font-size: 0.8rem;
+                color: #888;
+                font-weight: 700;
+            }
+
+            .slider-match-body {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                gap: 10px;
+            }
+
+            .slider-team {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 5px;
+                flex: 1;
+                text-align: center;
+            }
+
+            .slider-team-name {
+                font-size: 0.8rem;
+                font-weight: 800;
+                text-transform: uppercase;
+            }
+
+            .slider-score {
+                font-size: 1.8rem;
+                font-weight: 900;
+                color: white;
+                letter-spacing: -1px;
+            }
+
+            .slider-badge {
+                align-self: center;
+                font-size: 0.65rem;
+                padding: 4px 10px;
+                border-radius: 4px;
+                font-weight: 900;
+            }
+
+            .slider-badge.win {
+                background: #2ed573;
+                color: black;
+            }
+
+            .slider-badge.loss {
+                background: #ff4757;
+                color: white;
+            }
+
+            .slider-logo-img {
+                height: 35px;
+                width: auto;
+            }
+
+            .slider-logo-ph {
+                height: 35px;
+                width: 35px;
+                background: #222;
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 0.7rem;
+                color: #555;
+                font-weight: 800;
+            }
+        </style>
+</head>
+
+<body>
+    <%- include('partials/header') %>
+
+        <main>
+            <div class="hero"
+                style="height: 85vh; background: linear-gradient(rgba(15,17,21,0.5), rgba(15,17,21,1)), url('/index-bg-spike.png'); background-size: cover; background-position: center;">
+                <div>
+                    <h1 style="font-family: var(--font-head); line-height: 0.9;" data-i18n="hero_title">
+                        Un Club,<br><span style="color: var(--brand-yellow);">Une Passion</span>
+                    </h1>
+                    <p style="margin: 20px 0; font-size: 1.4rem; color: #ddd; font-weight: 600;"
+                        data-i18n="hero_subtitle">
+                        AS Dardilly Volley-Ball • Depuis 1944</p>
+                    <a href="/equipes" class="btn-join" data-i18n="hero_btn">Voir les Équipes</a>
+                </div>
+            </div>
+
+            <section style="background: var(--bg-card);">
+                <div
+                    style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 60px; width:90%; max-width:1200px; margin:0 auto;">
+                    <div>
+                        <h2 class="section-title" data-i18n="section_history"
+                            style="font-family:var(--font-head); font-weight:800; text-transform:uppercase;">Notre <span
+                                style="color:var(--brand-yellow)">Histoire</span></h2>
+                        <ul style="list-style: none; padding: 0; font-size: 1.1rem; line-height: 1.8; color: #ccc;">
+                            <li style="margin-bottom: 20px; border-left: 3px solid var(--brand-yellow); padding-left: 15px;"
+                                data-i18n="hist_1944">
+                                <strong>1944</strong> : Création du club par des jeunes dardillois passionnés.
+                            </li>
+                            <li style="margin-bottom: 20px; border-left: 3px solid #444; padding-left: 15px;"
+                                data-i18n="hist_50s">
+                                <strong>Années 50</strong> : Titre de Champion de France de Nationale 2.
+                            </li>
+                            <li style="margin-bottom: 20px; border-left: 3px solid #444; padding-left: 15px;"
+                                data-i18n="hist_90s">
+                                <strong>Années 90</strong> : Le club atteint la 36ème place nationale.
+                            </li>
+                            <li style="margin-bottom: 20px; border-left: 3px solid #444; padding-left: 15px;"
+                                data-i18n="hist_2000s">
+                                <strong>Années 2000</strong> : Équipes phares en N2 (Filles) et R1 (Garçons).
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div>
+                        <h2 class="section-title" data-i18n="section_gyms"
+                            style="font-family:var(--font-head); font-weight:800; text-transform:uppercase;">Nos <span
+                                style="color:var(--brand-yellow)">Terrains</span></h2>
+                        <div style="margin-bottom: 20px; background: #222; padding: 20px; border-radius: 4px;">
+                            <h4 style="color: var(--brand-yellow); margin:0 0 5px 0; font-family: var(--font-head); font-weight:700; font-size: 1.2rem;"
+                                data-i18n="gym_roland">Gymnase Roland Guillaud</h4>
+                            <p style="color: #aaa; margin:0;" data-i18n="loc_dodin"><i
+                                    class="fa-solid fa-location-dot"></i>
+                                Chemin du Dodin (Lycée Rabelais)</p>
+                        </div>
+                        <div style="margin-bottom: 20px; background: #222; padding: 20px; border-radius: 4px;">
+                            <h4 style="color: var(--brand-yellow); margin:0 0 5px 0; font-family: var(--font-head); font-weight:700; font-size: 1.2rem;"
+                                data-i18n="gym_moulin">Complexe Moulin Carron</h4>
+                            <p style="color: #aaa; margin:0;" data-i18n="loc_moulin"><i
+                                    class="fa-solid fa-location-dot"></i> Chemin du Moulin Carron</p>
+                        </div>
+                        <div style="background: #222; padding: 20px; border-radius: 4px;">
+                            <h4 style="color: var(--brand-yellow); margin:0 0 5px 0; font-family: var(--font-head); font-weight:700; font-size: 1.2rem;"
+                                data-i18n="gym_beach">Beach Volley</h4>
+                            <p style="color: #aaa; margin:0;" data-i18n="loc_broc"><i
+                                    class="fa-solid fa-location-dot"></i>
+                                Chemin de la Brocardière</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <div style="width:90%; max-width:1200px; margin:0 auto;">
+                    <h2 class="section-title" data-i18n="section_news"
+                        style="font-family:var(--font-head); font-weight:800; text-transform:uppercase;">Actualités</h2>
+                    <div class="team-grid">
+                        <div class="card">
+                            <div class="card-image"
+                                style="background-image: url('https://images.unsplash.com/photo-1541534741688-6078c6bfb5c5?w=600');">
+                            </div>
+                            <div class="card-content">
+                                <span class="card-tag">Tournoi</span>
+                                <h3 class="card-title" data-i18n="card_tournoi_title">Tournoi Interne Mixte</h3>
+                                <p style="font-size: 1rem; color: #aaa;" data-i18n="card_tournoi_desc">Rejoignez-nous ce
+                                    juillet pour le grand tournoi d'été.</p>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-image"
+                                style="background-image: url('https://images.unsplash.com/photo-1592656094267-764a45160876?w=600');">
+                            </div>
+                            <div class="card-content">
+                                <span class="card-tag">Club</span>
+                                <h3 class="card-title" data-i18n="card_inscript_title">Inscriptions 2025</h3>
+                                <p style="font-size: 1rem; color: #aaa;" data-i18n="card_inscript_desc">Les créneaux se
+                                    remplissent vite. Inscrivez-vous maintenant.</p>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-image"
+                                style="background-image: url('https://images.unsplash.com/photo-1626245550596-f6d3301cb4d6?w=600');">
+                            </div>
+                            <div class="card-content">
+                                <span class="card-tag">Beach</span>
+                                <h3 class="card-title" data-i18n="card_beach_title">Saison de Beach Volley</h3>
+                                <p style="font-size: 1rem; color: #aaa;" data-i18n="card_beach_desc">Profitez de nos
+                                    terrains extérieurs dès le mois de mai.</p>
+                                <a href="/beach"
+                                    style="color: var(--brand-yellow); text-decoration: underline; font-weight: bold; margin-top:10px; display:block;">En
+                                    savoir plus &rarr;</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="latest-results-section">
+                <div class="slider-container">
+                    <h2 class="section-title" data-i18n="latest_results_title"
+                        style="font-family:var(--font-head); font-weight:800; text-transform:uppercase; margin-bottom: 40px;">
+                        Derniers <span style="color:var(--brand-yellow)">Résultats</span></h2>
+                    <div class="slider-track" id="results-track">
+                        <% if (recentMatches.length===0) { %>
+                            <div style='text-align:center; width:100%; color:#666;'>Aucun résultat récent.</div>
+                            <% } else { %>
+                                <% recentMatches.forEach(m=> {
+                                    const scoreParts = (m.score || "0-0").split(/[-:]/).map(s => parseInt(s.trim()));
+                                    const homeScore = scoreParts[0] || 0;
+                                    const awayScore = scoreParts[1] || 0;
+                                    const isHome = m.home.toUpperCase().includes("DARDILLY");
+                                    const isWin = isHome ? (homeScore > awayScore) : (awayScore > homeScore);
+                                    const badgeClass = isWin ? "win" : "loss";
+                                    const badgeText = isWin ? "VICTOIRE" : "DÉFAITE";
+                                    %>
+                                    <a href="/match?id=<%= m.id %>" class="slider-card">
+                                        <div class="slider-match-header">
+                                            <span class="slider-date">
+                                                <%= m.date %>
+                                            </span>
+                                            <span class="slider-cat">
+                                                <%= m.category %>
+                                            </span>
+                                        </div>
+                                        <div class="slider-match-body">
+                                            <div class="slider-team">
+                                                <% if (isHome) { %>
+                                                    <img src="/image_fd6867.png" class="slider-logo-img">
+                                                    <% } else { %>
+                                                        <div class="slider-logo-ph">
+                                                            <%= m.home.substring(0,2).toUpperCase() %>
+                                                        </div>
+                                                        <% } %>
+                                                            <span class="slider-team-name">
+                                                                <%= m.home %>
+                                                            </span>
+                                            </div>
+                                            <div class="slider-score">
+                                                <%= m.score %>
+                                            </div>
+                                            <div class="slider-team">
+                                                <% if (!isHome) { %>
+                                                    <img src="/image_fd6867.png" class="slider-logo-img">
+                                                    <% } else { %>
+                                                        <div class="slider-logo-ph">
+                                                            <%= m.away.substring(0,2).toUpperCase() %>
+                                                        </div>
+                                                        <% } %>
+                                                            <span class="slider-team-name">
+                                                                <%= m.away %>
+                                                            </span>
+                                            </div>
+                                        </div>
+                                        <div class="slider-badge <%= badgeClass %>">
+                                            <%= badgeText %>
+                                        </div>
+                                    </a>
+                                    <% }) %>
+                                        <% } %>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <%- include('partials/footer') %>
+</body>
+
+</html>

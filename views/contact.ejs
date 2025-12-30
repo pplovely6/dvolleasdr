@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <%- include('partials/head', { title: 'Contact & Inscriptions | AS Dardilly Volley' }) %>
+        <style>
+            .contact-grid {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 50px;
+                margin-top: 40px;
+            }
+
+            .info-card {
+                background: var(--bg-card);
+                padding: 40px;
+                border: 1px solid #333;
+                border-radius: 8px;
+            }
+
+            .map-frame {
+                background: #222;
+                min-height: 400px;
+                border: 1px solid #444;
+                border-radius: 8px;
+                overflow: hidden;
+            }
+
+            .join-hero {
+                padding: 80px 0;
+                background: var(--bg-card);
+                border-top: 1px solid #333;
+                border-bottom: 2px solid var(--brand-yellow);
+                text-align: center;
+                margin-top: 80px;
+            }
+
+            .steps-container {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                gap: 30px;
+                margin-top: 50px;
+            }
+
+            .step-card {
+                background: var(--bg-card);
+                padding: 30px;
+                border: 1px solid #333;
+                border-radius: 8px;
+                text-align: left;
+                transition: transform 0.2s;
+            }
+
+            .step-card:hover {
+                transform: translateY(-5px);
+                border-color: #555;
+            }
+
+            .step-num {
+                font-family: var(--font-head);
+                font-weight: 800;
+                font-size: 3rem;
+                color: var(--brand-yellow);
+                line-height: 1;
+                margin-bottom: 15px;
+            }
+
+            .step-title {
+                font-family: var(--font-head);
+                font-weight: 700;
+                font-size: 1.3rem;
+                text-transform: uppercase;
+                margin-bottom: 10px;
+                color: white;
+            }
+
+            .cta-section {
+                text-align: center;
+                padding: 100px 5%;
+            }
+
+            @media (max-width: 900px) {
+                .contact-grid {
+                    grid-template-columns: 1fr;
+                }
+
+                .map-frame {
+                    min-height: 300px;
+                }
+            }
+        </style>
+</head>
+
+<body>
+    <%- include('partials/header') %>
+
+        <main>
+            <section style="padding: 60px 5%; width: 90%; max-width: 1200px; margin: 0 auto;">
+                <h1 class="section-title" data-i18n="contact_title"
+                    style="font-family:var(--font-head); font-weight:800; font-size:3rem; text-transform:uppercase;">
+                    Nous
+                    <span style="color:var(--brand-yellow);">Contacter</span>
+                </h1>
+
+                <div class="contact-grid">
+                    <div class="info-card">
+                        <h3 style="font-family: var(--font-head); font-weight: 700; font-size: 2rem; margin-bottom: 30px; text-transform: uppercase;"
+                            data-i18n="contact_coord">Coordonnées</h3>
+                        <ul style="font-size: 1.1rem; line-height: 2.5; list-style: none; padding: 0;">
+                            <li><i class="fa-solid fa-envelope"
+                                    style="color: var(--brand-yellow); margin-right: 15px;"></i>
+                                dardillyvolley@hotmail.com</li>
+                            <li><i class="fa-solid fa-location-dot"
+                                    style="color: var(--brand-yellow); margin-right: 15px;"></i> Gymnase Moulin Carron,
+                                Dardilly</li>
+                            <li><i class="fa-solid fa-phone"
+                                    style="color: var(--brand-yellow); margin-right: 15px;"></i> 06
+                                12 34 56 78</li>
+                        </ul>
+
+                        <div style="margin-top: 40px; border-top: 1px solid #333; padding-top: 20px;">
+                            <h4 style="margin-bottom: 15px; color: var(--text-gray); font-family: var(--font-head); font-weight: 600; font-size: 1.2rem; text-transform: uppercase;"
+                                data-i18n="contact_social">Réseaux Sociaux</h4>
+                            <div style="font-size: 1.8rem; display: flex; gap: 20px;">
+                                <a href="#" style="color:white; transition:0.2s;"><i
+                                        class="fa-brands fa-facebook"></i></a>
+                                <a href="#" style="color:white; transition:0.2s;"><i
+                                        class="fa-brands fa-instagram"></i></a>
+                                <a href="#" style="color:white; transition:0.2s;"><i
+                                        class="fa-brands fa-youtube"></i></a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="map-frame">
+                        <iframe
+                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2781.797747732662!2d4.766367376662099!3d45.79532891120253!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47f4eca39c29d997%3A0x9210037562820d0!2sGymnase%20Moulin%20Carron!5e0!3m2!1sfr!2sfr!4v1703865239000!5m2!1sfr!2sfr"
+                            width="100%" height="100%"
+                            style="border:0; filter: grayscale(100%) invert(92%) contrast(83%);" allowfullscreen=""
+                            loading="lazy"></iframe>
+                    </div>
+                </div>
+            </section>
+
+            <div id="inscription"></div>
+            <section class="join-hero">
+                <h2 class="section-title"
+                    style="font-family:var(--font-head); font-weight:800; font-size:3.5rem; text-transform:uppercase;"
+                    data-i18n="join_title">Rejoindre <br><span style="color:var(--brand-yellow);">Le Club</span></h2>
+                <p style="max-width: 700px; margin: 20px auto; font-size: 1.2rem; color: #ccc;" data-i18n="join_intro">
+                    La saison 2025-2026 approche. Voici comment valider votre inscription.
+                </p>
+            </section>
+
+            <section style="padding: 60px 5%; width: 90%; max-width: 1200px; margin: 0 auto;">
+                <h2 style="font-family:var(--font-head); font-weight:800; font-size:2.5rem; text-transform:uppercase; margin-bottom: 40px;"
+                    data-i18n="proc_title">La Procédure <span>Étape par Étape</span></h2>
+
+                <div class="steps-container">
+                    <div class="step-card">
+                        <div class="step-num">01</div>
+                        <h3 class="step-title" data-i18n="step1_t">Contact & Essai</h3>
+                        <p style="color:#aaa; line-height:1.6;" data-i18n="step1_d">Venez faire une séance d'essai
+                            gratuite.
+                            Contactez l'entraîneur pour confirmer le créneau.</p>
+                    </div>
+                    <!-- ... other steps ... -->
+                </div>
+            </section>
+        </main>
+
+        <%- include('partials/footer') %>
+</body>
+
+</html>
