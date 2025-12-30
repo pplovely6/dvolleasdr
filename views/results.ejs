@@ -285,7 +285,7 @@
                             const badgeClass = isWin ? "badge-win" : "badge-loss";
                             const badgeText = isWin ? "VICTOIRE" : "DÉFAITE";
                             %>
-                            <a href="/match.html?id=<%= m.id %>&tag=<%= m.tag %>" class="result-card <%= statusClass %>"
+                            <a href="/match?id=<%= m.id %>&tag=<%= m.tag %>" class="result-card <%= statusClass %>"
                                 data-tag="<%= m.tag %>">
                                 <div class="date-col">
                                     <div class="date-val">

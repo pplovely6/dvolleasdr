@@ -17,15 +17,19 @@ app.set('views', path.join(__dirname, 'views'));
 
 // Helper to get all matches for slider
 const getAllRecentMatches = () => {
-    const teamFiles = [
-        { file: 'db-m18-m', label: 'M18 GARÇONS', code: 'm18-m' },
-        { file: 'db-m15-m', label: 'M15 GARÇONS', code: 'm15-m' },
-        { file: 'db-sen-f', label: 'SÉNIORS FILLES', code: 'sen-f' },
-        { file: 'db-sen-m', label: 'SÉNIORS GARÇONS', code: 'sen-m' }
+    const teams = [
+        { file: "matches-dep-garcons", label: "SENIOR GARÇONS", code: "senior-m" },
+        { file: "matches-db", label: "M18 GARÇONS", code: "m18-m" },
+        { file: "matches-m18-filles-1", label: "M18 FILLES 1", code: "m18-f" },
+        { file: "matches-m18-filles-2", label: "M18 FILLES 2", code: "m18-f" },
+        { file: "matches-senior-filles-1", label: "SENIOR FILLES 1", code: "senior-f" },
+        { file: "matches-senior-filles-2", label: "SENIOR FILLES 2", code: "senior-f" },
+        { file: "matches-m15-filles", label: "M15 FILLES", code: "m15" },
+        { file: "matches-m13-mixte", label: "M13 MIXTE", code: "m13" }
     ];
 
     let allMatches = [];
-    teamFiles.forEach(t => {
+    teams.forEach(t => {
         const data = getJsonData(t.file);
         if (data.matches) {
             data.matches.forEach(m => {
@@ -34,23 +38,13 @@ const getAllRecentMatches = () => {
         }
     });
 
-    // Simple date parser for sorting (DD MMM YY)
-    const parseDate = (s) => {
-        const tokens = s.split(/\s+/);
-        if (tokens.length >= 2) {
-            const mnames = {
-                jan: 0, feb: 1, mar: 2, apr: 3, may: 4, jun: 5, jul: 6, aug: 7, sep: 8, oct: 9, nov: 10, dec: 11,
-                janv: 0, fev: 1, mars: 2, avr: 3, mai: 4, juin: 5, juil: 6, aout: 7, sept: 8, oct: 9, nov: 10, dec: 11
-            };
-            const day = parseInt(tokens[0], 10);
-            const monStr = tokens[1].toLowerCase().substring(0, 4).replace('.', '');
-            const month = mnames[monStr];
-            let year = 2025;
-            if (tokens[2]) {
-                const yearT = tokens[2];
-                year = (yearT.length === 2) ? parseInt('20' + yearT, 10) : parseInt(yearT, 10);
-            }
-            if (!isNaN(day) && month !== undefined) return new Date(year, month, day).getTime();
+    const parseDate = (dateStr) => {
+        if (!dateStr) return 0;
+        const parts = dateStr.split('/');
+        if (parts.length === 3) {
+            let year = parseInt(parts[2]);
+            if (year < 100) year += 2000;
+            return new Date(year, parts[1] - 1, parts[0]).getTime();
         }
         return 0;
     };
@@ -183,7 +177,16 @@ app.get('/contact.html', (req, res) => {
 
 app.get('/player/:team/:number', (req, res) => {
     const { team, number } = req.params;
-    const dbName = team.startsWith('db-') ? team : `db-${team}`;
+
+    // 1. Try to find the database name in TEAM_MAP first (if team is a slug)
+    let dbName;
+    if (TEAM_MAP[team]) {
+        dbName = TEAM_MAP[team].db;
+    } else {
+        // 2. Fallback to previous logic (if team is already a db name or direct link)
+        dbName = team.startsWith('db-') ? team : `db-${team}`;
+    }
+
     const data = getJsonData(dbName);
     const player = (data.players || []).find(p => p.number == number);
 
