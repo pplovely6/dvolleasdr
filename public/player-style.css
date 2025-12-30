@@ -1,31 +1,42 @@
-* --- IMPORT FONTS (Google Fonts) --- */
-/* Using Barlow & Barlow Condensed - sporty, readable, and fits the layout better than Poppins */
-@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800&family=Barlow:wght@300;400;500;600&display=swap');
+/* --- IMPORT FONTS (Google Fonts) --- */
+/* Using Outfit to match the rest of the website */
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap');
 
 /* --- RESET & VARIABLES --- */
 :root {
-    --brand-yellow: #fce300; 
+    --brand-yellow: #fce300;
     --brand-black: #000000;
     --bg-dark: #0f1115;
     --bg-card: #1a1d24;
     --text-white: #ffffff;
     --text-gray: #b0b0b0;
-    
-    /* DEFINING THE FONTS - BARLOW (New) */
-    --font-head: 'Barlow Condensed', sans-serif; /* Condensed for Titles */
-    --font-body: 'Barlow', sans-serif;           /* Standard for Text */
+
+    /* DEFINING THE FONTS - OUTFIT (Matching website) */
+    --font-head: 'Outfit', sans-serif;
+    --font-body: 'Outfit', sans-serif;
+}
+
+/* Ensure Outfit font is used everywhere */
+body {
+    font-family: var(--font-body);
+}
+
+* {
+    font-family: inherit;
 }
 
 /* --- HERO SECTION (Keeping the cutout style) --- */
 .player-hero {
     position: relative;
-    min-height: 70vh; /* Slightly shorter to show stats sooner */
+    min-height: 70vh;
+    /* Slightly shorter to show stats sooner */
     background: linear-gradient(180deg, var(--vw-bg) 0%, #000 100%);
     display: flex;
-    align-items: flex-end; /* Align bottom */
+    align-items: flex-end;
+    /* Align bottom */
     justify-content: center;
     overflow: hidden;
-    padding-top: 80px; 
+    padding-top: 80px;
 }
 
 .player-hero::before {
@@ -51,13 +62,14 @@
     height: 100%;
     width: auto;
     mask-image: linear-gradient(to bottom, black 80%, transparent 100%);
-    filter: drop-shadow(0 0 30px rgba(0,0,0,0.8));
+    filter: drop-shadow(0 0 30px rgba(0, 0, 0, 0.8));
 }
 
 /* --- PLAYER NAME HEADER --- */
 .player-header {
     text-align: center;
-    margin-top: -60px; /* Pull up over the faded image bottom */
+    margin-top: -60px;
+    /* Pull up over the faded image bottom */
     position: relative;
     z-index: 3;
     margin-bottom: 40px;
@@ -66,7 +78,8 @@
 .player-number-display {
     font-size: 4rem;
     font-weight: 900;
-    color: var(--brand-yellow); /* The "Pink" in your reference is now Yellow */
+    color: var(--brand-yellow);
+    /* The "Pink" in your reference is now Yellow */
     line-height: 1;
     font-family: var(--font-head);
 }
@@ -101,7 +114,8 @@
     gap: 15px;
 }
 
-.vw-section-title::before, .vw-section-title::after {
+.vw-section-title::before,
+.vw-section-title::after {
     content: '';
     height: 1px;
     width: 60px;
@@ -145,7 +159,8 @@
 }
 
 .bio-label {
-    color: var(--brand-yellow); /* Accent color */
+    color: var(--brand-yellow);
+    /* Accent color */
     font-size: 0.8rem;
     font-weight: 600;
     text-transform: uppercase;
@@ -162,7 +177,8 @@
 /* --- BOTTOM STATS GRID --- */
 .stats-grid {
     display: grid;
-    grid-template-columns: 1.2fr 1fr 1fr 1fr; /* First col wider for Total */
+    grid-template-columns: 1.2fr 1fr 1fr 1fr;
+    /* First col wider for Total */
 }
 
 .stat-group {
@@ -200,9 +216,20 @@
     padding-top: 10px;
 }
 
-.avg-match span { display: block; }
-.avg-label { font-size: 0.75rem; color: var(--vw-text-gray); }
-.avg-value { font-size: 1.2rem; font-weight: 700; margin-top: 2px; }
+.avg-match span {
+    display: block;
+}
+
+.avg-label {
+    font-size: 0.75rem;
+    color: var(--vw-text-gray);
+}
+
+.avg-value {
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin-top: 2px;
+}
 
 /* Action Columns (Attack, Block, Serve) */
 .stat-header {
@@ -242,83 +269,94 @@
     text-align: center;
 }
 
-.sub-label { font-size: 0.7rem; color: var(--vw-text-gray); display: block; margin-bottom: 2px; }
-.sub-val { font-size: 1rem; font-weight: 700; }
+.sub-label {
+    font-size: 0.7rem;
+    color: var(--vw-text-gray);
+    display: block;
+    margin-bottom: 2px;
+}
+
+.sub-val {
+    font-size: 1rem;
+    font-weight: 700;
+}
+
 /* ===== ROSTER RESET ===== */
 
 .roster-section {
-  background: var(--bg-card);
-  border-top: 1px solid #333;
-  padding: 80px 0;
+    background: var(--bg-card);
+    border-top: 1px solid #333;
+    padding: 80px 0;
 }
 
 .roster-wrapper {
-  display: grid;
-  grid-template-columns: 1fr 1.2fr;
-  gap: 40px;
-  max-width: 1200px;
-  margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap: 40px;
+    max-width: 1200px;
+    margin: 0 auto;
 }
 
 .roster-image {
-  min-height: 480px;
-  background-size: cover;
-  background-position: center;
-  border-radius: 8px;
+    min-height: 480px;
+    background-size: cover;
+    background-position: center;
+    border-radius: 8px;
 }
 
 .roster-table {
-  display: flex;
-  flex-direction: column;
+    display: flex;
+    flex-direction: column;
 }
 
 .roster-head,
 .roster-row {
-  display: grid;
-  grid-template-columns: 60px 1fr 80px 24px;
-  align-items: center;
-  padding: 12px 10px;
+    display: grid;
+    grid-template-columns: 60px 1fr 80px 24px;
+    align-items: center;
+    padding: 12px 10px;
 }
 
 .roster-head {
-  font-family: var(--font-head);
-  font-size: 0.8rem;
-  letter-spacing: 1px;
-  color: #666;
-  border-bottom: 1px solid #444;
+    font-family: var(--font-head);
+    font-size: 0.8rem;
+    letter-spacing: 1px;
+    color: #666;
+    border-bottom: 1px solid #444;
 }
 
 .roster-row {
-  text-decoration: none;
-  color: inherit;
-  border-bottom: 1px solid #333;
+    text-decoration: none;
+    color: inherit;
+    border-bottom: 1px solid #333;
 }
 
 .roster-row:hover {
-  background: rgba(255,255,255,0.04);
+    background: rgba(255, 255, 255, 0.04);
 }
 
 .roster-row .num {
-  font-weight: 800;
+    font-weight: 800;
 }
 
 .roster-row .pos {
-  color: var(--brand-yellow);
-  font-weight: 800;
+    color: var(--brand-yellow);
+    font-weight: 800;
 }
 
 .captain {
-  margin-left: 8px;
-  font-size: 0.7rem;
-  color: var(--brand-yellow);
-  text-transform: uppercase;
+    margin-left: 8px;
+    font-size: 0.7rem;
+    color: var(--brand-yellow);
+    text-transform: uppercase;
 }
 
 @media (max-width: 900px) {
-  .roster-wrapper {
-    grid-template-columns: 1fr;
-  }
+    .roster-wrapper {
+        grid-template-columns: 1fr;
+    }
 }
+
 /* New Match History Design */
 .match-history-grid {
     display: flex;
@@ -342,9 +380,17 @@
     border-color: var(--brand-yellow);
 }
 
-.res-indicator { height: 100%; }
-.res-win { background: #2ed573; }
-.res-loss { background: #ff4757; }
+.res-indicator {
+    height: 100%;
+}
+
+.res-win {
+    background: #2ed573;
+}
+
+.res-loss {
+    background: #ff4757;
+}
 
 .m-date-v2 {
     font-family: var(--font-head);
@@ -353,9 +399,20 @@
     color: #888;
 }
 
-.m-info-v2 { padding-left: 10px; }
-.m-opp-v2 { font-weight: 800; text-transform: uppercase; font-size: 1.1rem; }
-.m-sets-v2 { font-size: 0.8rem; color: #666; }
+.m-info-v2 {
+    padding-left: 10px;
+}
+
+.m-opp-v2 {
+    font-weight: 800;
+    text-transform: uppercase;
+    font-size: 1.1rem;
+}
+
+.m-sets-v2 {
+    font-size: 0.8rem;
+    color: #666;
+}
 
 .m-score-v2 {
     font-family: var(--font-head);
@@ -372,6 +429,7 @@
     justify-content: center;
     text-align: center;
 }
+
 .match-card-row {
     background: #1a1d24;
     border: 1px solid #333;
@@ -383,53 +441,154 @@
     height: 75px;
     overflow: hidden;
 }
-.win-indicator { background: #2ed573; }
-.loss-indicator { background: #ff4757; }
-.m-opp-v2 { font-weight: 800; text-transform: uppercase; color: #fff; }
-.m-score-v2 { color: #fce300; font-weight: 900; text-align: center; }
-.m-pts-badge { background: #222; height: 100%; text-align: center; display: flex; flex-direction: column; justify-content: center; }
 
-.m-pts-v2 span { font-size: 0.7rem; color: var(--brand-yellow); text-transform: uppercase; }
-.m-pts-v2 strong { font-size: 1.4rem; }
+.win-indicator {
+    background: #2ed573;
+}
+
+.loss-indicator {
+    background: #ff4757;
+}
+
+.m-opp-v2 {
+    font-weight: 800;
+    text-transform: uppercase;
+    color: #fff;
+}
+
+.m-score-v2 {
+    color: #fce300;
+    font-weight: 900;
+    text-align: center;
+}
+
+.m-pts-badge {
+    background: #222;
+    height: 100%;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.m-pts-v2 span {
+    font-size: 0.7rem;
+    color: var(--brand-yellow);
+    text-transform: uppercase;
+}
+
+.m-pts-v2 strong {
+    font-size: 1.4rem;
+}
+
 /* Responsive */
 @media (max-width: 768px) {
-    .bio-grid { grid-template-columns: 1fr 1fr; gap: 20px; }
-    .bio-item:not(:last-child)::after { display: none; }
-    
-    .stats-grid { grid-template-columns: 1fr; gap: 30px; }
-    .stat-group:not(:last-child)::after { display: none; }
+    .bio-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+    }
 
-/* Fallback responsive rules for match cards to avoid overlap on older pages */
-@media (max-width: 900px) {
-    .match-item-card, .match-card-row, .match-card-v3 {
-        grid-template-columns: 8px 1fr 1fr 60px 60px;
-        align-items: center;
-        display: grid;
+    .bio-item:not(:last-child)::after {
+        display: none;
     }
-    .m-score-v2, .m-score-main-v3, .m-score-main, .main-score {
-        font-size: clamp(1rem, 6vw, 2.2rem) !important;
-        line-height: 1 !important;
-    }
-    .m-pts-v2, .m-pts-badge { display:flex; justify-content:center; align-items:center; }
-    .m-team-row, .m-team-v3 { white-space: normal; overflow-wrap: anywhere; }
-}
-/* Additional mobile fixes to override inline styles on team pages */
-@media (max-width: 900px) {
-    .match-row, .team-grid, .roster-container {
-        grid-template-columns: 1fr !important;
-        width: 100% !important;
-        gap: 20px !important;
-        padding: 0 10px !important;
-    }
-    .card, .match-card, .match-card-v3 { width: 100% !important; margin-bottom: 18px !important; }
-    .table-responsive { overflow-x: auto; -webkit-overflow-scrolling: touch; }
-}
 
-@media (max-width: 600px) {
-    .hero h1, .hero-title { font-size: 2.5rem !important; line-height: 1.1 !important; }
-    .hero p, .hero-sub { font-size: 0.9rem !important; }
-    .m-score-main-v3, .m-score-v2, .main-score { font-size: clamp(1rem, 6vw, 2.2rem) !important; }
-    .team-name, .team { font-size: 1rem !important; }
-}
-    .stat-group { border-bottom: 1px solid var(--vw-divider); padding-bottom: 20px; }
+    .stats-grid {
+        grid-template-columns: 1fr;
+        gap: 30px;
+    }
+
+    .stat-group:not(:last-child)::after {
+        display: none;
+    }
+
+    /* Fallback responsive rules for match cards to avoid overlap on older pages */
+    @media (max-width: 900px) {
+
+        .match-item-card,
+        .match-card-row,
+        .match-card-v3 {
+            grid-template-columns: 8px 1fr 1fr 60px 60px;
+            align-items: center;
+            display: grid;
+        }
+
+        .m-score-v2,
+        .m-score-main-v3,
+        .m-score-main,
+        .main-score {
+            font-size: clamp(1rem, 6vw, 2.2rem) !important;
+            line-height: 1 !important;
+        }
+
+        .m-pts-v2,
+        .m-pts-badge {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .m-team-row,
+        .m-team-v3,
+        .m-opp-v2 {
+            white-space: normal;
+            overflow-wrap: break-word;
+            word-break: normal;
+            min-width: 0;
+        }
+    }
+
+    /* Additional mobile fixes to override inline styles on team pages */
+    @media (max-width: 900px) {
+
+        .match-row,
+        .team-grid,
+        .roster-container {
+            grid-template-columns: 1fr !important;
+            width: 100% !important;
+            gap: 20px !important;
+            padding: 0 10px !important;
+        }
+
+        .card,
+        .match-card,
+        .match-card-v3 {
+            width: 100% !important;
+            margin-bottom: 18px !important;
+        }
+
+        .table-responsive {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+    }
+
+    @media (max-width: 600px) {
+
+        .hero h1,
+        .hero-title {
+            font-size: 2.5rem !important;
+            line-height: 1.1 !important;
+        }
+
+        .hero p,
+        .hero-sub {
+            font-size: 0.9rem !important;
+        }
+
+        .m-score-main-v3,
+        .m-score-v2,
+        .main-score {
+            font-size: clamp(1rem, 6vw, 2.2rem) !important;
+        }
+
+        .team-name,
+        .team {
+            font-size: 1rem !important;
+        }
+    }
+
+    .stat-group {
+        border-bottom: 1px solid var(--vw-divider);
+        padding-bottom: 20px;
+    }
 }
