@@ -58,7 +58,73 @@
         "15:25",
         "20:25"
       ],
-      "category": "CHAMPIONNAT"
+      "category": "CHAMPIONNAT",
+      "lineup": {
+        "p1": "",
+        "p2": "",
+        "p3": "",
+        "p4": "",
+        "p5": "",
+        "p6": "",
+        "libero": ""
+      },
+      "statsHome": [
+        {
+          "num": "1",
+          "name": "BASSET NOA",
+          "pts": 10,
+          "att": 0,
+          "blk": 0,
+          "ace": 0
+        }
+      ],
+      "stats": {
+        "home": [
+          {
+            "num": "1",
+            "name": "BASSET NOA",
+            "pts": 10,
+            "att": 0,
+            "blk": 0,
+            "ace": 0
+          }
+        ],
+        "away": []
+      },
+      "roster": {
+        "home": [
+          {
+            "number": "1",
+            "name": "BASSET NOA"
+          },
+          {
+            "number": "4",
+            "name": "TERRASSON BASTIEN"
+          },
+          {
+            "number": "6",
+            "name": "EYRAUD MARTIN"
+          },
+          {
+            "number": "7",
+            "name": "LEBOURGEOIS CLOVIS"
+          },
+          {
+            "number": "8",
+            "name": "PERRAUD NATHAN"
+          },
+          {
+            "number": "9",
+            "name": "REYNAERT ELOI"
+          }
+        ],
+        "away": [
+          {
+            "number": "1",
+            "name": "BRiZARD ANTOINE"
+          }
+        ]
+      }
     }
   ]
 }
