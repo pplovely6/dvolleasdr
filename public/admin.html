@@ -947,7 +947,7 @@
 
             const payload = {
                 score: document.getElementById('adv-score').value,
-                sets: document.getElementById('adv-sets').value,
+                sets: document.getElementById('adv-sets').value.split(',').map(s => s.trim()),
                 lineup: lineup,
                 statsHome: statsHome, // Legacy
                 stats: {

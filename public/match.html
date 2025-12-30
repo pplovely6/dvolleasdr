@@ -349,7 +349,8 @@
                 document.getElementById('tableAwayName').innerText = match.away;
 
                 document.getElementById('matchScore').innerText = match.score || "0 - 0";
-                document.getElementById('setScores').innerText = match.sets ? match.sets.join(', ') : "0-0, 0-0, 0-0";
+                const setsDisplay = Array.isArray(match.sets) ? match.sets.join(', ') : (match.sets || "0-0, 0-0, 0-0");
+                document.getElementById('setScores').innerText = setsDisplay;
                 document.getElementById('matchDate').innerText = match.date || "Date inconnue";
                 // document.getElementById('matchVenue').innerText = match.location || "Gymnase Roland Guillaud"; // Location often not in match obj but schedule.
 
