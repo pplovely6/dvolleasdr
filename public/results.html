@@ -569,30 +569,32 @@
                         const awayDisplay = !isHome ? logoImg : placeholder(m.away);
 
                         return `
-                        <div class="result-card ${statusClass}" data-tag="${m.tag}">
-                            
-                            <div class="date-col">
-                                <div class="date-val">${m.date}</div>
-                                <div class="team-cat">${m.category}</div>
-                            </div>
+                        <a href="match.html?id=${m.id}&tag=${m.tag}" class="result-card-link" style="text-decoration:none;">
+                            <div class="result-card ${statusClass}" data-tag="${m.tag}">
+                                
+                                <div class="date-col">
+                                    <div class="date-val">${m.date}</div>
+                                    <div class="team-cat">${m.category}</div>
+                                </div>
 
-                            <div class="team-col home">
-                                <span>${m.home}</span>
-                                ${homeDisplay}
-                            </div>
+                                <div class="team-col home">
+                                    <span>${m.home}</span>
+                                    ${homeDisplay}
+                                </div>
 
-                            <div class="score-col">
-                                <div class="final-score">${m.score}</div>
-                                <div class="score-sets">${m.sets ? m.sets.join(' | ') : ''}</div>
-                                <div class="result-badge ${badgeClass}">${badgeText}</div>
-                            </div>
+                                <div class="score-col">
+                                    <div class="final-score">${m.score}</div>
+                                    <div class="score-sets">${m.sets ? m.sets.join(' | ') : ''}</div>
+                                    <div class="result-badge ${badgeClass}">${badgeText}</div>
+                                </div>
 
-                            <div class="team-col away">
-                                ${awayDisplay}
-                                <span>${m.away}</span>
-                            </div>
+                                <div class="team-col away">
+                                    ${awayDisplay}
+                                    <span>${m.away}</span>
+                                </div>
 
-                        </div>
+                            </div>
+                        </a>
                     `;
                     }).join('');
 
