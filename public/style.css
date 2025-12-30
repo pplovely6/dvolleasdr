@@ -1192,6 +1192,14 @@ section {
     .status-loss {
         border-top-color: var(--loss) !important;
     }
+
+    /* Global Mobile Overflow Fix */
+    body,
+    html {
+        overflow-x: hidden;
+        width: 100%;
+        position: relative;
+    }
 }
 
 @media (max-width: 600px) {

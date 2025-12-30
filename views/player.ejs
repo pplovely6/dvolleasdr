@@ -11,7 +11,7 @@
         <main>
             <section class="player-hero" data-number="<%= player.number %>">
                 <div class="player-image-container">
-                    <img src="/m18-photo-garcon2025.jpg" alt="Player Photo">
+                    <img src="/<%= heroImage %>" alt="Player Photo">
                 </div>
             </section>
 
@@ -36,7 +36,7 @@
                     <div class="bio-grid">
                         <div class="bio-item">
                             <span class="bio-label" data-i18n="bio_pos">Position</span>
-                            <span class="bio-value"><%= player.position || ' -' %></span>
+                            <span class="bio-value"><%= player.position || player.pos || ' -' %></span>
                 </div>
                 <div class="bio-item">
                     <span class="bio-label" data-i18n="bio_nat">Nationalité</span>
@@ -113,7 +113,7 @@
                             <div class="sub-stats">
                                 <div class="sub-stat-item"><span class="sub-label"
                                         data-i18n="st_succ">Succès</span><span class="sub-val">
-                                        <%= s.block.succ %>
+                                        <%= s.block.succ || s.block.success || '-' %>
                                     </span></div>
                                 <div class="sub-stat-item"><span class="sub-label" data-i18n="st_avg_pt">Pts
                                         Moyens</span><span class="sub-val">
@@ -126,16 +126,16 @@
                             <div class="stat-header"><i class="fa-solid fa-bullseye stat-icon"></i><span
                                     class="stat-title" data-i18n="st_srv">Points Service</span></div>
                             <div class="stat-main-value">
-                                <%= s.serve.points %>
+                                <%= s.serve ? s.serve.points : '-' %>
                             </div>
                             <div class="sub-stats">
                                 <div class="sub-stat-item"><span class="sub-label"
                                         data-i18n="st_succ">Succès</span><span class="sub-val">
-                                        <%= s.serve.succ %>
+                                        <%= s.serve ? (s.serve.succ || s.serve.success || '-' ) : '-' %>
                                     </span></div>
                                 <div class="sub-stat-item"><span class="sub-label" data-i18n="st_avg_pt">Pts
                                         Moyens</span><span class="sub-val">
-                                        <%= s.serve.avg %>
+                                        <%= s.serve ? s.serve.avg : '-' %>
                                     </span></div>
                             </div>
                         </div>
@@ -144,8 +144,39 @@
 
                 <div class="vw-section-title" style="margin-top: 50px;" data-i18n="sec_matches">Last Matches Played
                 </div>
-                <div class="match-history-grid" data-match-container data-limit="3">
-                    <div style="text-align:center; padding:20px; color:#666;">Chargement des matchs récents...</div>
+                <div class="match-history-grid" style="display: grid; gap: 20px;">
+                    <% if (recentMatches && recentMatches.length> 0) { %>
+                        <% recentMatches.forEach(m=> {
+                            const scoreParts = (m.score || "0-0").split(/[-:]/).map(s => parseInt(s.trim()));
+                            const hS = scoreParts[0] || 0;
+                            const aS = scoreParts[1] || 0;
+                            const isH = m.home.toUpperCase().includes("DARDILLY");
+                            const isWin = isH ? (hS > aS) : (aS > hS);
+                            const statusClass = isWin ? "status-win" : "status-loss";
+                            %>
+                            <a href="/match?id=<%= m.id %>" class="result-card <%= statusClass %>"
+                                style="display: grid; grid-template-columns: 120px 1fr 100px 1fr; align-items: center; background: var(--vw-card-bg); padding: 15px; border-radius: 8px; text-decoration: none; color: white; border: 1px solid #333;">
+                                <div style="text-align: center; border-right: 1px solid #333;">
+                                    <div style="font-weight: 800;">
+                                        <%= m.date %>
+                                    </div>
+                                </div>
+                                <div style="text-align: right; padding-right: 15px; font-weight: 700;">
+                                    <%= m.home %>
+                                </div>
+                                <div
+                                    style="text-align: center; font-size: 1.5rem; font-weight: 800; color: var(--brand-yellow);">
+                                    <%= m.score %>
+                                </div>
+                                <div style="text-align: left; padding-left: 15px; font-weight: 700;">
+                                    <%= m.away %>
+                                </div>
+                            </a>
+                            <% }) %>
+                                <% } else { %>
+                                    <div style="text-align:center; padding:20px; color:#666;">Aucun match récent
+                                        disponible.</div>
+                                    <% } %>
                 </div>
                 </div>
                 </div>

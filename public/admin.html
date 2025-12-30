@@ -461,6 +461,16 @@
             <div class="controls" style="display:block;">
                 <h4 style="margin-top:0">Statistiques Joueurs</h4>
 
+                <div style="display: flex; gap: 10px; margin-bottom: 8px; align-items: flex-end;">
+                    <div style="flex:1;">
+                        <label>Équipe pour les stats</label>
+                        <select id="adv-stats-team" style="padding:8px;">
+                            <option value="home">Domicile</option>
+                            <option value="away">Extérieur</option>
+                        </select>
+                    </div>
+                </div>
+
                 <div style="display: flex; gap: 10px; margin-bottom: 15px; align-items: flex-end;">
                     <div style="flex:1;">
                         <label>Ajouter un joueur (depuis liste)</label>
@@ -806,8 +816,18 @@
             // Render Stats
             const tbody = document.getElementById('adv-stats-body');
             tbody.innerHTML = '';
-            const stats = match.statsHome || []; // Defaulting to editing HOME team stats for now
-            stats.forEach(s => addStatsRowUI(s));
+
+            // Default to Dardilly stats (Home)
+            const teamSelect = document.getElementById('adv-stats-team');
+            teamSelect.value = 'home';
+
+            const statsHome = match.stats && match.stats.home ? match.stats.home : (match.statsHome || []);
+            const statsAway = match.stats && match.stats.away ? match.stats.away : [];
+
+            // For now UI only shows one list at a time.
+            // When switching teammate, we should probably re-render.
+            // But for now let's just use statsHome as default.
+            statsHome.forEach(s => addStatsRowUI(s));
 
             // Load Player Dropdown for the current team context
             const matchDb = document.getElementById('match-db').value;
@@ -864,7 +884,7 @@
             if (!val) return;
 
             const name = select.selectedOptions[0].dataset.name;
-            const rowData = { num: val, name: name, pts: 0, att: 0, blk: 0, ace: 0 };
+            const rowData = { number: val, name: name, pts: 0, attacks: 0, blocks: 0, aces: 0 };
             addStatsRowUI(rowData);
             select.value = ""; // Reset
         }
@@ -873,12 +893,12 @@
             const tbody = document.getElementById('adv-stats-body');
             const tr = document.createElement('tr');
             tr.innerHTML = `
-                <td><input type="text" class="st-num" value="${data.num}" style="width:40px; background:#111; color:#fff; border:1px solid #444; text-align:center;" readonly></td>
+                <td><input type="text" class="st-num" value="${data.number || data.num}" style="width:40px; background:#111; color:#fff; border:1px solid #444; text-align:center;" readonly></td>
                 <td><input type="text" class="st-name" value="${data.name}" style="width:100%; background:#111; color:#fff; border:1px solid #444;"></td>
                 <td><input type="number" class="st-pts" value="${data.pts || 0}" style="width:50px; background:#111; color:#fff; border:1px solid #444;"></td>
-                <td><input type="number" class="st-att" value="${data.att || 0}" style="width:50px; background:#111; color:#fff; border:1px solid #444;"></td>
-                <td><input type="number" class="st-blk" value="${data.blk || 0}" style="width:50px; background:#111; color:#fff; border:1px solid #444;"></td>
-                <td><input type="number" class="st-ace" value="${data.ace || 0}" style="width:50px; background:#111; color:#fff; border:1px solid #444;"></td>
+                <td><input type="number" class="st-att" value="${data.attacks || data.att || 0}" style="width:50px; background:#111; color:#fff; border:1px solid #444;"></td>
+                <td><input type="number" class="st-blk" value="${data.blocks || data.blk || 0}" style="width:50px; background:#111; color:#fff; border:1px solid #444;"></td>
+                <td><input type="number" class="st-ace" value="${data.aces || data.ace || 0}" style="width:50px; background:#111; color:#fff; border:1px solid #444;"></td>
                 <td><i class="fa-solid fa-trash" style="color:#ff4e45; cursor:pointer;" onclick="this.parentElement.parentElement.remove()"></i></td>
             `;
             tbody.appendChild(tr);
@@ -968,15 +988,16 @@
                 libero: document.getElementById('adv-libero').value,
             };
 
-            // Stats Home
+            // Stats logic
+            const currentStatsTeam = document.getElementById('adv-stats-team').value;
             const rows = document.querySelectorAll('#adv-stats-body tr');
-            const statsHome = Array.from(rows).map(tr => ({
-                num: tr.querySelector('.st-num').value,
+            const newStatsData = Array.from(rows).map(tr => ({
+                number: tr.querySelector('.st-num').value,
                 name: tr.querySelector('.st-name').value,
                 pts: parseInt(tr.querySelector('.st-pts').value) || 0,
-                att: parseInt(tr.querySelector('.st-att').value) || 0,
-                blk: parseInt(tr.querySelector('.st-blk').value) || 0,
-                ace: parseInt(tr.querySelector('.st-ace').value) || 0,
+                attacks: parseInt(tr.querySelector('.st-att').value) || 0,
+                blocks: parseInt(tr.querySelector('.st-blk').value) || 0,
+                aces: parseInt(tr.querySelector('.st-ace').value) || 0,
             }));
 
             // Rosters
@@ -999,10 +1020,10 @@
                 score: document.getElementById('adv-score').value,
                 sets: setsArray,
                 lineup: lineup,
-                statsHome: statsHome, // Legacy
+                statsHome: currentStatsTeam === 'home' ? newStatsData : [],
                 stats: {
-                    home: statsHome,
-                    away: []
+                    home: currentStatsTeam === 'home' ? newStatsData : [],
+                    away: currentStatsTeam === 'away' ? newStatsData : []
                 },
                 roster: {
                     home: rosterHome,

@@ -20,15 +20,42 @@
                 border: 1px solid #333;
             }
 
+            @media (max-width: 600px) {
+                .scoreboard-box {
+                    padding: 20px 10px;
+                }
+
+                .vw-main-score {
+                    font-size: 3rem !important;
+                }
+
+                .vw-team-name {
+                    font-size: 1rem !important;
+                }
+            }
+
             .court-wrapper {
                 position: relative;
-                width: 400px;
-                height: 400px;
+                width: 100%;
+                max-width: 400px;
+                aspect-ratio: 1/1;
                 margin: 20px auto;
                 background-color: #fce300;
                 border: 6px solid #000;
                 box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
                 border-radius: 8px;
+            }
+
+            @media (max-width: 450px) {
+                .player-dot {
+                    width: 60px !important;
+                    height: 60px !important;
+                }
+
+                .player-name {
+                    font-size: 0.7rem !important;
+                    max-width: 50px !important;
+                }
             }
 
             .net-area {

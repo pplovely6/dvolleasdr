@@ -177,21 +177,41 @@ app.get('/contact.html', (req, res) => {
 
 app.get('/player/:team/:number', (req, res) => {
     const { team, number } = req.params;
+    const teamCfg = TEAM_MAP[team];
 
     // 1. Try to find the database name in TEAM_MAP first (if team is a slug)
-    let dbName;
-    if (TEAM_MAP[team]) {
-        dbName = TEAM_MAP[team].db;
+    let dbName, matchesFile;
+    if (teamCfg) {
+        dbName = teamCfg.db;
+        matchesFile = teamCfg.matches;
     } else {
         // 2. Fallback to previous logic (if team is already a db name or direct link)
         dbName = team.startsWith('db-') ? team : `db-${team}`;
+        matchesFile = team.replace('db-', 'matches-');
     }
 
     const data = getJsonData(dbName);
     const player = (data.players || []).find(p => p.number == number);
 
     if (player) {
-        res.render('player', { player, teamName: data.team || team, teamSlug: team });
+        // Fetch recent matches for the team
+        const mData = getJsonData(matchesFile);
+        const allMatches = mData.matches || [];
+        // Sort by date desc
+        const parseDate = (d) => {
+            if (!d) return 0;
+            const p = d.split('/');
+            return new Date(p[2], p[1] - 1, p[0]).getTime();
+        };
+        const recentMatches = allMatches.sort((a, b) => parseDate(b.date) - parseDate(a.date)).slice(0, 3);
+
+        res.render('player', {
+            player,
+            teamName: data.team || team,
+            teamSlug: team,
+            heroImage: data.metadata?.heroImage || 'logo.jpg',
+            recentMatches: recentMatches
+        });
     } else {
         res.status(404).send("Joueur non trouvé");
     }
