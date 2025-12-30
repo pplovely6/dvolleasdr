@@ -2158,6 +2158,7 @@ section {
         }
     }
 }
+
 /* --- NEXT MATCH CARD & COMPONENTS --- */
 .next-match-card {
     background: #1a1a1a;
@@ -2250,4 +2251,136 @@ section {
     font-family: var(--font-head);
     font-size: 3rem;
     color: #444;
+}
+
+/* --- CENTERED MATCH CARD (M18 REFERENCE) --- */
+.match-card {
+    background: #1a1a1a;
+    border: 1px solid #333;
+    border-radius: 0;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    position: relative;
+    overflow: hidden;
+    min-height: 300px;
+}
+
+.match-card::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 250px;
+    height: 250px;
+    background-image: url('image_fd6867.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    opacity: 0.05;
+    pointer-events: none;
+}
+
+.match-card-header {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    z-index: 2;
+}
+
+.card-header-label {
+    color: var(--brand-yellow);
+    font-family: var(--font-head);
+    font-size: 1.5rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.m-date-v3 {
+    color: #666;
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.teams-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 20px;
+    z-index: 2;
+    padding: 0 10px;
+}
+
+.team-block {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 35%;
+    text-align: center;
+}
+
+.team-logo {
+    height: 60px;
+    width: 60px;
+    object-fit: contain;
+    margin-bottom: 10px;
+}
+
+.team-placeholder {
+    height: 60px;
+    width: 60px;
+    background: #252525;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    color: #555;
+    margin-bottom: 10px;
+    font-family: var(--font-head);
+    font-size: 1.2rem;
+}
+
+.team-name {
+    font-weight: 700;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    line-height: 1.2;
+    color: #ddd;
+}
+
+.center-info {
+    width: 30%;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.main-score {
+    font-family: var(--font-head);
+    font-size: 3rem;
+    color: white;
+    line-height: 1;
+}
+
+.vs-text {
+    font-family: var(--font-head);
+    font-size: 2.5rem;
+    color: #333;
+}
+
+.sets-detail {
+    font-size: 0.8rem;
+    color: #666;
+    margin-top: 5px;
+    letter-spacing: 1px;
 }

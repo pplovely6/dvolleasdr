@@ -114,77 +114,92 @@
                 <section class="results-container">
                     <h2 class="section-title">Calendrier & <span>Résultats</span></h2>
                     <div class="split-results">
-                        <div class="match-card-v3">
-                            <% if (latestMatch) { const sc=(latestMatch.score || "0-0" ).split(/[-:]/).map(s=>
-                                parseInt(s.trim()));
-                                const hS = sc[0] || 0;
-                                const aS = sc[1] || 0;
-                                const isH = latestMatch.home.toUpperCase().includes("DARDILLY");
-                                const win = isH ? (hS > aS) : (aS > hS);
-                                const hW = hS > aS;
-                                const aW = aS > hS;
-                                %>
-                                <div class="match-header-v3"
-                                    style="border-left: 6px solid var(--<%= win ? 'win' : 'loss' %>);">
-                                    <span class="m-category-tag">
+                        <!-- LATEST RESULT -->
+                        <% let borderStyle="" ; if (latestMatch) { const sc=(latestMatch.score || "0-0"
+                            ).split(/[-:]/).map(s=> parseInt(s.trim()));
+                            const hS = sc[0] || 0;
+                            const aS = sc[1] || 0;
+                            const isH = latestMatch.home.toUpperCase().includes("DARDILLY");
+                            const win = isH ? (hS > aS) : (aS > hS);
+                            borderStyle = `border-left: 6px solid var(--${win ? 'win' : 'loss'});`;
+                            }
+                            %>
+                            <div class="match-card" style="<%= borderStyle %>">
+                                <div class="match-card-header">
+                                    <span class="card-header-label">
                                         <%= metadata.category || 'DERNIER RÉSULTAT' %>
                                     </span>
-                                    <span class="m-date-v3">
-                                        <%= latestMatch.date %>
-                                    </span>
-                                </div>
-                                <div class="match-body-v3">
-                                    <div class="m-teams-col">
-                                        <div class="m-team-row <%= hW ? 'winner' : 'loser' %>">
-                                            <% if (latestMatch.home.toUpperCase().includes('DARDILLY')) { %>
-                                                <img src="/image_fd6867.png" class="mini-logo-v3" alt="Logo">
-                                                <% } else { %>
-                                                    <div class="logo-spacer"></div>
-                                                    <% } %>
-                                                        <span>
-                                                            <%= latestMatch.home %>
-                                                        </span>
-                                        </div>
-                                        <div class="m-team-row <%= aW ? 'winner' : 'loser' %>">
-                                            <% if (latestMatch.away.toUpperCase().includes('DARDILLY')) { %>
-                                                <img src="/image_fd6867.png" class="mini-logo-v3" alt="Logo">
-                                                <% } else { %>
-                                                    <div class="logo-spacer"></div>
-                                                    <% } %>
-                                                        <span>
-                                                            <%= latestMatch.away %>
-                                                        </span>
-                                        </div>
-                                    </div>
-                                    <div class="m-score-col">
-                                        <div class="m-score-main-v3">
-                                            <%= latestMatch.score.replace('-', ' - ' ) %>
-                                        </div>
-                                        <div class="m-sets-v3">
-                                            <%= Array.isArray(latestMatch.sets) ? latestMatch.sets.join(' ') : latestMatch.sets %>
-                                    </div>
-                                </div>
-                            </div>
-                            <% } else { %>
-                                <div class="match-header-v3">
-                                    <span class="m-category-tag"><%= metadata.category || ' DERNIER RÉSULTAT' %></span>
-                                        </div>
-                                        <div class="match-body-v3">
-                                            <p style="color:#666; width:100%; text-align:center;">Aucun résultat
-                                                disponible.</p>
-                                        </div>
+                                    <% if (latestMatch) { %>
+                                        <span class="m-date-v3">
+                                            <%= latestMatch.date %>
+                                        </span>
                                         <% } %>
+                                </div>
+
+                                <% if (latestMatch) { %>
+                                    <div class="teams-row">
+                                        <div class="team-block">
+                                            <% if (latestMatch.home.toUpperCase().includes('DARDILLY')) { %>
+                                                <img src="/image_fd6867.png" class="team-logo" alt="Logo">
+                                                <% } else { %>
+                                                    <div class="team-placeholder">
+                                                        <%= latestMatch.home.substring(0,3).toUpperCase() %>
+                                                    </div>
+                                                    <% } %>
+                                                        <div class="team-name">
+                                                            <%= latestMatch.home %>
+                                                        </div>
+                                        </div>
+                                        <div class="center-info">
+                                            <div class="main-score">
+                                                <%= latestMatch.score.replace('-', ' - ' ) %>
+                                            </div>
+                                            <div class="sets-detail">
+                                                <%= Array.isArray(latestMatch.sets) ? latestMatch.sets.join(' ') : latestMatch.sets %></div>
+                                    </div>
+                                    <div class="team-block">
+                                        <% if (latestMatch.away.toUpperCase().includes(' DARDILLY')) { %>
+                                                    <img src="/image_fd6867.png" class="team-logo" alt="Logo">
+                                                    <% } else { %>
+                                                        <div class="team-placeholder">
+                                                            <%= latestMatch.away.substring(0,3).toUpperCase() %>
+                                                        </div>
+                                                        <% } %>
+                                                            <div class="team-name">
+                                                                <%= latestMatch.away %>
+                                                            </div>
+                                            </div>
+                                        </div>
+                                        <div class="match-location">
+                                            <i class="fa-solid fa-location-dot"
+                                                style="color: var(--brand-yellow); margin-right: 5px;"></i>
+                                            <strong>
+                                                <%= latestMatch.location %>
+                                            </strong>
+                                        </div>
+                                        <% } else { %>
+                                            <div
+                                                style="display:flex; height:100%; align-items:center; justify-content:center;">
+                                                <p style="color:#666;">Aucun résultat disponible.</p>
+                                            </div>
+                                            <% } %>
                                     </div>
 
                                     <div class="vertical-divider"></div>
 
-                                    <div class="next-match-card">
-                                        <div class="card-header-label">PROCHAIN MATCH</div>
+                                    <!-- NEXT MATCH -->
+                                    <div class="match-card">
+                                        <div class="match-card-header">
+                                            <span class="card-header-label">PROCHAIN MATCH</span>
+                                            <% if (nextMatch) { %>
+                                                <span class="m-date-v3">
+                                                    <%= nextMatch.date %>
+                                                        <%= nextMatch.time ? ' • ' + nextMatch.time : '' %>
+                                                </span>
+                                                <% } %>
+                                        </div>
+
                                         <% if (nextMatch) { %>
-                                            <div class="card-date">
-                                                <%= nextMatch.date %>
-                                                    <%= nextMatch.time ? ' • ' + nextMatch.time : '' %>
-                                            </div>
                                             <div class="teams-row">
                                                 <div class="team-block">
                                                     <% if (nextMatch.home.toUpperCase().includes('DARDILLY')) { %>
@@ -222,16 +237,20 @@
                                                 </strong>
                                             </div>
                                             <% } else { %>
-                                                <p style="color:#666;">Aucun match prévu.</p>
+                                                <div
+                                                    style="display:flex; height:100%; align-items:center; justify-content:center;">
+                                                    <p style="color:#666;">Aucun match prévu.</p>
+                                                </div>
                                                 <% } %>
                                     </div>
-                                </div>
+                            </div>
                 </section>
 
                 <section
                     style="background: #1a1d24; border-top: 1px solid #333; padding-top: 100px; margin-top: 60px; padding-bottom: 60px;">
                     <h2 class="section-title" style="width:90%; max-width:1400px; margin:0 auto 40px;">L'Effectif
-                        <span>2025-26</span></h2>
+                        <span>2025-26</span>
+                    </h2>
                     <div class="roster-container"
                         style="width:90%; max-width:1400px; margin:0 auto; display:grid; grid-template-columns: 1fr 1.5fr; gap:40px;">
                         <div class="roster-image"
@@ -246,7 +265,9 @@
                         <div class="roster-content">
                             <div class="roster-header"
                                 style="display:grid; grid-template-columns: 60px 1fr 120px 24px; padding: 15px 0; border-bottom: 1px solid #444; color:#888; font-weight:bold; font-size:0.85rem; text-transform:uppercase; letter-spacing:1px;">
-                                <span>N°</span><span>JOUEUR</span><span>POSTE</span><span></span>
+                                <span data-i18n="roster.number">N°</span><span
+                                    data-i18n="roster.player">JOUEUR</span><span
+                                    data-i18n="roster.position">POSTE</span><span></span>
                             </div>
                             <% roster.sort((a,b)=> a.number - b.number).forEach(p => { %>
                                 <a href="/player/<%= slug %>/<%= p.number %>" class="roster-row">
