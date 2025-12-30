@@ -1,26 +1,28 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Planning Général | AS Dardilly</title>
-    
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
+
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="player-style.css">
-    
+
     <style>
         /* --- GLOBAL VARIABLES --- */
         :root {
             /* BOTH HEAD AND BODY USE OUTFIT NOW */
             --font-head: 'Outfit', sans-serif;
             --font-body: 'Outfit', sans-serif;
-            
+
             --brand-yellow: #fce300;
             --bg-dark: #0f0f0f;
             --bg-card: #1a1a1a;
@@ -36,28 +38,31 @@
 
         /* --- HERO --- */
         .planning-hero {
-            height: 40vh; 
-            background: linear-gradient(rgba(0,0,0,0.7), rgba(15,17,21,1)), url('m18-photo-garcon2025.jpg'); 
-            display: flex; 
-            align-items: flex-end; 
-            padding-bottom: 40px; 
-            padding-left: 5%; 
-            background-size: cover; 
+            height: 40vh;
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(15, 17, 21, 1)), url('m18-photo-garcon2025.jpg');
+            display: flex;
+            align-items: flex-end;
+            padding-bottom: 40px;
+            padding-left: 5%;
+            background-size: cover;
             background-position: center;
         }
+
         .hero-title {
-            font-family: var(--font-head); 
-            font-weight: 800; /* Extra Bold for Impact */
-            font-size: 5rem; 
-            text-transform: uppercase; 
-            line-height: 1; 
+            font-family: var(--font-head);
+            font-weight: 800;
+            /* Extra Bold for Impact */
+            font-size: 5rem;
+            text-transform: uppercase;
+            line-height: 1;
             margin: 0;
             letter-spacing: -1px;
         }
+
         .hero-sub {
-            color: #bbb; 
-            letter-spacing: 2px; 
-            font-weight: 600; 
+            color: #bbb;
+            letter-spacing: 2px;
+            font-weight: 600;
             margin-top: 10px;
             text-transform: uppercase;
             font-size: 1.1rem;
@@ -93,7 +98,9 @@
             transition: 0.2s;
             border-radius: 4px;
         }
-        .filter-btn:hover, .filter-btn.active {
+
+        .filter-btn:hover,
+        .filter-btn.active {
             background: var(--brand-yellow);
             color: black;
             border-color: var(--brand-yellow);
@@ -110,6 +117,7 @@
             padding: 30px;
             transition: transform 0.2s, border-color 0.2s;
         }
+
         .match-row:hover {
             border-color: #666;
             transform: translateX(5px);
@@ -125,47 +133,52 @@
             flex-direction: column;
             justify-content: center;
         }
-        .date-day { 
-            font-family: var(--font-head); 
-            font-weight: 800; 
-            font-size: 2.5rem; 
-            line-height: 1; 
-            color: white; 
+
+        .date-day {
+            font-family: var(--font-head);
+            font-weight: 800;
+            font-size: 2.5rem;
+            line-height: 1;
+            color: white;
         }
-        .date-month { 
-            font-weight: 700; 
-            color: var(--brand-yellow); 
-            font-size: 0.9rem; 
-            text-transform: uppercase; 
-            margin-top: 5px; 
+
+        .date-month {
+            font-weight: 700;
+            color: var(--brand-yellow);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            margin-top: 5px;
             letter-spacing: 1px;
         }
-        
+
         /* Time & Category */
         .time-cat-box {
             display: flex;
             flex-direction: column;
             gap: 8px;
         }
-        .match-time { 
-            font-family: var(--font-body); 
-            font-weight: 700; 
-            color: white; 
-            font-size: 1.3rem; 
+
+        .match-time {
+            font-family: var(--font-body);
+            font-weight: 700;
+            color: white;
+            font-size: 1.3rem;
         }
-        .match-cat { 
-            font-family: var(--font-head); 
+
+        .match-cat {
+            font-family: var(--font-head);
             font-weight: 600;
-            font-size: 0.9rem; 
-            color: #888; 
-            text-transform: uppercase; 
-            letter-spacing: 1px; 
+            font-size: 0.9rem;
+            color: #888;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
         /* Teams */
         .teams-vs {
             font-size: 1.5rem;
-            font-weight: 800; /* Bold to replace Anton */
+            font-weight: 800;
+            /* Bold to replace Anton */
             text-transform: uppercase;
             font-family: var(--font-head);
             color: #ddd;
@@ -174,8 +187,9 @@
             align-items: center;
             gap: 15px;
         }
-        .vs-badge { 
-            color: #000; 
+
+        .vs-badge {
+            color: #000;
             background: var(--brand-yellow);
             padding: 3px 10px;
             font-size: 0.8rem;
@@ -194,7 +208,10 @@
             justify-content: flex-end;
             gap: 10px;
         }
-        .location-box i { color: var(--brand-yellow); }
+
+        .location-box i {
+            color: var(--brand-yellow);
+        }
 
         /* Empty State */
         .empty-state {
@@ -210,28 +227,44 @@
 
         /* --- RESPONSIVE --- */
         @media (max-width: 900px) {
-            .hero-title { font-size: 3rem; }
-            
+            .hero-title {
+                font-size: 3rem;
+            }
+
             .match-row {
                 grid-template-columns: 1fr;
                 gap: 20px;
                 text-align: center;
                 padding: 25px;
             }
-            .date-box { 
-                border-right: none; 
-                padding-right: 0; 
-                margin-right: 0; 
-                border-bottom: 1px solid #333; 
-                padding-bottom: 15px; 
+
+            .date-box {
+                border-right: none;
+                padding-right: 0;
+                margin-right: 0;
+                border-bottom: 1px solid #333;
+                padding-bottom: 15px;
                 flex-direction: row;
                 gap: 15px;
                 align-items: baseline;
                 justify-content: center;
             }
-            .time-cat-box { align-items: center; }
-            .teams-vs { justify-content: center; flex-direction: column; gap: 5px; }
-            .location-box { justify-content: center; border-top: 1px solid #333; padding-top: 15px; }
+
+            .time-cat-box {
+                align-items: center;
+            }
+
+            .teams-vs {
+                justify-content: center;
+                flex-direction: column;
+                gap: 5px;
+            }
+
+            .location-box {
+                justify-content: center;
+                border-top: 1px solid #333;
+                padding-top: 15px;
+            }
         }
 
         /* Footer Adjustments */
@@ -242,26 +275,120 @@
             margin-top: 80px;
             font-family: var(--font-body);
         }
-        .footer-container { display: grid; grid-template-columns: 1fr 1.5fr; gap: 80px; width: 90%; max-width: 1200px; margin: 0 auto 60px; }
-        .footer-branding { display: flex; flex-direction: column; gap: 20px; }
-        .footer-logo-text { font-family: var(--font-head); font-weight:800; font-size: 2.5rem; color: var(--brand-yellow); text-transform: uppercase; line-height: 1; }
-        .brand-desc { color: #888; line-height: 1.6; max-width: 300px; font-size: 0.95rem; }
-        .footer-socials { display: flex; gap: 15px; margin-top: 10px; }
-        .social-link { width: 40px; height: 40px; border-radius: 50%; background: #1a1a1a; display: flex; align-items: center; justify-content: center; color: white; border: 1px solid #333; transition: 0.3s; }
-        .social-link:hover { background: var(--brand-yellow); color: black; border-color: var(--brand-yellow); }
-        .footer-nav-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; }
-        .nav-col h4 { color: white; text-transform: uppercase; margin-bottom: 25px; font-size: 1.1rem; letter-spacing: 1px; font-weight: 700; }
-        .nav-col a { display: block; color: #888; margin-bottom: 12px; text-decoration: none; transition: 0.3s; font-size: 0.95rem; }
-        .nav-col a:hover { color: var(--brand-yellow); padding-left: 5px; }
-        .nav-col .arrow { color: var(--brand-yellow); font-size: 0.8rem; vertical-align: top; }
-        .copyright { text-align: center; border-top: 1px solid #222; padding-top: 30px; color: #555; font-size: 0.9rem; }
+
+        .footer-container {
+            display: grid;
+            grid-template-columns: 1fr 1.5fr;
+            gap: 80px;
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto 60px;
+        }
+
+        .footer-branding {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .footer-logo-text {
+            font-family: var(--font-head);
+            font-weight: 800;
+            font-size: 2.5rem;
+            color: var(--brand-yellow);
+            text-transform: uppercase;
+            line-height: 1;
+        }
+
+        .brand-desc {
+            color: #888;
+            line-height: 1.6;
+            max-width: 300px;
+            font-size: 0.95rem;
+        }
+
+        .footer-socials {
+            display: flex;
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        .social-link {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #1a1a1a;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            border: 1px solid #333;
+            transition: 0.3s;
+        }
+
+        .social-link:hover {
+            background: var(--brand-yellow);
+            color: black;
+            border-color: var(--brand-yellow);
+        }
+
+        .footer-nav-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+        }
+
+        .nav-col h4 {
+            color: white;
+            text-transform: uppercase;
+            margin-bottom: 25px;
+            font-size: 1.1rem;
+            letter-spacing: 1px;
+            font-weight: 700;
+        }
+
+        .nav-col a {
+            display: block;
+            color: #888;
+            margin-bottom: 12px;
+            text-decoration: none;
+            transition: 0.3s;
+            font-size: 0.95rem;
+        }
+
+        .nav-col a:hover {
+            color: var(--brand-yellow);
+            padding-left: 5px;
+        }
+
+        .nav-col .arrow {
+            color: var(--brand-yellow);
+            font-size: 0.8rem;
+            vertical-align: top;
+        }
+
+        .copyright {
+            text-align: center;
+            border-top: 1px solid #222;
+            padding-top: 30px;
+            color: #555;
+            font-size: 0.9rem;
+        }
 
         @media (max-width: 900px) {
-            .footer-container { grid-template-columns: 1fr; gap: 50px; }
-            .footer-nav-grid { grid-template-columns: 1fr; gap: 30px; }
+            .footer-container {
+                grid-template-columns: 1fr;
+                gap: 50px;
+            }
+
+            .footer-nav-grid {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
         }
     </style>
 </head>
+
 <body>
 
     <header>
@@ -270,7 +397,7 @@
             <ul>
                 <li><a href="index.html" data-i18n="nav_home">Accueil</a></li>
                 <li><a href="equipes.html" data-i18n="nav_teams">Les Équipes</a></li>
-                <li><a href="planning.html" data-i18n="planning_title" class="active">PLANNING</a></li>
+                <li><a href="planning.html" data-i18n="planning_title">PLANNING</a></li>
                 <li><a href="results.html" data-i18n="matches_title">RÉSULTATS</a></li>
                 <li><a href="contact.html" data-i18n="nav_contact">Contact</a></li>
             </ul>
@@ -293,7 +420,7 @@
     </div>
 
     <main class="planning-container">
-        
+
         <div class="filter-bar">
             <button class="filter-btn active" onclick="filterMatches('all')">Tout</button>
             <button class="filter-btn" onclick="filterMatches('dep')">DEP</button>
@@ -312,7 +439,8 @@
         <div class="footer-container">
             <div class="footer-branding">
                 <div class="footer-logo-text">AS DARDILLY</div>
-                <p class="brand-desc" data-i18n="footer_desc">Le club historique de l'Ouest Lyonnais. Formation, compétition et convivialité depuis 1944.</p>
+                <p class="brand-desc" data-i18n="footer_desc">Le club historique de l'Ouest Lyonnais. Formation,
+                    compétition et convivialité depuis 1944.</p>
                 <div class="footer-socials">
                     <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
                     <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
@@ -364,40 +492,40 @@
 
             // Helper: French Date String -> JS Date Object for Sorting
             const parseDate = (dateStr, timeStr) => {
-                if(!dateStr) return new Date(8640000000000000); 
-                const months = { "JAN":0, "JANV":0, "FÉV":1, "FEV":1, "MAR":2, "AVR":3, "MAI":4, "JUIN":5, "JUIL":6, "AOÛT":7, "AOUT":7, "SEP":8, "SEPT":8, "OCT":9, "NOV":10, "DÉC":11, "DEC":11 };
-                
+                if (!dateStr) return new Date(8640000000000000);
+                const months = { "JAN": 0, "JANV": 0, "FÉV": 1, "FEV": 1, "MAR": 2, "AVR": 3, "MAI": 4, "JUIN": 5, "JUIL": 6, "AOÛT": 7, "AOUT": 7, "SEP": 8, "SEPT": 8, "OCT": 9, "NOV": 10, "DÉC": 11, "DEC": 11 };
+
                 try {
                     const parts = dateStr.toUpperCase().split(" ");
                     const day = parseInt(parts[0]);
                     const month = months[parts[1]] || 0;
                     const year = parts[2] ? parseInt(parts[2]) : 2026;
-                    const [hour, min] = timeStr ? timeStr.split(":").map(Number) : [0,0];
+                    const [hour, min] = timeStr ? timeStr.split(":").map(Number) : [0, 0];
                     return new Date(year, month, day, hour, min);
-                } catch(e) { return new Date(); }
+                } catch (e) { return new Date(); }
             };
 
             // 1. Fetch All Databases
-            Promise.all(teams.map(t => 
+            Promise.all(teams.map(t =>
                 fetch(`${API_BASE}/data/${t.file}`)
                     .then(res => res.json())
                     .then(data => (data.schedule || []).map(m => ({ ...m, category: t.label, tag: t.code })))
-                    .catch(() => []) 
+                    .catch(() => [])
             ))
-            .then(results => {
-                // 2. Flatten & Sort
-                let allMatches = results.flat();
-                allMatches.sort((a, b) => parseDate(a.date, a.time) - parseDate(b.date, b.time));
+                .then(results => {
+                    // 2. Flatten & Sort
+                    let allMatches = results.flat();
+                    allMatches.sort((a, b) => parseDate(a.date, a.time) - parseDate(b.date, b.time));
 
-                // 3. Render
-                if(allMatches.length === 0) {
-                    container.innerHTML = "<div class='empty-state'>Aucun match programmé.</div>";
-                    return;
-                }
+                    // 3. Render
+                    if (allMatches.length === 0) {
+                        container.innerHTML = "<div class='empty-state'>Aucun match programmé.</div>";
+                        return;
+                    }
 
-                container.innerHTML = allMatches.map(m => {
-                    const dateParts = m.date.split(" ");
-                    return `
+                    container.innerHTML = allMatches.map(m => {
+                        const dateParts = m.date.split(" ");
+                        return `
                         <div class="match-row" data-tag="${m.tag}">
                             <div class="date-box">
                                 <div class="date-day">${dateParts[0] || "--"}</div>
@@ -415,21 +543,22 @@
                             </div>
                         </div>
                     `;
-                }).join('');
+                    }).join('');
 
-                if(window.setLanguage) window.setLanguage(localStorage.getItem('language') || 'fr');
-            });
+                    if (window.setLanguage) window.setLanguage(localStorage.getItem('language') || 'fr');
+                });
         });
 
         // Filter Logic
         function filterMatches(tag) {
             document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
             event.target.classList.add('active');
-            
+
             document.querySelectorAll('.match-row').forEach(row => {
                 row.style.display = (tag === 'all' || row.dataset.tag === tag) ? 'grid' : 'none';
             });
         }
     </script>
 </body>
+
 </html>

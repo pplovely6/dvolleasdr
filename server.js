@@ -2,7 +2,8 @@ const express = require('express');
 const fs = require('fs');
 const path = require('path');
 const cors = require('cors');
-
+// Allow the server to understand JSON data sent in POST requests
+app.use(express.json());
 const app = express();
 // Change const PORT = 3000; to:
 const PORT = 5000;
@@ -119,7 +120,58 @@ app.delete('/api/delete/:file/:id', (req, res) => {
     saveJsonData(file, data);
     res.json({ success: true });
 });
+// --- NEW CODE: Match Editing API ---
 
+const DATA_FOLDER = path.join(__dirname, 'data');
+
+// Helper: Find which file contains a specific match ID
+function findMatchInFiles(matchId) {
+    const files = fs.readdirSync(DATA_FOLDER).filter(f => f.endsWith('.json'));
+
+    for (const file of files) {
+        const filePath = path.join(DATA_FOLDER, file);
+        try {
+            const fileData = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+            if (fileData.matches) {
+                const matchIndex = fileData.matches.findIndex(m => m.id === matchId);
+                if (matchIndex !== -1) {
+                    return { filePath, fileData, matchIndex, match: fileData.matches[matchIndex] };
+                }
+            }
+        } catch (err) {
+            console.error("Error reading file:", file, err);
+        }
+    }
+    return null;
+}
+
+// 1. Get Match Details (including Lineup)
+app.get('/api/match/:id', (req, res) => {
+    const result = findMatchInFiles(req.params.id);
+    if (result) {
+        res.json(result.match);
+    } else {
+        res.status(404).json({ error: "Match non trouvé" });
+    }
+});
+
+// 2. Save Match Details (Score + Lineup)
+app.post('/api/match/:id', (req, res) => {
+    const result = findMatchInFiles(req.params.id);
+
+    if (result) {
+        const { filePath, fileData, matchIndex } = result;
+
+        // Merge existing match data with new data (score, sets, lineup)
+        fileData.matches[matchIndex] = { ...fileData.matches[matchIndex], ...req.body };
+
+        // Save back to the file
+        fs.writeFileSync(filePath, JSON.stringify(fileData, null, 2));
+        res.json({ success: true, message: "Match mis à jour" });
+    } else {
+        res.status(404).json({ error: "Match non trouvé pour mise à jour" });
+    }
+});
 // Start Server
 app.listen(PORT, HOST, () => {
     console.log(`--------------------------------------------------`);

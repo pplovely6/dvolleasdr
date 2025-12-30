@@ -1,41 +1,92 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Seniors Filles 2 (DEP) | AS Dardilly</title>
-    
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Outfit:wght@300;400;500;700;800&display=swap" rel="stylesheet">
-    
+    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Outfit:wght@300;400;500;700;800&display=swap"
+        rel="stylesheet">
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="player-style.css">
     <style>
-        .results-container { width: 90%; max-width: 1400px; margin: 60px auto 0; }
-        .split-results { display: grid; grid-template-columns: 1.2fr 1px 1fr; gap: 40px; align-items: stretch; width: 100%; }
-        #match-container { height: 100%; display: flex; flex-direction: column; }
-        .vertical-divider { width: 1px; background: #333; height: 100%; opacity: 0.5; }
-        .next-match-card { background: #1a1a1a; border: 1px solid #333; padding: 40px; display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100%; }
-        .dardilly-footer { background: #0f0f0f; border-top: 1px solid #333; padding: 80px 0 30px; margin-top: 80px; }
-        @media (max-width: 1100px) { .split-results { grid-template-columns: 1fr; gap: 40px; } .vertical-divider { display: none; } }
+        .results-container {
+            width: 90%;
+            max-width: 1400px;
+            margin: 60px auto 0;
+        }
+
+        .split-results {
+            display: grid;
+            grid-template-columns: 1.2fr 1px 1fr;
+            gap: 40px;
+            align-items: stretch;
+            width: 100%;
+        }
+
+        #match-container {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .vertical-divider {
+            width: 1px;
+            background: #333;
+            height: 100%;
+            opacity: 0.5;
+        }
+
+        .next-match-card {
+            background: #1a1a1a;
+            border: 1px solid #333;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+        }
+
+        .dardilly-footer {
+            background: #0f0f0f;
+            border-top: 1px solid #333;
+            padding: 80px 0 30px;
+            margin-top: 80px;
+        }
+
+        @media (max-width: 1100px) {
+            .split-results {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+
+            .vertical-divider {
+                display: none;
+            }
+        }
     </style>
 </head>
+
 <body>
     <header>
         <div class="brand"><a href="index.html"><img src="image_fd6867.png" alt="Logo"></a></div>
         <nav id="main-nav">
             <ul>
-                <li><a href="index.html">Accueil</a></li>
-                <li><a href="equipes.html">Les Équipes</a></li>
-                <li><a href="planning.html">PLANNING</a></li>
-                <li><a href="results.html">RÉSULTATS</a></li>
-                <li><a href="contact.html">Contact</a></li>
+                <li><a href="index.html" data-i18n="nav_home">Accueil</a></li>
+                <li><a href="equipes.html" data-i18n="nav_teams">Les Équipes</a></li>
+                <li><a href="planning.html" data-i18n="planning_title">PLANNING</a></li>
+                <li><a href="results.html" data-i18n="matches_title">RÉSULTATS</a></li>
+                <li><a href="contact.html" data-i18n="nav_contact">Contact</a></li>
             </ul>
         </nav>
         <div style="display:flex; align-items:center; gap: 15px;">
-            <a href="inscription.html" class="btn-join">Rejoindre</a>
+            <a href="inscription.html" class="btn-join" data-i18n="btn_join">Rejoindre</a>
             <div class="lang-switch">
                 <button onclick="window.setLanguage('fr')" class="lang-btn">FR</button>
                 <button onclick="window.setLanguage('en')" class="lang-btn">EN</button>
@@ -45,35 +96,54 @@
     </header>
 
     <main>
-        <div class="hero" style="height: 40vh; background: linear-gradient(rgba(0,0,0,0.7), rgba(15,17,21,1)), url('Dep-fille-2025.jpg'); display:flex; align-items:flex-end; padding-bottom:40px; padding-left:5%; background-size: cover; background-position: center;">
+        <div class="hero"
+            style="height: 40vh; background: linear-gradient(rgba(0,0,0,0.7), rgba(15,17,21,1)), url('Dep-fille-2025.jpg'); display:flex; align-items:flex-end; padding-bottom:40px; padding-left:5%; background-size: cover; background-position: center;">
             <div>
-                <h1 style="font-family: var(--font-head); font-size: 5rem; text-transform: uppercase; line-height: 1; margin:0;">SENIORS <span style="color:var(--brand-yellow);">FILLES 2</span></h1>
-                <p style="color: #bbb; letter-spacing: 2px; font-weight: 600; margin-top:10px;">CHAMPIONNAT DÉPARTEMENTAL • SAISON 2025 / 2026</p>
+                <h1
+                    style="font-family: var(--font-head); font-size: 5rem; text-transform: uppercase; line-height: 1; margin:0;">
+                    SENIORS <span style="color:var(--brand-yellow);">FILLES 2</span></h1>
+                <p style="color: #bbb; letter-spacing: 2px; font-weight: 600; margin-top:10px;">CHAMPIONNAT
+                    DÉPARTEMENTAL • SAISON 2025 / 2026</p>
             </div>
         </div>
 
         <section class="results-container">
             <h2 class="section-title">Calendrier & <span>Résultats</span></h2>
             <div class="split-results">
-                <div class="table-responsive"><div id="match-container"></div></div>
+                <div class="table-responsive">
+                    <div id="match-container"></div>
+                </div>
                 <div class="vertical-divider"></div>
                 <div class="next-match-card">
                     <div class="card-header-label">PROCHAIN MATCH</div>
                     <div class="card-date" id="nm-date">--</div>
                     <div class="teams-row" style="display:flex; justify-content:space-between; width:100%;">
-                        <div class="team-block" style="text-align:center;"><img src="image_fd6867.png" style="height:80px;"><div class="team-name" id="nm-home">AS DARDILLOISE</div></div>
+                        <div class="team-block" style="text-align:center;"><img src="image_fd6867.png"
+                                style="height:80px;">
+                            <div class="team-name" id="nm-home">AS DARDILLOISE</div>
+                        </div>
                         <div class="vs-text">VS</div>
-                        <div class="team-block" style="text-align:center;"><div style="height:80px; width:80px; background:#252525; border-radius:50%; display:flex; align-items:center; justify-content:center;" id="nm-away-ph">ADV</div><div class="team-name" id="nm-away">ADVERSAIRE</div></div>
+                        <div class="team-block" style="text-align:center;">
+                            <div style="height:80px; width:80px; background:#252525; border-radius:50%; display:flex; align-items:center; justify-content:center;"
+                                id="nm-away-ph">ADV</div>
+                            <div class="team-name" id="nm-away">ADVERSAIRE</div>
+                        </div>
                     </div>
                 </div>
             </div>
         </section>
 
         <section style="background: #1a1d24; border-top: 1px solid #333; padding: 100px 0 60px;">
-            <h2 class="section-title" style="width:90%; max-width:1400px; margin:0 auto 40px;">L'Effectif <span>2025-26</span></h2>
-            <div class="roster-container" style="width:90%; max-width:1400px; margin:0 auto; display:grid; grid-template-columns: 1fr 1.5fr; gap:40px;">
-                <div class="roster-image" style="background-image: url('Dep-fille-2025.jpg'); background-size: cover; min-height: 500px;"></div>
-                <div class="roster-content"><div id="roster-list"></div></div>
+            <h2 class="section-title" style="width:90%; max-width:1400px; margin:0 auto 40px;">L'Effectif
+                <span>2025-26</span></h2>
+            <div class="roster-container"
+                style="width:90%; max-width:1400px; margin:0 auto; display:grid; grid-template-columns: 1fr 1.5fr; gap:40px;">
+                <div class="roster-image"
+                    style="background-image: url('Dep-fille-2025.jpg'); background-size: cover; min-height: 500px;">
+                </div>
+                <div class="roster-content">
+                    <div id="roster-list"></div>
+                </div>
             </div>
         </section>
     </main>
@@ -81,18 +151,19 @@
     <footer class="dardilly-footer">
         <div class="copyright" style="text-align:center; padding: 40px; color: #555;">© 2025 AS Dardilly Volley.</div>
     </footer>
-    <script src="lang.js"></script><script src="player-db.js"></script>
+    <script src="lang.js"></script>
+    <script src="player-db.js"></script>
     <script>
         document.addEventListener("DOMContentLoaded", () => {
             const API_BASE = "/api";
             const FILES = { players: "db-dep-filles", matches: "matches-db", schedule: "schedule-dep-filles" };
             fetch(`${API_BASE}/data/${FILES.schedule}`).then(res => res.json()).then(data => {
                 const m = (data.schedule || [])[0];
-                if(m) {
+                if (m) {
                     document.getElementById('nm-date').innerText = m.date;
                     document.getElementById('nm-home').innerText = m.home;
                     document.getElementById('nm-away').innerText = m.away;
-                    document.getElementById('nm-away-ph').innerText = m.away.substring(0,2).toUpperCase();
+                    document.getElementById('nm-away-ph').innerText = m.away.substring(0, 2).toUpperCase();
                 }
             });
             fetch(`${API_BASE}/data/${FILES.matches}`).then(res => res.json()).then(data => {
@@ -100,16 +171,17 @@
                 const matches = (data.matches || []).filter(m => m.category === "DEP FILLES").slice(-1);
                 matches.forEach(m => {
                     const isWin = m.home.includes("DARDILLY") ? parseInt(m.score.split('-')[0]) > parseInt(m.score.split('-')[1]) : parseInt(m.score.split('-')[1]) > parseInt(m.score.split('-')[0]);
-                    container.innerHTML = `<div class="match-card-v3" style="border-left: 6px solid var(--${isWin?'win':'loss'});"><div class="match-main-v3"><div class="match-header-v3"><span>${m.category}</span><span>${m.date}</span></div><div class="match-body-v3"><div>${m.home}<br>${m.away}</div><div>${m.score}</div></div></div></div>`;
+                    container.innerHTML = `<div class="match-card-v3" style="border-left: 6px solid var(--${isWin ? 'win' : 'loss'});"><div class="match-main-v3"><div class="match-header-v3"><span>${m.category}</span><span>${m.date}</span></div><div class="match-body-v3"><div>${m.home}<br>${m.away}</div><div>${m.score}</div></div></div></div>`;
                 });
             });
             fetch(`${API_BASE}/data/${FILES.players}`).then(res => res.json()).then(data => {
                 const list = document.getElementById('roster-list');
                 (data.players || []).filter(p => p.number).forEach(p => {
-                    const a = document.createElement("a"); a.className="roster-row"; a.innerHTML = `<span>${p.number}</span><span>${p.name}</span><span>${p.position||""}</span>`; list.appendChild(a);
+                    const a = document.createElement("a"); a.className = "roster-row"; a.innerHTML = `<span>${p.number}</span><span>${p.name}</span><span>${p.position || ""}</span>`; list.appendChild(a);
                 });
             });
         });
     </script>
 </body>
+
 </html>

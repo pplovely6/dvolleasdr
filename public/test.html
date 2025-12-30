@@ -1,13 +1,16 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AS DARDILLOISE - Équipes Masculines</title>
     <style>
         :root {
-            --primary-color: #e30613; /* Sporty Red */
-            --secondary-color: #1d1d1b; /* Dark Grey/Black */
+            --primary-color: #e30613;
+            /* Sporty Red */
+            --secondary-color: #1d1d1b;
+            /* Dark Grey/Black */
             --bg-color: #f4f4f4;
             --text-color: #333;
             --white: #ffffff;
@@ -88,8 +91,13 @@
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
         }
 
         /* SHARED COMPONENT STYLES */
@@ -107,7 +115,7 @@
         .card {
             background: var(--white);
             border-radius: 0 0 4px 4px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
             padding: 20px;
             overflow-x: auto;
         }
@@ -118,7 +126,8 @@
             margin-top: 0;
         }
 
-        th, td {
+        th,
+        td {
             padding: 12px;
             text-align: left;
             border-bottom: 1px solid #eee;
@@ -144,10 +153,21 @@
             background-color: #fff3cd;
             font-weight: bold;
         }
-        
-        .win { color: green; font-weight: bold; }
-        .loss { color: red; font-weight: bold; }
-        .pending { color: #888; font-style: italic; }
+
+        .win {
+            color: green;
+            font-weight: bold;
+        }
+
+        .loss {
+            color: red;
+            font-weight: bold;
+        }
+
+        .pending {
+            color: #888;
+            font-style: italic;
+        }
 
         .roster-number {
             font-weight: bold;
@@ -165,11 +185,28 @@
         }
     </style>
 </head>
+
 <body>
 
     <header>
-        <h1>AS DARDILLOISE</h1>
-        <p>Saison 2025/2026 — Comité du Rhône Métropole de Lyon</p>
+        <div class="brand"><a href="index.html"><img src="image_fd6867.png" alt="Logo"></a></div>
+        <nav id="main-nav">
+            <ul>
+                <li><a href="index.html" data-i18n="nav_home">Accueil</a></li>
+                <li><a href="equipes.html" data-i18n="nav_teams">Les Équipes</a></li>
+                <li><a href="planning.html" data-i18n="planning_title">PLANNING</a></li>
+                <li><a href="results.html" data-i18n="matches_title">RÉSULTATS</a></li>
+                <li><a href="contact.html" data-i18n="nav_contact">Contact</a></li>
+            </ul>
+        </nav>
+        <div style="display:flex; align-items:center; gap: 15px;">
+            <a href="inscription.html" class="btn-join" data-i18n="btn_join">Rejoindre</a>
+            <div class="lang-switch">
+                <button onclick="window.setLanguage('fr')" class="lang-btn">FR</button>
+                <button onclick="window.setLanguage('en')" class="lang-btn">EN</button>
+            </div>
+            <button id="mobile-toggle-btn" class="mobile-toggle"><i class="fa-solid fa-bars"></i></button>
+        </div>
     </header>
 
     <div class="container">
@@ -180,24 +217,68 @@
         </div>
 
         <div id="seniors" class="tab-content active">
-            
+
             <div class="section-title">Effectif (Roster) - Seniors D2</div>
             <div class="card">
                 <table>
                     <thead>
-                        <tr><th style="text-align: center;">#</th><th>Nom Prénom</th><th>Licence</th></tr>
+                        <tr>
+                            <th style="text-align: center;">#</th>
+                            <th>Nom Prénom</th>
+                            <th>Licence</th>
+                        </tr>
                     </thead>
                     <tbody>
-                        <tr><td class="roster-number">01</td><td><strong>DURIEUX</strong> Clément</td><td>1813922</td></tr>
-                        <tr><td class="roster-number">03</td><td><strong>VRIJHOF</strong> Hugo</td><td>2413455</td></tr>
-                        <tr><td class="roster-number">04</td><td><strong>INNOCENTI</strong> Evan</td><td>1869969</td></tr>
-                        <tr><td class="roster-number">07</td><td><strong>BIBARD</strong> Enzo</td><td>2468390</td></tr>
-                        <tr><td class="roster-number">08</td><td><strong>LERME</strong> Jehan</td><td>1893562</td></tr>
-                        <tr><td class="roster-number">09</td><td><strong>DURAND</strong> Léo</td><td>2532884</td></tr>
-                        <tr><td class="roster-number">11</td><td><strong>BALLOTAUD</strong> Erwan</td><td>2507021</td></tr>
-                        <tr><td class="roster-number">12</td><td><strong>GAUTIER</strong> Raphaël</td><td>2682266</td></tr>
-                        <tr><td class="roster-number">13</td><td><strong>GRANGE</strong> Thomas</td><td>2500944</td></tr>
-                        <tr><td class="roster-number">14</td><td><strong>PLOT</strong> Loan</td><td>2681437</td></tr>
+                        <tr>
+                            <td class="roster-number">01</td>
+                            <td><strong>DURIEUX</strong> Clément</td>
+                            <td>1813922</td>
+                        </tr>
+                        <tr>
+                            <td class="roster-number">03</td>
+                            <td><strong>VRIJHOF</strong> Hugo</td>
+                            <td>2413455</td>
+                        </tr>
+                        <tr>
+                            <td class="roster-number">04</td>
+                            <td><strong>INNOCENTI</strong> Evan</td>
+                            <td>1869969</td>
+                        </tr>
+                        <tr>
+                            <td class="roster-number">07</td>
+                            <td><strong>BIBARD</strong> Enzo</td>
+                            <td>2468390</td>
+                        </tr>
+                        <tr>
+                            <td class="roster-number">08</td>
+                            <td><strong>LERME</strong> Jehan</td>
+                            <td>1893562</td>
+                        </tr>
+                        <tr>
+                            <td class="roster-number">09</td>
+                            <td><strong>DURAND</strong> Léo</td>
+                            <td>2532884</td>
+                        </tr>
+                        <tr>
+                            <td class="roster-number">11</td>
+                            <td><strong>BALLOTAUD</strong> Erwan</td>
+                            <td>2507021</td>
+                        </tr>
+                        <tr>
+                            <td class="roster-number">12</td>
+                            <td><strong>GAUTIER</strong> Raphaël</td>
+                            <td>2682266</td>
+                        </tr>
+                        <tr>
+                            <td class="roster-number">13</td>
+                            <td><strong>GRANGE</strong> Thomas</td>
+                            <td>2500944</td>
+                        </tr>
+                        <tr>
+                            <td class="roster-number">14</td>
+                            <td><strong>PLOT</strong> Loan</td>
+                            <td>2681437</td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
@@ -206,14 +287,62 @@
             <div class="card">
                 <table>
                     <thead>
-                        <tr><th>Rang</th><th>Équipe</th><th>Pts</th><th>J</th><th>G</th><th>P</th><th>Sets</th></tr>
+                        <tr>
+                            <th>Rang</th>
+                            <th>Équipe</th>
+                            <th>Pts</th>
+                            <th>J</th>
+                            <th>G</th>
+                            <th>P</th>
+                            <th>Sets</th>
+                        </tr>
                     </thead>
                     <tbody>
-                        <tr><td>1</td><td>VBALL</td><td>20.0</td><td>7</td><td>7</td><td>0</td><td>21:5</td></tr>
-                        <tr class="highlight-team"><td>2</td><td>AS DARDILLOISE</td><td>14.0</td><td>6</td><td>5</td><td>1</td><td>15:5</td></tr>
-                        <tr><td>3</td><td>VB VILLEFRANCHE VB</td><td>13.0</td><td>7</td><td>4</td><td>3</td><td>16:11</td></tr>
-                        <tr><td>4</td><td>PL VILLETTE PB</td><td>13.0</td><td>7</td><td>4</td><td>3</td><td>15:11</td></tr>
-                        <tr><td>5</td><td>VV SAÔNE</td><td>13.0</td><td>8</td><td>4</td><td>4</td><td>17:16</td></tr>
+                        <tr>
+                            <td>1</td>
+                            <td>VBALL</td>
+                            <td>20.0</td>
+                            <td>7</td>
+                            <td>7</td>
+                            <td>0</td>
+                            <td>21:5</td>
+                        </tr>
+                        <tr class="highlight-team">
+                            <td>2</td>
+                            <td>AS DARDILLOISE</td>
+                            <td>14.0</td>
+                            <td>6</td>
+                            <td>5</td>
+                            <td>1</td>
+                            <td>15:5</td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td>VB VILLEFRANCHE VB</td>
+                            <td>13.0</td>
+                            <td>7</td>
+                            <td>4</td>
+                            <td>3</td>
+                            <td>16:11</td>
+                        </tr>
+                        <tr>
+                            <td>4</td>
+                            <td>PL VILLETTE PB</td>
+                            <td>13.0</td>
+                            <td>7</td>
+                            <td>4</td>
+                            <td>3</td>
+                            <td>15:11</td>
+                        </tr>
+                        <tr>
+                            <td>5</td>
+                            <td>VV SAÔNE</td>
+                            <td>13.0</td>
+                            <td>8</td>
+                            <td>4</td>
+                            <td>4</td>
+                            <td>17:16</td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
@@ -222,32 +351,83 @@
             <div class="card">
                 <table>
                     <thead>
-                        <tr><th>Journée</th><th>Adversaire</th><th>Résultat</th><th>Score</th></tr>
+                        <tr>
+                            <th>Journée</th>
+                            <th>Adversaire</th>
+                            <th>Résultat</th>
+                            <th>Score</th>
+                        </tr>
                     </thead>
                     <tbody>
-                        <tr><td>J01</td><td>AS ARBENT VB</td><td class="win">3 - 0</td><td>31-29, 25-13, 25-17</td></tr>
-                        <tr><td>J02</td><td>VBALL</td><td class="loss">1 - 3</td><td>21-25, 25-27, 25-20, 23-25</td></tr>
-                        <tr><td>J04</td><td>AS ECULLOISE VB</td><td class="win">3 - 0</td><td>25-14, 25-13, 25-16</td></tr>
-                        <tr><td>J05</td><td>PL VILLETTE PB</td><td class="win">3 - 0</td><td>25-20, 25-16, 25-15</td></tr>
-                        <tr><td>J06</td><td>ST MAURICE COTIERE</td><td class="win">3 - 0</td><td>25-14, 25-21, 25-17</td></tr>
-                        <tr><td>J07</td><td>VV SAÔNE</td><td class="win">3 - 0</td><td>25-12, 25-20, 26-24</td></tr>
+                        <tr>
+                            <td>J01</td>
+                            <td>AS ARBENT VB</td>
+                            <td class="win">3 - 0</td>
+                            <td>31-29, 25-13, 25-17</td>
+                        </tr>
+                        <tr>
+                            <td>J02</td>
+                            <td>VBALL</td>
+                            <td class="loss">1 - 3</td>
+                            <td>21-25, 25-27, 25-20, 23-25</td>
+                        </tr>
+                        <tr>
+                            <td>J04</td>
+                            <td>AS ECULLOISE VB</td>
+                            <td class="win">3 - 0</td>
+                            <td>25-14, 25-13, 25-16</td>
+                        </tr>
+                        <tr>
+                            <td>J05</td>
+                            <td>PL VILLETTE PB</td>
+                            <td class="win">3 - 0</td>
+                            <td>25-20, 25-16, 25-15</td>
+                        </tr>
+                        <tr>
+                            <td>J06</td>
+                            <td>ST MAURICE COTIERE</td>
+                            <td class="win">3 - 0</td>
+                            <td>25-14, 25-21, 25-17</td>
+                        </tr>
+                        <tr>
+                            <td>J07</td>
+                            <td>VV SAÔNE</td>
+                            <td class="win">3 - 0</td>
+                            <td>25-12, 25-20, 26-24</td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
         </div>
 
         <div id="dep-garcon" class="tab-content">
-            
+
             <div class="section-title">Effectif (Roster) - Dep Garçons</div>
             <div class="card">
                 <table>
                     <thead>
-                        <tr><th style="text-align: center;">#</th><th>Nom Prénom</th><th>Licence</th></tr>
+                        <tr>
+                            <th style="text-align: center;">#</th>
+                            <th>Nom Prénom</th>
+                            <th>Licence</th>
+                        </tr>
                     </thead>
                     <tbody>
-                        <tr><td class="roster-number">--</td><td><em>À définir (Remplir avec la liste)</em></td><td>---</td></tr>
-                        <tr><td class="roster-number">--</td><td><em>À définir</em></td><td>---</td></tr>
-                        <tr><td class="roster-number">--</td><td><em>À définir</em></td><td>---</td></tr>
+                        <tr>
+                            <td class="roster-number">--</td>
+                            <td><em>À définir (Remplir avec la liste)</em></td>
+                            <td>---</td>
+                        </tr>
+                        <tr>
+                            <td class="roster-number">--</td>
+                            <td><em>À définir</em></td>
+                            <td>---</td>
+                        </tr>
+                        <tr>
+                            <td class="roster-number">--</td>
+                            <td><em>À définir</em></td>
+                            <td>---</td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
@@ -256,12 +436,40 @@
             <div class="card">
                 <table>
                     <thead>
-                        <tr><th>Rang</th><th>Équipe</th><th>Pts</th><th>J</th><th>G</th><th>P</th></tr>
+                        <tr>
+                            <th>Rang</th>
+                            <th>Équipe</th>
+                            <th>Pts</th>
+                            <th>J</th>
+                            <th>G</th>
+                            <th>P</th>
+                        </tr>
                     </thead>
                     <tbody>
-                        <tr class="highlight-team"><td>-</td><td>AS DARDILLOISE (Dep)</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
-                        <tr><td>-</td><td>Adversaire 1</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
-                        <tr><td>-</td><td>Adversaire 2</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+                        <tr class="highlight-team">
+                            <td>-</td>
+                            <td>AS DARDILLOISE (Dep)</td>
+                            <td>0</td>
+                            <td>0</td>
+                            <td>0</td>
+                            <td>0</td>
+                        </tr>
+                        <tr>
+                            <td>-</td>
+                            <td>Adversaire 1</td>
+                            <td>0</td>
+                            <td>0</td>
+                            <td>0</td>
+                            <td>0</td>
+                        </tr>
+                        <tr>
+                            <td>-</td>
+                            <td>Adversaire 2</td>
+                            <td>0</td>
+                            <td>0</td>
+                            <td>0</td>
+                            <td>0</td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
@@ -270,11 +478,26 @@
             <div class="card">
                 <table>
                     <thead>
-                        <tr><th>Date</th><th>Adversaire</th><th>Résultat</th><th>Score</th></tr>
+                        <tr>
+                            <th>Date</th>
+                            <th>Adversaire</th>
+                            <th>Résultat</th>
+                            <th>Score</th>
+                        </tr>
                     </thead>
                     <tbody>
-                        <tr><td>--/--</td><td>Adversaire A</td><td class="pending">-</td><td>0 - 0</td></tr>
-                        <tr><td>--/--</td><td>Adversaire B</td><td class="pending">-</td><td>0 - 0</td></tr>
+                        <tr>
+                            <td>--/--</td>
+                            <td>Adversaire A</td>
+                            <td class="pending">-</td>
+                            <td>0 - 0</td>
+                        </tr>
+                        <tr>
+                            <td>--/--</td>
+                            <td>Adversaire B</td>
+                            <td class="pending">-</td>
+                            <td>0 - 0</td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
@@ -292,27 +515,27 @@
             var i;
             var x = document.getElementsByClassName("tab-content");
             var tabs = document.getElementsByClassName("tab-button");
-            
+
             // Hide all contents
             for (i = 0; i < x.length; i++) {
                 x[i].style.display = "none";
                 x[i].classList.remove("active");
             }
-            
+
             // Remove active class from buttons
             for (i = 0; i < tabs.length; i++) {
                 tabs[i].classList.remove("active");
             }
-            
+
             // Show current tab and activate button
             document.getElementById(tabName).style.display = "block";
-            
+
             // Find the button that called this function (or match by text/index) 
             // Simplified: we just loop through buttons to find which one matches the onclick argument, 
             // or we can rely on the user clicking passed 'this'. 
             // For simplicity in this static HTML, we can just grab the button by index or logic.
             // Here we re-highlight based on the tabName:
-            if(tabName === 'seniors') {
+            if (tabName === 'seniors') {
                 tabs[0].classList.add("active");
             } else {
                 tabs[1].classList.add("active");
@@ -320,5 +543,12 @@
         }
     </script>
 
+    <script src="lang.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            if (window.setLanguage) window.setLanguage(localStorage.getItem('language') || 'fr');
+        });
+    </script>
 </body>
+
 </html>

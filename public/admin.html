@@ -186,6 +186,138 @@
                 <button class="btn" style="flex:1; background:#333;" onclick="closeModals()">Annuler</button>
             </div>
         </div>
+        <div class="admin-section" style="margin-top:50px; border-top:2px solid #eee; padding-top:20px;">
+    <h2>Gestion des Matchs (Score & Compo)</h2>
+    
+    <div style="margin-bottom: 20px;">
+        <label><b>Choisir un match :</b></label>
+        <select id="adminMatchSelect" style="padding:10px; width:100%; max-width:400px;">
+            <option value="">Chargement...</option>
+        </select>
+        <button onclick="loadMatchForEdit()" style="padding:10px; background:#333; color:white; border:none; cursor:pointer;">Charger</button>
+    </div>
+
+    <div id="editZone" style="display:none; background:#f9f9f9; padding:20px; border-radius:8px;">
+        <h3 id="editMatchTitle"></h3>
+        
+        <div style="margin-bottom:15px;">
+            <label>Score (ex: 3 - 1)</label><br>
+            <input type="text" id="editScore" style="padding:8px; width:100px;">
+        </div>
+
+        <div style="margin-bottom:15px;">
+            <label>Détail Sets (ex: 25:20, 25:18)</label><br>
+            <input type="text" id="editSets" style="padding:8px; width:100%;">
+        </div>
+
+        <h4>6 de Départ (Noms des joueurs)</h4>
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; max-width:500px;">
+            <input type="text" id="editP4" placeholder="Pos 4 (Avant-Gauche)">
+            <input type="text" id="editP3" placeholder="Pos 3 (Avant-Centre)">
+            <input type="text" id="editP2" placeholder="Pos 2 (Avant-Droit)">
+            <input type="text" id="editP5" placeholder="Pos 5 (Arrière-Gauche)">
+            <input type="text" id="editP6" placeholder="Pos 6 (Arrière-Centre)">
+            <input type="text" id="editP1" placeholder="Pos 1 (Arrière-Droit)">
+        </div>
+        <div style="margin-top:10px;">
+            <input type="text" id="editLibero" placeholder="Libéro" style="width:100%;">
+        </div>
+
+        <button onclick="saveMatchData()" style="margin-top:20px; padding:12px 24px; background:#d32f2f; color:white; border:none; font-size:1rem; cursor:pointer;">Enregistrer les modifications</button>
+        <div id="saveMsg" style="margin-top:10px; font-weight:bold;"></div>
+    </div>
+</div>
+
+<script>
+    // --- ADD THIS SCRIPT TO YOUR EXISTING ADMIN SCRIPT BLOCK ---
+    
+    // 1. Fetch all matches to populate the dropdown
+    async function initMatchAdmin() {
+        // We reuse your existing API or generic fetch if you have one.
+        // Assuming your existing logic loads matches from JSON files via JS,
+        // we can fetch them via the new server capability.
+        // Note: For simplicity, we will fetch 'matches-db.json' via backend if you expose it,
+        // OR we just iterate common known files.
+        // Ideally, you should add a generic 'GET /api/matches' to server.js if not present.
+        // For now, let's try to fetch standard schedule files manually or check matches-db.json
+        
+        // Let's add a quick helper to get matches if you don't have a global API yet.
+        // You can add this route to server.js: app.get('/api/all-matches', ...)
+        // Or we rely on manual ID input if list is hard to get.
+        
+        // For this demo, I will populate the list assuming you have a list available or
+        // the user enters the ID manually.
+        const select = document.getElementById('adminMatchSelect');
+        
+        // Example: If you have a way to get all matches, loop here.
+        // Otherwise, allow Manual Entry:
+        select.innerHTML = '<option value="">-- Entrer ID manuellement --</option>';
+        // (If you want a full list, we need to add app.get('/api/matches') to server.js)
+    }
+
+    let currentMatchId = null;
+
+    async function loadMatchForEdit() {
+        // If dropdown is empty/manual, ask user or use input
+        let id = document.getElementById('adminMatchSelect').value;
+        if(!id) id = prompt("Entrez l'ID du match (ex: SMBA002) :");
+        if(!id) return;
+
+        const res = await fetch('/api/match/' + id);
+        if(res.ok) {
+            const m = await res.json();
+            currentMatchId = m.id;
+            document.getElementById('editMatchTitle').innerText = m.home + " vs " + m.away;
+            document.getElementById('editScore').value = m.score || "";
+            document.getElementById('editSets').value = m.sets ? m.sets.join(', ') : "";
+            
+            if(m.lineup) {
+                document.getElementById('editP1').value = m.lineup.p1 || "";
+                document.getElementById('editP2').value = m.lineup.p2 || "";
+                document.getElementById('editP3').value = m.lineup.p3 || "";
+                document.getElementById('editP4').value = m.lineup.p4 || "";
+                document.getElementById('editP5').value = m.lineup.p5 || "";
+                document.getElementById('editP6').value = m.lineup.p6 || "";
+                document.getElementById('editLibero').value = m.lineup.libero || "";
+            }
+            document.getElementById('editZone').style.display = 'block';
+        } else {
+            alert("Match introuvable ! Vérifiez l'ID.");
+        }
+    }
+
+    async function saveMatchData() {
+        if(!currentMatchId) return;
+
+        const payload = {
+            score: document.getElementById('editScore').value,
+            sets: document.getElementById('editSets').value.split(',').map(s => s.trim()),
+            lineup: {
+                p1: document.getElementById('editP1').value,
+                p2: document.getElementById('editP2').value,
+                p3: document.getElementById('editP3').value,
+                p4: document.getElementById('editP4').value,
+                p5: document.getElementById('editP5').value,
+                p6: document.getElementById('editP6').value,
+                libero: document.getElementById('editLibero').value
+            }
+        };
+
+        const res = await fetch('/api/match/' + currentMatchId, {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(payload)
+        });
+
+        const json = await res.json();
+        if(json.success) {
+            document.getElementById('saveMsg').innerText = "Sauvegardé avec succès !";
+            document.getElementById('saveMsg').style.color = "green";
+        } else {
+            document.getElementById('saveMsg').innerText = "Erreur.";
+        }
+    }
+</script>
     </div>
 
     <script>

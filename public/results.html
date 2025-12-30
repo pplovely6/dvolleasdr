@@ -1,18 +1,20 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tous les Résultats | AS Dardilly</title>
-    
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="player-style.css">
-    
+
     <style>
         /* --- GLOBAL VARIABLES --- */
         :root {
@@ -22,8 +24,10 @@
             --bg-dark: #0f0f0f;
             --bg-card: #1a1a1a;
             --border: #333;
-            --win: #2ba640;  /* Green */
-            --loss: #ff4e45; /* Red */
+            --win: #2ba640;
+            /* Green */
+            --loss: #ff4e45;
+            /* Red */
         }
 
         body {
@@ -35,27 +39,29 @@
 
         /* --- HERO --- */
         .results-hero {
-            height: 35vh; 
-            background: linear-gradient(rgba(0,0,0,0.8), rgba(15,17,21,1)), url('index-bg-spike.png'); 
-            display: flex; 
-            align-items: flex-end; 
-            padding-bottom: 40px; 
-            padding-left: 5%; 
-            background-size: cover; 
+            height: 35vh;
+            background: linear-gradient(rgba(0, 0, 0, 0.8), rgba(15, 17, 21, 1)), url('index-bg-spike.png');
+            display: flex;
+            align-items: flex-end;
+            padding-bottom: 40px;
+            padding-left: 5%;
+            background-size: cover;
             background-position: center;
         }
+
         .hero-title {
-            font-family: var(--font-head); 
-            font-weight: 800; 
-            font-size: 4.5rem; 
-            text-transform: uppercase; 
-            line-height: 1; 
+            font-family: var(--font-head);
+            font-weight: 800;
+            font-size: 4.5rem;
+            text-transform: uppercase;
+            line-height: 1;
             margin: 0;
             letter-spacing: -1px;
         }
+
         .hero-sub {
-            color: #bbb; 
-            font-weight: 600; 
+            color: #bbb;
+            font-weight: 600;
             margin-top: 10px;
             text-transform: uppercase;
             font-size: 1.1rem;
@@ -77,15 +83,18 @@
             flex-wrap: wrap;
             justify-content: center;
         }
-        
+
         /* UPDATED BUTTON STYLE: High Contrast White */
         .filter-btn {
             background: transparent;
-            border: 1px solid rgba(255, 255, 255, 0.4); /* Brighter Border */
-            color: #ffffff !important; /* Force White Text */
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            /* Brighter Border */
+            color: #ffffff !important;
+            /* Force White Text */
             padding: 12px 24px;
             font-family: var(--font-head);
-            font-weight: 700; /* Bold */
+            font-weight: 700;
+            /* Bold */
             font-size: 0.95rem;
             text-transform: uppercase;
             cursor: pointer;
@@ -93,10 +102,10 @@
             border-radius: 6px;
             letter-spacing: 0.5px;
         }
-        
+
         .filter-btn:hover {
             border-color: white;
-            background: rgba(255,255,255,0.1);
+            background: rgba(255, 255, 255, 0.1);
         }
 
         .filter-btn.active {
@@ -113,30 +122,51 @@
             margin-bottom: 20px;
             padding: 25px;
             display: grid;
-            grid-template-columns: 120px 1fr 1fr 1fr; /* Date | Home | Score | Away */
+            grid-template-columns: 120px 1fr 1fr 1fr;
+            /* Date | Home | Score | Away */
             align-items: center;
             transition: transform 0.2s;
             position: relative;
             overflow: hidden;
         }
-        
-        .result-card:hover { transform: translateY(-3px); border-color: #555; }
+
+        .result-card:hover {
+            transform: translateY(-3px);
+            border-color: #555;
+        }
 
         /* Status Borders */
-        .status-win { border-left: 6px solid var(--win); }
-        .status-loss { border-left: 6px solid var(--loss); }
+        .status-win {
+            border-left: 6px solid var(--win);
+        }
+
+        .status-loss {
+            border-left: 6px solid var(--loss);
+        }
 
         /* Date Section */
         .date-col {
             text-align: center;
             border-right: 1px solid var(--border);
             padding-right: 20px;
-            display: flex; 
+            display: flex;
             flex-direction: column;
             justify-content: center;
         }
-        .date-val { font-weight: 800; font-size: 1.1rem; color: white; }
-        .team-cat { font-size: 0.8rem; color: #888; text-transform: uppercase; margin-top: 5px; font-weight: 600; }
+
+        .date-val {
+            font-weight: 800;
+            font-size: 1.1rem;
+            color: white;
+        }
+
+        .team-cat {
+            font-size: 0.8rem;
+            color: #888;
+            text-transform: uppercase;
+            margin-top: 5px;
+            font-weight: 600;
+        }
 
         /* Team Columns */
         .team-col {
@@ -147,16 +177,34 @@
             font-size: 1.1rem;
             text-transform: uppercase;
         }
-        .team-col.home { justify-content: flex-end; text-align: right; }
-        .team-col.away { justify-content: flex-start; text-align: left; }
-        
+
+        .team-col.home {
+            justify-content: flex-end;
+            text-align: right;
+        }
+
+        .team-col.away {
+            justify-content: flex-start;
+            text-align: left;
+        }
+
         /* Logos */
-        .team-logo { height: 50px; width: auto; object-fit: contain; }
-        .logo-placeholder { 
-            height: 40px; width: 40px; 
-            background: #252525; border-radius: 50%; 
-            display: flex; align-items: center; justify-content: center; 
-            font-size: 0.8rem; color: #555; 
+        .team-logo {
+            height: 50px;
+            width: auto;
+            object-fit: contain;
+        }
+
+        .logo-placeholder {
+            height: 40px;
+            width: 40px;
+            background: #252525;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            color: #555;
         }
 
         /* Score Section */
@@ -166,17 +214,20 @@
             align-items: center;
             justify-content: center;
         }
+
         .final-score {
             font-size: 2.5rem;
             font-weight: 800;
             color: white;
             line-height: 1;
         }
+
         .score-sets {
             font-size: 0.85rem;
             color: #888;
             margin-top: 5px;
         }
+
         .result-badge {
             font-size: 0.7rem;
             padding: 3px 8px;
@@ -185,15 +236,32 @@
             font-weight: 700;
             margin-top: 5px;
         }
-        .badge-win { background: rgba(43, 166, 64, 0.2); color: var(--win); }
-        .badge-loss { background: rgba(255, 78, 69, 0.2); color: var(--loss); }
+
+        .badge-win {
+            background: rgba(43, 166, 64, 0.2);
+            color: var(--win);
+        }
+
+        .badge-loss {
+            background: rgba(255, 78, 69, 0.2);
+            color: var(--loss);
+        }
 
         /* Empty State */
-        .empty-state { text-align: center; padding: 60px; color: #666; font-size: 1.2rem; border: 1px dashed #333; }
+        .empty-state {
+            text-align: center;
+            padding: 60px;
+            color: #666;
+            font-size: 1.2rem;
+            border: 1px dashed #333;
+        }
 
         /* RESPONSIVE */
         @media (max-width: 900px) {
-            .hero-title { font-size: 3rem; }
+            .hero-title {
+                font-size: 3rem;
+            }
+
             .result-card {
                 grid-template-columns: 1fr;
                 grid-template-rows: auto auto auto auto;
@@ -201,31 +269,153 @@
                 text-align: center;
                 padding: 30px 20px;
             }
-            .date-col { border-right: none; border-bottom: 1px solid #333; padding-right: 0; padding-bottom: 15px; }
-            .team-col { justify-content: center !important; text-align: center !important; flex-direction: column; }
-            .final-score { font-size: 3rem; margin: 10px 0; }
-            .status-win, .status-loss { border-left: 1px solid var(--border); border-top: 6px solid; }
-            .status-win { border-top-color: var(--win); }
-            .status-loss { border-top-color: var(--loss); }
+
+            .date-col {
+                border-right: none;
+                border-bottom: 1px solid #333;
+                padding-right: 0;
+                padding-bottom: 15px;
+            }
+
+            .team-col {
+                justify-content: center !important;
+                text-align: center !important;
+                flex-direction: column;
+            }
+
+            .final-score {
+                font-size: 3rem;
+                margin: 10px 0;
+            }
+
+            .status-win,
+            .status-loss {
+                border-left: 1px solid var(--border);
+                border-top: 6px solid;
+            }
+
+            .status-win {
+                border-top-color: var(--win);
+            }
+
+            .status-loss {
+                border-top-color: var(--loss);
+            }
         }
 
         /* FOOTER */
-        .dardilly-footer { background: #0f0f0f; border-top: 1px solid #333; padding: 80px 0 30px; margin-top: 80px; }
-        .footer-container { display: grid; grid-template-columns: 1fr 1.5fr; gap: 80px; width: 90%; max-width: 1200px; margin: 0 auto 60px; }
-        .footer-branding { display: flex; flex-direction: column; gap: 20px; }
-        .footer-logo-text { font-weight: 800; font-size: 2.5rem; color: var(--brand-yellow); text-transform: uppercase; line-height: 1; }
-        .brand-desc { color: #888; line-height: 1.6; max-width: 300px; font-size: 0.95rem; }
-        .footer-socials { display: flex; gap: 15px; margin-top: 10px; }
-        .social-link { width: 40px; height: 40px; border-radius: 50%; background: #1a1a1a; display: flex; align-items: center; justify-content: center; color: white; border: 1px solid #333; transition: 0.3s; }
-        .social-link:hover { background: var(--brand-yellow); color: black; border-color: var(--brand-yellow); }
-        .footer-nav-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; }
-        .nav-col h4 { color: white; text-transform: uppercase; margin-bottom: 25px; font-size: 1.1rem; letter-spacing: 1px; font-weight: 700; }
-        .nav-col a { display: block; color: #888; margin-bottom: 12px; text-decoration: none; transition: 0.3s; font-size: 0.95rem; }
-        .nav-col a:hover { color: var(--brand-yellow); padding-left: 5px; }
-        .copyright { text-align: center; border-top: 1px solid #222; padding-top: 30px; color: #555; font-size: 0.9rem; }
-        @media (max-width: 900px) { .footer-container { grid-template-columns: 1fr; gap: 50px; } .footer-nav-grid { grid-template-columns: 1fr; } }
+        .dardilly-footer {
+            background: #0f0f0f;
+            border-top: 1px solid #333;
+            padding: 80px 0 30px;
+            margin-top: 80px;
+        }
+
+        .footer-container {
+            display: grid;
+            grid-template-columns: 1fr 1.5fr;
+            gap: 80px;
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto 60px;
+        }
+
+        .footer-branding {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .footer-logo-text {
+            font-weight: 800;
+            font-size: 2.5rem;
+            color: var(--brand-yellow);
+            text-transform: uppercase;
+            line-height: 1;
+        }
+
+        .brand-desc {
+            color: #888;
+            line-height: 1.6;
+            max-width: 300px;
+            font-size: 0.95rem;
+        }
+
+        .footer-socials {
+            display: flex;
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        .social-link {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #1a1a1a;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            border: 1px solid #333;
+            transition: 0.3s;
+        }
+
+        .social-link:hover {
+            background: var(--brand-yellow);
+            color: black;
+            border-color: var(--brand-yellow);
+        }
+
+        .footer-nav-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+        }
+
+        .nav-col h4 {
+            color: white;
+            text-transform: uppercase;
+            margin-bottom: 25px;
+            font-size: 1.1rem;
+            letter-spacing: 1px;
+            font-weight: 700;
+        }
+
+        .nav-col a {
+            display: block;
+            color: #888;
+            margin-bottom: 12px;
+            text-decoration: none;
+            transition: 0.3s;
+            font-size: 0.95rem;
+        }
+
+        .nav-col a:hover {
+            color: var(--brand-yellow);
+            padding-left: 5px;
+        }
+
+        .copyright {
+            text-align: center;
+            border-top: 1px solid #222;
+            padding-top: 30px;
+            color: #555;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 900px) {
+            .footer-container {
+                grid-template-columns: 1fr;
+                gap: 50px;
+            }
+
+            .footer-nav-grid {
+                grid-template-columns: 1fr;
+            }
+        }
     </style>
 </head>
+
 <body>
 
     <header>
@@ -235,7 +425,7 @@
                 <li><a href="index.html" data-i18n="nav_home">Accueil</a></li>
                 <li><a href="equipes.html" data-i18n="nav_teams">Les Équipes</a></li>
                 <li><a href="planning.html" data-i18n="planning_title">PLANNING</a></li>
-                <li><a href="results.html" data-i18n="matches_title" class="active">RÉSULTATS</a></li>
+                <li><a href="results.html" data-i18n="matches_title">RÉSULTATS</a></li>
                 <li><a href="contact.html" data-i18n="nav_contact">Contact</a></li>
             </ul>
         </nav>
@@ -257,7 +447,7 @@
     </div>
 
     <main class="main-container">
-        
+
         <div class="filter-bar">
             <button class="filter-btn active" onclick="filterMatches('all')">Tout</button>
             <button class="filter-btn" onclick="filterMatches('senior-m')">Senior Garçons</button>
@@ -278,7 +468,8 @@
         <div class="footer-container">
             <div class="footer-branding">
                 <div class="footer-logo-text">AS DARDILLY</div>
-                <p class="brand-desc" data-i18n="footer_desc">Le club historique de l'Ouest Lyonnais. Formation, compétition et convivialité depuis 1944.</p>
+                <p class="brand-desc" data-i18n="footer_desc">Le club historique de l'Ouest Lyonnais. Formation,
+                    compétition et convivialité depuis 1944.</p>
                 <div class="footer-socials">
                     <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
                     <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
@@ -330,54 +521,54 @@
 
             // Helper to parse French Date to JS Date for sorting
             const parseDate = (dateStr) => {
-                if(!dateStr) return new Date(0); 
+                if (!dateStr) return new Date(0);
                 // Parsing DD/MM/YYYY
                 const parts = dateStr.split('/');
-                if(parts.length === 3) return new Date(parts[2], parts[1]-1, parts[0]);
+                if (parts.length === 3) return new Date(parts[2], parts[1] - 1, parts[0]);
                 // Fallback
-                return new Date(); 
+                return new Date();
             };
 
             // Fetch All Data
-            Promise.all(teams.map(t => 
+            Promise.all(teams.map(t =>
                 fetch(`${API_BASE}/data/${t.file}`)
                     .then(res => res.json())
                     .then(data => (data.matches || []).map(m => ({ ...m, category: t.label, tag: t.code })))
                     .catch(() => [])
             ))
-            .then(results => {
-                // Flatten
-                let allMatches = results.flat();
-                
-                // Sort by Date Descending (Newest First)
-                allMatches.sort((a, b) => parseDate(b.date) - parseDate(a.date));
+                .then(results => {
+                    // Flatten
+                    let allMatches = results.flat();
 
-                if(allMatches.length === 0) {
-                    container.innerHTML = "<div class='empty-state'>Aucun résultat disponible pour le moment.</div>";
-                    return;
-                }
+                    // Sort by Date Descending (Newest First)
+                    allMatches.sort((a, b) => parseDate(b.date) - parseDate(a.date));
 
-                container.innerHTML = allMatches.map(m => {
-                    // Logic to determine Win/Loss
-                    const scoreParts = (m.score || "0-0").split(/[-:]/).map(s => parseInt(s.trim()));
-                    const homeScore = scoreParts[0] || 0;
-                    const awayScore = scoreParts[1] || 0;
-                    
-                    const isHome = m.home.toUpperCase().includes("DARDILLY");
-                    const isWin = isHome ? (homeScore > awayScore) : (awayScore > homeScore);
-                    
-                    const statusClass = isWin ? "status-win" : "status-loss";
-                    const badgeClass = isWin ? "badge-win" : "badge-loss";
-                    const badgeText = isWin ? "VICTOIRE" : "DÉFAITE";
+                    if (allMatches.length === 0) {
+                        container.innerHTML = "<div class='empty-state'>Aucun résultat disponible pour le moment.</div>";
+                        return;
+                    }
 
-                    // Logo Logic
-                    const logoImg = `<img src="image_fd6867.png" class="team-logo">`;
-                    const placeholder = (name) => `<div class="logo-placeholder">${name.substring(0,3).toUpperCase()}</div>`;
+                    container.innerHTML = allMatches.map(m => {
+                        // Logic to determine Win/Loss
+                        const scoreParts = (m.score || "0-0").split(/[-:]/).map(s => parseInt(s.trim()));
+                        const homeScore = scoreParts[0] || 0;
+                        const awayScore = scoreParts[1] || 0;
 
-                    const homeDisplay = isHome ? logoImg : placeholder(m.home);
-                    const awayDisplay = !isHome ? logoImg : placeholder(m.away);
+                        const isHome = m.home.toUpperCase().includes("DARDILLY");
+                        const isWin = isHome ? (homeScore > awayScore) : (awayScore > homeScore);
 
-                    return `
+                        const statusClass = isWin ? "status-win" : "status-loss";
+                        const badgeClass = isWin ? "badge-win" : "badge-loss";
+                        const badgeText = isWin ? "VICTOIRE" : "DÉFAITE";
+
+                        // Logo Logic
+                        const logoImg = `<img src="image_fd6867.png" class="team-logo">`;
+                        const placeholder = (name) => `<div class="logo-placeholder">${name.substring(0, 3).toUpperCase()}</div>`;
+
+                        const homeDisplay = isHome ? logoImg : placeholder(m.home);
+                        const awayDisplay = !isHome ? logoImg : placeholder(m.away);
+
+                        return `
                         <div class="result-card ${statusClass}" data-tag="${m.tag}">
                             
                             <div class="date-col">
@@ -403,20 +594,21 @@
 
                         </div>
                     `;
-                }).join('');
+                    }).join('');
 
-                if(window.setLanguage) window.setLanguage(localStorage.getItem('language') || 'fr');
-            });
+                    if (window.setLanguage) window.setLanguage(localStorage.getItem('language') || 'fr');
+                });
         });
 
         function filterMatches(tag) {
             document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
             event.target.classList.add('active');
-            
+
             document.querySelectorAll('.result-card').forEach(card => {
                 card.style.display = (tag === 'all' || card.dataset.tag === tag) ? 'grid' : 'none';
             });
         }
     </script>
 </body>
+
 </html>

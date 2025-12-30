@@ -1,18 +1,20 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Seniors Filles 1 (REG) | AS Dardilly</title>
-    
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    
+    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Outfit:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="player-style.css">
-    
+
     <style>
         /* --- GLOBAL VARIABLES --- */
         :root {
@@ -33,15 +35,15 @@
 
         /* --- LAYOUT GRID --- */
         .results-container {
-            width: 90%; 
+            width: 90%;
             max-width: 1400px;
             margin: 60px auto 0;
         }
 
         .split-results {
             display: grid;
-            grid-template-columns: 1.2fr 1px 1fr; 
-            gap: 40px; 
+            grid-template-columns: 1.2fr 1px 1fr;
+            gap: 40px;
             align-items: stretch;
             width: 100%;
         }
@@ -66,7 +68,8 @@
         }
 
         /* --- CARDS --- */
-        .match-card, .next-match-card {
+        .match-card,
+        .next-match-card {
             background: #1a1a1a;
             border: 1px solid #333;
             border-radius: 0;
@@ -83,9 +86,11 @@
         .match-card::before {
             content: '';
             position: absolute;
-            top: 50%; left: 50%;
+            top: 50%;
+            left: 50%;
             transform: translate(-50%, -50%);
-            width: 300px; height: 300px;
+            width: 300px;
+            height: 300px;
             background-image: url('image_fd6867.png');
             background-size: contain;
             background-repeat: no-repeat;
@@ -137,14 +142,23 @@
             text-align: center;
         }
 
-        .team-logo { height: 80px; width: 80px; object-fit: contain; margin-bottom: 15px; }
-        
+        .team-logo {
+            height: 80px;
+            width: 80px;
+            object-fit: contain;
+            margin-bottom: 15px;
+        }
+
         .team-placeholder {
-            height: 80px; width: 80px;
+            height: 80px;
+            width: 80px;
             background: #252525;
             border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            font-weight: bold; color: #555;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: #555;
             margin-bottom: 15px;
             font-family: var(--font-head);
             font-size: 1.5rem;
@@ -162,7 +176,10 @@
         .center-info {
             width: 30%;
             text-align: center;
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
         }
 
         .main-score {
@@ -171,7 +188,7 @@
             font-size: 4rem;
             color: white;
             line-height: 1;
-            text-shadow: 0 0 20px rgba(0,0,0,0.5);
+            text-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
         }
 
         .vs-text {
@@ -181,7 +198,12 @@
             color: #444;
         }
 
-        .sets-detail { font-size: 0.9rem; color: #999; margin-top: 10px; letter-spacing: 1px; }
+        .sets-detail {
+            font-size: 0.9rem;
+            color: #999;
+            margin-top: 10px;
+            letter-spacing: 1px;
+        }
 
         .match-location {
             border-top: 1px solid #333;
@@ -196,40 +218,175 @@
 
         /* --- RESPONSIVE --- */
         @media (max-width: 1100px) {
-            .split-results { grid-template-columns: 1fr; gap: 40px; }
-            .vertical-divider { display: none; }
-            .table-responsive { padding-right: 0; }
-            .match-card, .next-match-card { height: auto; padding: 30px 15px; }
-            .main-score { font-size: 3rem; }
-            .team-logo, .team-placeholder { height: 60px; width: 60px; }
+            .split-results {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+
+            .vertical-divider {
+                display: none;
+            }
+
+            .table-responsive {
+                padding-right: 0;
+            }
+
+            .match-card,
+            .next-match-card {
+                height: auto;
+                padding: 30px 15px;
+            }
+
+            .main-score {
+                font-size: 3rem;
+            }
+
+            .team-logo,
+            .team-placeholder {
+                height: 60px;
+                width: 60px;
+            }
         }
 
         /* Mobile specific */
         @media (max-width: 900px) {
-            .roster-container { grid-template-columns: 1fr !important; gap: 0 !important; }
-            .roster-image { min-height: 250px !important; border-radius: 8px 8px 0 0; }
-            .roster-content { padding: 0 !important; }
-            .roster-header { padding: 15px 10px !important; }
-            .hero h1 { font-size: 3.5rem !important; }
+            .roster-container {
+                grid-template-columns: 1fr !important;
+                gap: 0 !important;
+            }
+
+            .roster-image {
+                min-height: 250px !important;
+                border-radius: 8px 8px 0 0;
+            }
+
+            .roster-content {
+                padding: 0 !important;
+            }
+
+            .roster-header {
+                padding: 15px 10px !important;
+            }
+
+            .hero h1 {
+                font-size: 3.5rem !important;
+            }
         }
 
         /* --- FOOTER OVERRIDES --- */
-        .dardilly-footer { background: #0f0f0f; border-top: 1px solid #333; padding: 80px 0 30px; margin-top: 80px; }
-        .footer-container { display: grid; grid-template-columns: 1fr 1.5fr; gap: 80px; width: 90%; max-width: 1200px; margin: 0 auto 60px; }
-        .footer-branding { display: flex; flex-direction: column; gap: 20px; }
-        .footer-logo-text { font-family: var(--font-head); font-weight: 800; font-size: 2.5rem; color: var(--brand-yellow); text-transform: uppercase; line-height: 1; }
-        .brand-desc { color: #888; line-height: 1.6; max-width: 300px; font-size: 0.95rem; }
-        .footer-socials { display: flex; gap: 15px; margin-top: 10px; }
-        .social-link { width: 40px; height: 40px; border-radius: 50%; background: #1a1a1a; display: flex; align-items: center; justify-content: center; color: white; border: 1px solid #333; transition: 0.3s; }
-        .social-link:hover { background: var(--brand-yellow); color: black; border-color: var(--brand-yellow); }
-        .footer-nav-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; }
-        .nav-col h4 { color: white; text-transform: uppercase; margin-bottom: 25px; font-size: 1.1rem; letter-spacing: 1px; font-weight: 700; }
-        .nav-col a { display: block; color: #888; margin-bottom: 12px; text-decoration: none; transition: 0.3s; font-size: 0.95rem; }
-        .nav-col a:hover { color: var(--brand-yellow); padding-left: 5px; }
-        .copyright { text-align: center; border-top: 1px solid #222; padding-top: 30px; color: #555; font-size: 0.9rem; }
-        @media (max-width: 900px) { .footer-container { grid-template-columns: 1fr; gap: 50px; } .footer-nav-grid { grid-template-columns: 1fr; } }
+        .dardilly-footer {
+            background: #0f0f0f;
+            border-top: 1px solid #333;
+            padding: 80px 0 30px;
+            margin-top: 80px;
+        }
+
+        .footer-container {
+            display: grid;
+            grid-template-columns: 1fr 1.5fr;
+            gap: 80px;
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto 60px;
+        }
+
+        .footer-branding {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .footer-logo-text {
+            font-family: var(--font-head);
+            font-weight: 800;
+            font-size: 2.5rem;
+            color: var(--brand-yellow);
+            text-transform: uppercase;
+            line-height: 1;
+        }
+
+        .brand-desc {
+            color: #888;
+            line-height: 1.6;
+            max-width: 300px;
+            font-size: 0.95rem;
+        }
+
+        .footer-socials {
+            display: flex;
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        .social-link {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #1a1a1a;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            border: 1px solid #333;
+            transition: 0.3s;
+        }
+
+        .social-link:hover {
+            background: var(--brand-yellow);
+            color: black;
+            border-color: var(--brand-yellow);
+        }
+
+        .footer-nav-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+        }
+
+        .nav-col h4 {
+            color: white;
+            text-transform: uppercase;
+            margin-bottom: 25px;
+            font-size: 1.1rem;
+            letter-spacing: 1px;
+            font-weight: 700;
+        }
+
+        .nav-col a {
+            display: block;
+            color: #888;
+            margin-bottom: 12px;
+            text-decoration: none;
+            transition: 0.3s;
+            font-size: 0.95rem;
+        }
+
+        .nav-col a:hover {
+            color: var(--brand-yellow);
+            padding-left: 5px;
+        }
+
+        .copyright {
+            text-align: center;
+            border-top: 1px solid #222;
+            padding-top: 30px;
+            color: #555;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 900px) {
+            .footer-container {
+                grid-template-columns: 1fr;
+                gap: 50px;
+            }
+
+            .footer-nav-grid {
+                grid-template-columns: 1fr;
+            }
+        }
     </style>
 </head>
+
 <body>
 
     <header>
@@ -254,16 +411,20 @@
     </header>
 
     <main>
-        <div class="hero" style="height: 40vh; background: linear-gradient(rgba(0,0,0,0.7), rgba(15,17,21,1)), url('reg-f2025.jpg'); display:flex; align-items:flex-end; padding-bottom:40px; padding-left:5%; background-size: cover; background-position: center;">
+        <div class="hero"
+            style="height: 40vh; background: linear-gradient(rgba(0,0,0,0.7), rgba(15,17,21,1)), url('reg-f2025.jpg'); display:flex; align-items:flex-end; padding-bottom:40px; padding-left:5%; background-size: cover; background-position: center;">
             <div>
-                <h1 style="font-family: var(--font-head); font-weight: 800; font-size: 5rem; text-transform: uppercase; line-height: 1; margin:0;">SENIORS <span style="color:var(--brand-yellow);">FILLES 1</span></h1>
-                <p style="color: #bbb; letter-spacing: 2px; font-weight: 600; margin-top:10px;" data-i18n="sub_m18">SAISON 2025 / 2026</p>
+                <h1
+                    style="font-family: var(--font-head); font-weight: 800; font-size: 5rem; text-transform: uppercase; line-height: 1; margin:0;">
+                    SENIORS <span style="color:var(--brand-yellow);">FILLES 1</span></h1>
+                <p style="color: #bbb; letter-spacing: 2px; font-weight: 600; margin-top:10px;" data-i18n="sub_m18">
+                    SAISON 2025 / 2026</p>
             </div>
         </div>
 
         <section class="results-container">
             <h2 class="section-title" data-i18n="matches_title">Calendrier & <span>Résultats</span></h2>
-            
+
             <div class="split-results">
                 <div class="table-responsive">
                     <div id="match-container">
@@ -276,7 +437,7 @@
                 <div class="next-match-card">
                     <div class="card-header-label" data-i18n="nm_title">PROCHAIN MATCH</div>
                     <div class="card-date" id="nm-date">--</div>
-                    
+
                     <div class="teams-row">
                         <div class="team-block">
                             <img src="image_fd6867.png" alt="AS Dardilly" class="team-logo">
@@ -299,21 +460,27 @@
             </div>
         </section>
 
-        <section style="background: #1a1d24; border-top: 1px solid #333; padding-top: 100px; margin-top: 60px; padding-bottom: 60px;">
-            <h2 class="section-title" style="width:90%; max-width:1400px; margin:0 auto 40px;" data-i18n="roster_title">L'Effectif <span>2025-26</span></h2>
-            
-            <div class="roster-container" style="width:90%; max-width:1400px; margin:0 auto; display:grid; grid-template-columns: 1fr 1.5fr; gap:40px;">
-                <div class="roster-image" style="background-image: url('reg-f2025.jpg'); background-size: cover; background-position: center; min-height: 500px; border-radius: 0;"></div>
-                
+        <section
+            style="background: #1a1d24; border-top: 1px solid #333; padding-top: 100px; margin-top: 60px; padding-bottom: 60px;">
+            <h2 class="section-title" style="width:90%; max-width:1400px; margin:0 auto 40px;" data-i18n="roster_title">
+                L'Effectif <span>2025-26</span></h2>
+
+            <div class="roster-container"
+                style="width:90%; max-width:1400px; margin:0 auto; display:grid; grid-template-columns: 1fr 1.5fr; gap:40px;">
+                <div class="roster-image"
+                    style="background-image: url('reg-f2025.jpg'); background-size: cover; background-position: center; min-height: 500px; border-radius: 0;">
+                </div>
+
                 <div class="roster-content" style="padding: 0;">
-                    <div class="roster-header" style="display:grid; grid-template-columns: 60px 1fr 120px 24px; padding: 15px 0; border-bottom: 1px solid #444; color:#888; font-weight:bold; font-size:0.85rem; text-transform:uppercase; letter-spacing:1px;">
+                    <div class="roster-header"
+                        style="display:grid; grid-template-columns: 60px 1fr 120px 24px; padding: 15px 0; border-bottom: 1px solid #444; color:#888; font-weight:bold; font-size:0.85rem; text-transform:uppercase; letter-spacing:1px;">
                         <span>N°</span>
                         <span data-i18n="hdr_player">JOUEUSE</span>
                         <span data-i18n="hdr_pos">POSTE</span>
                         <span></span>
                     </div>
                     <div id="roster-list">
-                        </div>
+                    </div>
                 </div>
             </div>
         </section>
@@ -323,7 +490,8 @@
         <div class="footer-container">
             <div class="footer-branding">
                 <div class="footer-logo-text">AS DARDILLY</div>
-                <p class="brand-desc" data-i18n="footer_desc">Le club historique de l'Ouest Lyonnais. Formation, compétition et convivialité depuis 1944.</p>
+                <p class="brand-desc" data-i18n="footer_desc">Le club historique de l'Ouest Lyonnais. Formation,
+                    compétition et convivialité depuis 1944.</p>
                 <div class="footer-socials">
                     <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
                     <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
@@ -360,12 +528,12 @@
     <script>
         document.addEventListener("DOMContentLoaded", () => {
             const API_BASE = "/api";
-            
+
             // FILES CONFIGURATION
             const FILES = {
-                players: "db-senior-filles-1",      
+                players: "db-senior-filles-1",
                 matches: "matches-senior-filles-1",
-                schedule: "schedule-senior-filles-1" 
+                schedule: "schedule-senior-filles-1"
             };
 
             // 1. PLAYERS
@@ -373,13 +541,13 @@
                 .then(res => res.json())
                 .then(data => {
                     const list = document.getElementById('roster-list');
-                    if(list) {
+                    if (list) {
                         list.innerHTML = "";
-                        const players = (data.players || []).filter(p => p.number).sort((a,b) => a.number - b.number);
-                        
+                        const players = (data.players || []).filter(p => p.number).sort((a, b) => a.number - b.number);
+
                         players.forEach(p => {
                             const row = document.createElement("a");
-                            row.href = (p.profile && p.profile !== "#") ? p.profile : "javascript:void(0)"; 
+                            row.href = (p.profile && p.profile !== "#") ? p.profile : "javascript:void(0)";
                             row.className = "roster-row";
                             row.innerHTML = `
                                 <span class="num">${p.number}</span>
@@ -390,7 +558,7 @@
                             list.appendChild(row);
                         });
                     }
-                    if(window.setLanguage) window.setLanguage(localStorage.getItem('language') || 'fr');
+                    if (window.setLanguage) window.setLanguage(localStorage.getItem('language') || 'fr');
                 });
 
             // 2. MATCHES (LATEST)
@@ -399,11 +567,11 @@
                 .then(data => {
                     const container = document.getElementById('match-container');
                     if (!container) return;
-                    
-                    container.innerHTML = "";
-                    const matches = (data.matches || []).slice(-1); 
 
-                    if(matches.length === 0) {
+                    container.innerHTML = "";
+                    const matches = (data.matches || []).slice(-1);
+
+                    if (matches.length === 0) {
                         container.innerHTML = "<p style='padding:20px; color:#888; text-align:center;'>Aucun résultat disponible.</p>";
                     } else {
                         matches.forEach(m => {
@@ -413,7 +581,7 @@
                             const awayScore = scoreParts[1] || 0;
                             const isHome = m.home.toUpperCase().includes("DARDILLY");
                             const isWin = isHome ? (homeScore > awayScore) : (awayScore > homeScore);
-                            
+
                             const homeWin = homeScore > awayScore;
                             const awayWin = awayScore > homeScore;
                             const homeLogo = m.home.includes("DARDILLY") ? '<img src="image_fd6867.png" class="mini-logo-v3">' : '<div class="logo-spacer"></div>';
@@ -454,13 +622,13 @@
                 .then(res => res.json())
                 .then(data => {
                     const list = data.schedule || [];
-                    const nextMatch = list[0]; 
+                    const nextMatch = list[0];
 
                     if (nextMatch) {
                         document.getElementById('nm-date').innerText = `${nextMatch.date} • ${nextMatch.time}`;
                         document.getElementById('nm-home').innerText = nextMatch.home;
                         document.getElementById('nm-away').innerText = nextMatch.away;
-                        document.getElementById('nm-away-ph').innerText = nextMatch.away.substring(0,3).toUpperCase();
+                        document.getElementById('nm-away-ph').innerText = nextMatch.away.substring(0, 3).toUpperCase();
                         document.getElementById('nm-loc').innerText = nextMatch.location;
                     } else {
                         document.querySelector('.next-match-card').innerHTML = "<p style='color:#777; text-align:center; margin-top:50px;'>Aucun match prévu.</p>";
@@ -470,4 +638,5 @@
         });
     </script>
 </body>
+
 </html>

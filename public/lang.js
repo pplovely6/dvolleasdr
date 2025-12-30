@@ -17,9 +17,9 @@ const translations = {
     "btn_see_team": { "fr": "Voir l'Équipe <i class='fa-solid fa-arrow-right'></i>", "en": "See Team <i class='fa-solid fa-arrow-right'></i>" },
 
     // --- HOME PAGE & HERO ---
-    "hero_title": { 
-        "fr": "Un Club,<br><span style='color: var(--brand-yellow); font-weight: 800;'>Une Passion</span>", 
-        "en": "One Club,<br><span style='color: var(--brand-yellow); font-weight: 800;'>One Passion</span>" 
+    "hero_title": {
+        "fr": "Un Club,<br><span style='color: var(--brand-yellow); font-weight: 800;'>Une Passion</span>",
+        "en": "One Club,<br><span style='color: var(--brand-yellow); font-weight: 800;'>One Passion</span>"
     },
     "hero_subtitle": { "fr": "AS Dardilly Volley-Ball • Depuis 1944", "en": "AS Dardilly Volleyball • Since 1944" },
 
@@ -39,20 +39,47 @@ const translations = {
     // TEAM
     "boy_garcon": { "fr": "Garcons", "en": "Boys" },
     "prochain_match_card": { "fr": "PROCHAIN MATCH", "en": "NEXT MATCH" },
+
+    // --- SECTIONS & CONTENT ---
+    "section_news": { "fr": "Actualités", "en": "News" },
+    "section_history": { "fr": "Notre <span style='color:var(--brand-yellow)'>Histoire</span>", "en": "Our <span style='color:var(--brand-yellow)'>History</span>" },
+    "latest_results_title": { "fr": "Derniers <span style='color:var(--brand-yellow)'>Résultats</span>", "en": "Latest <span style='color:var(--brand-yellow)'>Results</span>" },
+    "section_gyms": { "fr": "Nos <span style='color:var(--brand-yellow)'>Terrains</span>", "en": "Our <span style='color:var(--brand-yellow)'>Gyms</span>" },
+
+    // --- CARDS ---
+    "card_inscript_desc": { "fr": "Les créneaux se remplissent vite. Inscrivez-vous maintenant.", "en": "Slots fill up fast. Register now." },
+    "card_beach_desc": { "fr": "Profitez de nos terrains extérieurs dès le mois de mai.", "en": "Enjoy our outdoor courts starting in May." },
+    "hero_btn": { "fr": "Voir les Équipes", "en": "See Teams" },
+
+    // --- LOCATIONS ---
+    "loc_moulin": { "fr": "<i class='fa-solid fa-location-dot'></i> Chemin du Moulin Carron", "en": "<i class='fa-solid fa-location-dot'></i> Moulin Carron Road" },
+    "gym_beach": { "fr": "Beach Volley", "en": "Beach Volleyball" },
+    "loc_broc": { "fr": "<i class='fa-solid fa-location-dot'></i> Chemin de la Brocardière", "en": "<i class='fa-solid fa-location-dot'></i> Brocardière Road" },
+
+    // --- NEXT MATCH CARD ---
+    "nm_title": { "fr": "PROCHAIN MATCH", "en": "NEXT MATCH" },
+    "nm_vs": { "fr": "VS", "en": "VS" },
+
+    // --- ROSTER ---
+    "hdr_player": { "fr": "JOUEUR", "en": "PLAYER" },
+    "hdr_pos": { "fr": "POSTE", "en": "POSITION" },
+
+    // --- FOOTER DESCRIPTION ---
+    "footer_desc": { "fr": "Le club historique de l'Ouest Lyonnais. Formation, compétition et convivialité depuis 1944.", "en": "The historic club of West Lyon. Training, competition and conviviality since 1944." },
 };
 
 /**
  * GLOBAL FUNCTION: setLanguage
  * Attached to 'window' so HTML buttons can call onclick="window.setLanguage('fr')"
  */
-window.setLanguage = function(lang) {
+window.setLanguage = function (lang) {
     // 1. Save preference
     localStorage.setItem('language', lang);
-    
+
     // 2. Update all elements with data-i18n attribute
     document.querySelectorAll('[data-i18n]').forEach(element => {
         const key = element.getAttribute('data-i18n');
-        
+
         if (translations[key]) {
             // If the translation contains HTML tags (like <br> or <span>), use innerHTML
             if (translations[key][lang].includes('<')) {
@@ -84,14 +111,25 @@ function updateButtonStyles(lang) {
 document.addEventListener("DOMContentLoaded", () => {
     // 1. Determine language (Local Storage > Browser Default > Fallback to FR)
     const savedLang = localStorage.getItem('language') || (navigator.language.startsWith('en') ? 'en' : 'fr');
-    
+
     // 2. Apply language immediately
     window.setLanguage(savedLang);
 
-    // 3. Mobile Menu Logic (Burger Menu)
+    // 4. Highlight Active Link
+    const currentPath = window.location.pathname.split('/').pop() || 'index.html';
+    document.querySelectorAll('#main-nav a').forEach(link => {
+        const linkPath = link.getAttribute('href');
+        if (linkPath === currentPath) {
+            link.classList.add('active');
+        } else {
+            link.classList.remove('active');
+        }
+    });
+
+    // 5. Mobile Menu Logic (Burger Menu)
     const toggleBtn = document.getElementById('mobile-toggle-btn'); // Ensure your HTML has this ID on the burger
     const nav = document.getElementById('main-nav'); // Ensure your HTML has this ID on the nav ul
-    
+
     if (toggleBtn && nav) {
         toggleBtn.addEventListener('click', () => {
             nav.classList.toggle('mobile-open');
