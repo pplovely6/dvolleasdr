@@ -3,6 +3,22 @@
 <title>
     <%= typeof title !=='undefined' ? title : 'AS Dardilly Volley' %>
 </title>
+<meta name="description"
+    content="<%= typeof description !== 'undefined' ? description : 'Site officiel de l\'AS Dardilly Volleyball. Retrouvez les résultats, les équipes et la vie du club.' %>">
+
+<!-- Open Graph / Facebook -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="<%= typeof title !== 'undefined' ? title : 'AS Dardilly Volley' %>">
+<meta property="og:description"
+    content="<%= typeof description !== 'undefined' ? description : 'Site officiel de l\'AS Dardilly Volleyball.' %>">
+<meta property="og:image" content="<%= typeof ogImage !== 'undefined' ? ogImage : '/image_fd6867.png' %>">
+
+<!-- Twitter -->
+<meta property="twitter:card" content="summary_large_image">
+<meta property="twitter:title" content="<%= typeof title !== 'undefined' ? title : 'AS Dardilly Volley' %>">
+<meta property="twitter:description"
+    content="<%= typeof description !== 'undefined' ? description : 'Site officiel de l\'AS Dardilly Volleyball.' %>">
+<meta property="twitter:image" content="<%= typeof ogImage !== 'undefined' ? ogImage : '/image_fd6867.png' %>">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

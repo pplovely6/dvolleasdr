@@ -445,6 +445,36 @@ app.post('/api/match/:id', (req, res) => {
         res.status(404).json({ error: "Match non trouvé pour mise à jour" });
     }
 });
+// --- SITEMAP & AI ACCESSIBILITY ---
+app.get('/sitemap.xml', (req, res) => {
+    const baseUrl = 'https://as-dardilly.replit.app'; // Fallback base URL
+    let xml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n`;
+
+    // Core Pages
+    ['/', '/results', '/contact', '/planning', '/admin.html'].forEach(p => {
+        xml += `  <url><loc>${baseUrl}${p}</loc><priority>0.8</priority></url>\n`;
+    });
+
+    // Team & Player Pages
+    Object.keys(TEAM_MAP).forEach(slug => {
+        xml += `  <url><loc>${baseUrl}/equipe/${slug}</loc><priority>0.7</priority></url>\n`;
+
+        // Load players for this team
+        const data = getJsonData(TEAM_MAP[slug].db);
+        if (data && data.players) {
+            data.players.forEach(p => {
+                if (p.number) {
+                    xml += `  <url><loc>${baseUrl}/player/${slug}/${p.number}</loc><priority>0.6</priority></url>\n`;
+                }
+            });
+        }
+    });
+
+    xml += `</urlset>`;
+    res.header('Content-Type', 'application/xml');
+    res.send(xml);
+});
+
 // Start Server
 app.listen(PORT, HOST, () => {
     console.log(`--------------------------------------------------`);

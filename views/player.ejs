@@ -2,26 +2,48 @@
 <html lang="fr">
 
 <head>
-    <%- include('partials/head', { title: (player.name || 'Joueur' ) + ' | AS Dardilly' }) %>
+    <% const pageTitle=(player.name || 'Joueur' ) + ' - N°' + player.number + ' | AS Dardilly Volley' ; const
+        pageDesc=`Découvrez les statistiques et le profil de ${player.name}, joueur de volleyball à l'AS Dardilly.
+        Poste: ${player.position || player.pos || 'N/A' }.`; const profileImg='/' + heroImage; %>
+        <%- include('partials/head', { title: pageTitle, description: pageDesc, ogImage: profileImg }) %>
+
+            <!-- JSON-LD for AI & Search Engines -->
+            <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "<%= player.name %>",
+      "jobTitle": "<%= player.position || player.pos %>",
+      "memberOf": {
+        "@type": "SportsOrganization",
+        "name": "AS Dardilly Volleyball"
+      },
+      "image": "<%= profileImg %>",
+      "description": "<%= pageDesc %>",
+      "knowsAbout": ["Volleyball", "Sport", "AS Dardilly"],
+      "nationality": "<%= player.nationality || 'France' %>"
+    }
+    </script>
 </head>
 
 <body>
     <%- include('partials/header') %>
 
-        <main>
+        <main itemscope itemtype="https://schema.org/Person">
             <section class="player-hero" data-number="<%= player.number %>">
                 <div class="player-image-container">
-                    <img src="/<%= heroImage %>" alt="Player Photo">
+                    <img src="/<%= heroImage %>" alt="Photo de <%= player.name %> - Joueur AS Dardilly"
+                        itemprop="image">
                 </div>
             </section>
 
             <div class="player-header">
-                <div class="player-number-display">
+                <div class="player-number-display" aria-label="Numéro du joueur">
                     <%= player.number %>
                 </div>
                 <div class="player-lastname">
                     <%= (player.name || '' ).split(' ').pop().toUpperCase() %></div>
-                <div class="player-fullname"><%= player.name %></div>
+                <h1 class="player-fullname" itemprop="name"><%= player.name %></h1>
 
                 <div style="margin-top: 15px;">
                     <a href="/equipe/<%= teamSlug %>" style="color: #666; text-decoration: none; font-size: 0.9rem; border: 1px solid #333; padding: 5px 15px; border-radius: 20px;" data-i18n="btn_back">
@@ -34,35 +56,36 @@
                 <div class="vw-section-title" data-i18n="sec_bio">Bio du Joueur</div>
                 <div class="vw-card">
                     <div class="bio-grid">
-                        <div class="bio-item">
+                        <article class="bio-item">
                             <span class="bio-label" data-i18n="bio_pos">Position</span>
-                            <span class="bio-value"><%= player.position || player.pos || ' -' %></span>
+                            <span class="bio-value" itemprop="jobTitle"><%= player.position || player.pos || ' -' %>
+                        </span>
+                        </article>
+                        <article class="bio-item">
+                            <span class="bio-label" data-i18n="bio_nat">Nationalité</span>
+                            <span class="bio-value" itemprop="nationality">
+                                <%= player.nationality || '-' %>
+                            </span>
+                        </article>
+                        <article class="bio-item">
+                            <span class="bio-label" data-i18n="bio_age">Age</span>
+                            <span class="bio-value">
+                                <%= player.age || '-' %>
+                            </span>
+                        </article>
+                        <article class="bio-item">
+                            <span class="bio-label" data-i18n="bio_dob">Date Naissance</span>
+                            <span class="bio-value">
+                                <%= player.dob || '-' %>
+                            </span>
+                        </article>
+                        <article class="bio-item">
+                            <span class="bio-label" data-i18n="bio_hgt">Taille</span>
+                            <span class="bio-value">
+                                <%= player.height || '-' %>
+                            </span>
+                        </article>
                 </div>
-                <div class="bio-item">
-                    <span class="bio-label" data-i18n="bio_nat">Nationalité</span>
-                    <span class="bio-value">
-                        <%= player.nationality || '-' %>
-                    </span>
-                </div>
-                <div class="bio-item">
-                    <span class="bio-label" data-i18n="bio_age">Age</span>
-                    <span class="bio-value">
-                        <%= player.age || '-' %>
-                    </span>
-                </div>
-                <div class="bio-item">
-                    <span class="bio-label" data-i18n="bio_dob">Date Naissance</span>
-                    <span class="bio-value">
-                        <%= player.dob || '-' %>
-                    </span>
-                </div>
-                <div class="bio-item">
-                    <span class="bio-label" data-i18n="bio_hgt">Taille</span>
-                    <span class="bio-value">
-                        <%= player.height || '-' %>
-                    </span>
-                </div>
-            </div>
             </div>
 
             <% const s=player.stats || { totalPoints: "-" , avgPerMatch: "-" , attack: { points: "-" , eff: "-" ,

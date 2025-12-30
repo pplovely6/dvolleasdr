@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://as-dardilly.replit.app/sitemap.xml
