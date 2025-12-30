@@ -282,7 +282,10 @@
                 fetch(`${API_BASE}/data/${t.file}`)
                     .then(res => res.json())
                     .then(data => (data.matches || []).map(m => ({ ...m, category: t.label, tag: t.code })))
-                    .catch(() => [])
+                    .catch(err => {
+                        console.error(`Error fetching ${t.file}:`, err);
+                        return [];
+                    })
             )).then(results => {
                 let allMatches = results.flat();
                 // Sort newest first
@@ -337,6 +340,9 @@
                     ${tagEnd}
                     `;
                 }).join('');
+            }).catch(err => {
+                console.error('Error loading latest results:', err);
+                track.innerHTML = "<div style='text-align:center; width:100%; color:#666;'>Erreur de chargement des résultats.</div>";
             });
         });
     </script>

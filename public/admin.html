@@ -945,9 +945,12 @@
                 name: el.dataset.name
             }));
 
+            const setsInput = document.getElementById('adv-sets').value;
+            const setsArray = setsInput ? setsInput.split(',').map(s => s.trim()).filter(s => s.length > 0) : [];
+
             const payload = {
                 score: document.getElementById('adv-score').value,
-                sets: document.getElementById('adv-sets').value.split(',').map(s => s.trim()),
+                sets: setsArray,
                 lineup: lineup,
                 statsHome: statsHome, // Legacy
                 stats: {

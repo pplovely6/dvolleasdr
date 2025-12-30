@@ -587,7 +587,7 @@
 
                                 <div class="score-col">
                                     <div class="final-score">${m.score}</div>
-                                    <div class="score-sets">${m.sets ? m.sets.join(' | ') : ''}</div>
+                                    <div class="score-sets">${m.sets ? (Array.isArray(m.sets) ? m.sets.join(' | ') : m.sets) : ''}</div>
                                     <div class="result-badge ${badgeClass}">${badgeText}</div>
                                 </div>
 
