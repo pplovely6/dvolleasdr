@@ -2158,3 +2158,96 @@ section {
         }
     }
 }
+/* --- NEXT MATCH CARD & COMPONENTS --- */
+.next-match-card {
+    background: #1a1a1a;
+    border: 1px solid #333;
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    position: relative;
+    overflow: hidden;
+}
+
+.card-header-label {
+    color: var(--brand-yellow);
+    font-family: var(--font-head);
+    font-size: 2rem;
+    margin-bottom: 25px;
+    text-transform: uppercase;
+    z-index: 2;
+}
+
+.card-date {
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 35px;
+    color: #fff;
+    background: #333;
+    padding: 8px 25px;
+    border-radius: 4px;
+    z-index: 2;
+}
+
+.teams-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 20px;
+    z-index: 2;
+}
+
+.team-block {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 35%;
+    text-align: center;
+}
+
+.team-logo {
+    height: 80px;
+    width: 80px;
+    object-fit: contain;
+    margin-bottom: 15px;
+}
+
+.team-placeholder {
+    height: 80px;
+    width: 80px;
+    background: #252525;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    color: #555;
+    margin-bottom: 15px;
+    font-size: 1.5rem;
+}
+
+.team-name {
+    font-weight: 700;
+    font-size: 1rem;
+    text-transform: uppercase;
+    color: #ddd;
+}
+
+.center-info {
+    width: 30%;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.vs-text {
+    font-family: var(--font-head);
+    font-size: 3rem;
+    color: #444;
+}

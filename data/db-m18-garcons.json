@@ -76,7 +76,30 @@
       "name": "JANTANA SIRADANAI",
       "position": "S",
       "profile": "player-m18-15.html",
-      "captain": false
+      "captain": false,
+      "nationality": "Thaïlande",
+      "age": 18,
+      "dob": "22/10/2007",
+      "height": "172 cm",
+      "stats": {
+        "totalPoints": 84,
+        "avgPerMatch": 10.5,
+        "attack": {
+          "points": 68,
+          "eff": "42%",
+          "avg": 8.5
+        },
+        "block": {
+          "points": 6,
+          "succ": "15%",
+          "avg": 0.7
+        },
+        "serve": {
+          "points": 10,
+          "succ": "8%",
+          "avg": 1.2
+        }
+      }
     },
     {
       "number": 10,

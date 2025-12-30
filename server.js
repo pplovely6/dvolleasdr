@@ -184,7 +184,7 @@ app.get('/player/:team/:number', (req, res) => {
     const player = (data.players || []).find(p => p.number == number);
 
     if (player) {
-        res.render('player', { player, teamName: data.team || team });
+        res.render('player', { player, teamName: data.team || team, teamSlug: team });
     } else {
         res.status(404).send("Joueur non trouvé");
     }

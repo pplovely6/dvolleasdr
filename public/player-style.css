@@ -14,6 +14,12 @@
     /* DEFINING THE FONTS - OUTFIT (Matching website) */
     --font-head: 'Outfit', sans-serif;
     --font-body: 'Outfit', sans-serif;
+
+    /* VW SPECIFIC VARIABLES */
+    --vw-bg: #111111;
+    --vw-divider: #333333;
+    --vw-card-bg: #1a1d24;
+    --vw-text-gray: #b0b0b0;
 }
 
 /* Ensure Outfit font is used everywhere */
