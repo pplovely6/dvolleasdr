@@ -232,38 +232,65 @@
             }
 
             .match-row {
-                grid-template-columns: 1fr;
-                gap: 20px;
-                text-align: center;
-                padding: 25px;
+                grid-template-columns: 80px 1fr;
+                grid-template-areas:
+                    "date meta"
+                    "date teams"
+                    "date loc";
+                gap: 5px 15px;
+                text-align: left;
+                padding: 15px;
+                align-items: start;
             }
 
             .date-box {
-                border-right: none;
-                padding-right: 0;
+                grid-area: date;
+                border-right: 1px solid #333;
+                border-bottom: none;
+                padding-right: 15px;
                 margin-right: 0;
-                border-bottom: 1px solid #333;
-                padding-bottom: 15px;
-                flex-direction: row;
-                gap: 15px;
-                align-items: baseline;
+                padding-bottom: 0;
+                flex-direction: column;
+                gap: 0;
+                align-items: center;
                 justify-content: center;
+                height: 100%;
+            }
+
+            .date-day {
+                font-size: 1.8rem;
+            }
+
+            .date-month {
+                font-size: 0.8rem;
             }
 
             .time-cat-box {
+                grid-area: meta;
+                flex-direction: row;
                 align-items: center;
+                gap: 10px;
+                font-size: 0.85rem;
+            }
+
+            .match-time {
+                font-size: 1rem;
             }
 
             .teams-vs {
-                justify-content: center;
-                flex-direction: column;
-                gap: 5px;
+                grid-area: teams;
+                justify-content: flex-start;
+                font-size: 1.2rem;
+                flex-wrap: wrap;
+                margin: 5px 0;
             }
 
             .location-box {
-                justify-content: center;
-                border-top: 1px solid #333;
-                padding-top: 15px;
+                grid-area: loc;
+                justify-content: flex-start;
+                border-top: none;
+                padding-top: 0;
+                font-size: 0.85rem;
             }
         }
 
