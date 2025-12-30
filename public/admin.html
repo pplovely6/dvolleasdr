@@ -496,28 +496,75 @@
         </div>
     </div>
 
-    <div id="modal-player" class="modal">
-        <div class="modal-box">
-            <h2>Joueur</h2>
+    <div id="modal-player" class="modal" style="overflow-y: auto;">
+        <div class="modal-box" style="width: 700px; max-height: 90vh; overflow-y: auto;">
+            <h2>Fiche Joueur</h2>
             <div class="form-row">
-                <div style="width:100px"><label>N°</label><input type="number" id="py-number"></div>
-                <div style="flex:1"><label>Nom</label><input type="text" id="py-name"></div>
+                <div style="width:80px"><label>N°</label><input type="number" id="py-number"></div>
+                <div style="flex:1"><label>Nom Complet</label><input type="text" id="py-name"></div>
+                <div style="flex:1">
+                    <label>Poste</label>
+                    <select id="py-pos">
+                        <option value="S">S (Passeur)</option>
+                        <option value="OH">OH (Récep/Attaq)</option>
+                        <option value="MB">MB (Central)</option>
+                        <option value="OP">OP (Pointu)</option>
+                        <option value="L">L (Libero)</option>
+                    </select>
+                </div>
             </div>
-            <div class="form-group">
-                <label>Poste</label>
-                <select id="py-pos">
-                    <option value="S">S (Passeur)</option>
-                    <option value="OH">OH (Récep/Attaq)</option>
-                    <option value="MB">MB (Central)</option>
-                    <option value="OP">OP (Pointu)</option>
-                    <option value="L">L (Libero)</option>
-                </select>
+
+            <div class="form-row">
+                <div style="flex:1"><label>Nationalité</label><input type="text" id="py-nat" placeholder="ex: France">
+                </div>
+                <div style="flex:1"><label>Age</label><input type="number" id="py-age"></div>
+                <div style="flex:1"><label>Date Naissance</label><input type="text" id="py-dob"
+                        placeholder="JJ/MM/AAAA"></div>
+                <div style="flex:1"><label>Taille</label><input type="text" id="py-height" placeholder="ex: 185 cm">
+                </div>
             </div>
-            <div class="form-group"><label>Lien Profil</label><input type="text" id="py-profile"></div>
+
+            <div style="border-top: 1px solid #333; margin: 20px 0; padding-top: 20px;">
+                <h3 style="margin-top:0">Statistiques de Saison</h3>
+                <div class="form-row">
+                    <div style="flex:1"><label>Total Points</label><input type="number" id="st-total"></div>
+                    <div style="flex:1"><label>Moyenne /Match</label><input type="text" id="st-avg-m"></div>
+                </div>
+
+                <div style="background:rgba(255,255,255,0.03); padding:15px; border-radius:8px; margin-bottom:15px;">
+                    <h4 style="margin:0 0 10px 0; font-size:0.9rem; color:var(--brand);">ATTAQUE</h4>
+                    <div class="form-row" style="margin-bottom:0">
+                        <div style="flex:1"><label>Points</label><input type="number" id="st-att-pts"></div>
+                        <div style="flex:1"><label>Efficacité (%)</label><input type="text" id="st-att-eff"></div>
+                        <div style="flex:1"><label>Moyenne</label><input type="text" id="st-att-avg"></div>
+                    </div>
+                </div>
+
+                <div style="background:rgba(255,255,255,0.03); padding:15px; border-radius:8px; margin-bottom:15px;">
+                    <h4 style="margin:0 0 10px 0; font-size:0.9rem; color:var(--brand);">BLOCK</h4>
+                    <div class="form-row" style="margin-bottom:0">
+                        <div style="flex:1"><label>Points</label><input type="number" id="st-blk-pts"></div>
+                        <div style="flex:1"><label>Succès (%)</label><input type="text" id="st-blk-succ"></div>
+                        <div style="flex:1"><label>Moyenne</label><input type="text" id="st-blk-avg"></div>
+                    </div>
+                </div>
+
+                <div style="background:rgba(255,255,255,0.03); padding:15px; border-radius:8px;">
+                    <h4 style="margin:0 0 10px 0; font-size:0.9rem; color:var(--brand);">SERVICE</h4>
+                    <div class="form-row" style="margin-bottom:0">
+                        <div style="flex:1"><label>Points</label><input type="number" id="st-srv-pts"></div>
+                        <div style="flex:1"><label>Succès (%)</label><input type="text" id="st-srv-succ"></div>
+                        <div style="flex:1"><label>Moyenne</label><input type="text" id="st-srv-avg"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group"><label>Lien Profil / Photo</label><input type="text" id="py-profile"></div>
             <div class="form-group"><label style="display:flex;align-items:center;gap:10px"><input type="checkbox"
-                        id="py-captain" style="width:auto"> Capitaine</label></div>
+                        id="py-captain" style="width:auto"> Capitaine de l'équipe</label></div>
+
             <div class="form-row" style="margin-top:30px">
-                <button class="btn" style="flex:2" onclick="savePlayer()">Enregistrer</button>
+                <button class="btn" style="flex:2" onclick="savePlayer()">Enregistrer Joueur</button>
                 <button class="btn" style="flex:1; background:#333;" onclick="closeModals()">Annuler</button>
             </div>
         </div>
@@ -1011,15 +1058,60 @@
             if (item) {
                 document.getElementById('py-number').value = item.number;
                 document.getElementById('py-name').value = item.name;
-                document.getElementById('py-pos').value = item.pos;
+                document.getElementById('py-pos').value = item.pos || item.position;
                 document.getElementById('py-profile').value = item.profile || '';
                 document.getElementById('py-captain').checked = !!item.captain;
+
+                // Bio
+                document.getElementById('py-nat').value = item.nationality || '';
+                document.getElementById('py-age').value = item.age || '';
+                document.getElementById('py-dob').value = item.dob || '';
+                document.getElementById('py-height').value = item.height || '';
+
+                // Stats
+                const s = item.stats || {};
+                document.getElementById('st-total').value = s.totalPoints || 0;
+                document.getElementById('st-avg-m').value = s.avgPerMatch || 0;
+
+                const att = s.attack || {};
+                document.getElementById('st-att-pts').value = att.points || 0;
+                document.getElementById('st-att-eff').value = att.eff || '';
+                document.getElementById('st-att-avg').value = att.avg || 0;
+
+                const blk = s.block || {};
+                document.getElementById('st-blk-pts').value = blk.points || 0;
+                document.getElementById('st-blk-succ').value = blk.succ || '';
+                document.getElementById('st-blk-avg').value = blk.avg || 0;
+
+                const srv = s.serve || {};
+                document.getElementById('st-srv-pts').value = srv.points || 0;
+                document.getElementById('st-srv-succ').value = srv.succ || '';
+                document.getElementById('st-srv-avg').value = srv.avg || 0;
             } else {
                 document.getElementById('py-number').value = '';
                 document.getElementById('py-name').value = '';
                 document.getElementById('py-pos').value = 'OH';
                 document.getElementById('py-profile').value = '';
                 document.getElementById('py-captain').checked = false;
+
+                // Reset Bio
+                document.getElementById('py-nat').value = '';
+                document.getElementById('py-age').value = '';
+                document.getElementById('py-dob').value = '';
+                document.getElementById('py-height').value = '';
+
+                // Reset Stats
+                document.getElementById('st-total').value = 0;
+                document.getElementById('st-avg-m').value = 0;
+                document.getElementById('st-att-pts').value = 0;
+                document.getElementById('st-att-eff').value = '';
+                document.getElementById('st-att-avg').value = 0;
+                document.getElementById('st-blk-pts').value = 0;
+                document.getElementById('st-blk-succ').value = '';
+                document.getElementById('st-blk-avg').value = 0;
+                document.getElementById('st-srv-pts').value = 0;
+                document.getElementById('st-srv-succ').value = '';
+                document.getElementById('st-srv-avg').value = 0;
             }
         }
 
@@ -1029,8 +1121,32 @@
                 number: parseInt(document.getElementById('py-number').value),
                 name: document.getElementById('py-name').value,
                 pos: document.getElementById('py-pos').value,
+                position: document.getElementById('py-pos').value, // Dual support
                 profile: document.getElementById('py-profile').value,
-                captain: document.getElementById('py-captain').checked
+                captain: document.getElementById('py-captain').checked,
+                nationality: document.getElementById('py-nat').value,
+                age: parseInt(document.getElementById('py-age').value) || 0,
+                dob: document.getElementById('py-dob').value,
+                height: document.getElementById('py-height').value,
+                stats: {
+                    totalPoints: parseInt(document.getElementById('st-total').value) || 0,
+                    avgPerMatch: parseFloat(document.getElementById('st-avg-m').value) || 0,
+                    attack: {
+                        points: parseInt(document.getElementById('st-att-pts').value) || 0,
+                        eff: document.getElementById('st-att-eff').value,
+                        avg: parseFloat(document.getElementById('st-att-avg').value) || 0
+                    },
+                    block: {
+                        points: parseInt(document.getElementById('st-blk-pts').value) || 0,
+                        succ: document.getElementById('st-blk-succ').value,
+                        avg: parseFloat(document.getElementById('st-blk-avg').value) || 0
+                    },
+                    serve: {
+                        points: parseInt(document.getElementById('st-srv-pts').value) || 0,
+                        succ: document.getElementById('st-srv-succ').value,
+                        avg: parseFloat(document.getElementById('st-srv-avg').value) || 0
+                    }
+                }
             };
             await fetch(`${API_BASE}/players/update`, {
                 method: 'POST',
