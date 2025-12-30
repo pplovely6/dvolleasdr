@@ -85,6 +85,7 @@ body {
 }
 
 .player-lastname {
+    font-family: var(--font-head);
     font-size: 3.5rem;
     font-weight: 800;
     text-transform: uppercase;
@@ -94,6 +95,7 @@ body {
 }
 
 .player-fullname {
+    font-family: var(--font-body);
     font-size: 1.2rem;
     color: var(--vw-text-gray);
     font-weight: 400;
@@ -101,6 +103,7 @@ body {
 
 /* --- SECTIONS COMMON STYLES --- */
 .vw-section-title {
+    font-family: var(--font-head);
     text-align: center;
     font-size: 0.9rem;
     letter-spacing: 1px;
@@ -130,6 +133,7 @@ body {
 
 /* --- STATS CARD (The Dark Box) --- */
 .vw-card {
+    font-family: var(--font-body);
     background: var(--vw-card-bg);
     border-radius: 8px;
     padding: 25px;
@@ -169,6 +173,7 @@ body {
 }
 
 .bio-value {
+    font-family: var(--font-head);
     font-size: 1.2rem;
     font-weight: 700;
     text-transform: uppercase;
@@ -226,6 +231,7 @@ body {
 }
 
 .avg-value {
+    font-family: var(--font-head);
     font-size: 1.2rem;
     font-weight: 700;
     margin-top: 2px;
@@ -246,6 +252,7 @@ body {
 }
 
 .stat-title {
+    font-family: var(--font-head);
     color: var(--brand-yellow);
     font-size: 0.85rem;
     font-weight: 700;
@@ -253,6 +260,7 @@ body {
 }
 
 .stat-main-value {
+    font-family: var(--font-head);
     font-size: 2.2rem;
     font-weight: 700;
     margin-bottom: 15px;
@@ -357,129 +365,7 @@ body {
     }
 }
 
-/* New Match History Design */
-.match-history-grid {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    margin-top: 20px;
-}
-
-.match-item-card {
-    background: #1a1d24;
-    border: 1px solid #333;
-    border-radius: 8px;
-    display: grid;
-    grid-template-columns: 8px 100px 1fr 120px 60px;
-    align-items: center;
-    overflow: hidden;
-    transition: transform 0.2s;
-}
-
-.match-item-card:hover {
-    border-color: var(--brand-yellow);
-}
-
-.res-indicator {
-    height: 100%;
-}
-
-.res-win {
-    background: #2ed573;
-}
-
-.res-loss {
-    background: #ff4757;
-}
-
-.m-date-v2 {
-    font-family: var(--font-head);
-    font-weight: 700;
-    text-align: center;
-    color: #888;
-}
-
-.m-info-v2 {
-    padding-left: 10px;
-}
-
-.m-opp-v2 {
-    font-weight: 800;
-    text-transform: uppercase;
-    font-size: 1.1rem;
-}
-
-.m-sets-v2 {
-    font-size: 0.8rem;
-    color: #666;
-}
-
-.m-score-v2 {
-    font-family: var(--font-head);
-    font-weight: 800;
-    text-align: center;
-    font-size: 1.2rem;
-}
-
-.m-pts-v2 {
-    background: #222;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    text-align: center;
-}
-
-.match-card-row {
-    background: #1a1d24;
-    border: 1px solid #333;
-    border-radius: 8px;
-    display: grid;
-    grid-template-columns: 8px 90px 1fr 100px 75px;
-    align-items: center;
-    margin-bottom: 12px;
-    height: 75px;
-    overflow: hidden;
-}
-
-.win-indicator {
-    background: #2ed573;
-}
-
-.loss-indicator {
-    background: #ff4757;
-}
-
-.m-opp-v2 {
-    font-weight: 800;
-    text-transform: uppercase;
-    color: #fff;
-}
-
-.m-score-v2 {
-    color: #fce300;
-    font-weight: 900;
-    text-align: center;
-}
-
-.m-pts-badge {
-    background: #222;
-    height: 100%;
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-}
-
-.m-pts-v2 span {
-    font-size: 0.7rem;
-    color: var(--brand-yellow);
-    text-transform: uppercase;
-}
-
-.m-pts-v2 strong {
-    font-size: 1.4rem;
-}
+/* Obsolete styles removed. Match history now uses global .result-card from style.css */
 
 /* Responsive */
 @media (max-width: 768px) {
@@ -501,94 +387,22 @@ body {
         display: none;
     }
 
-    /* Fallback responsive rules for match cards to avoid overlap on older pages */
-    @media (max-width: 900px) {
-
-        .match-item-card,
-        .match-card-row,
-        .match-card-v3 {
-            grid-template-columns: 8px 1fr 1fr 60px 60px;
-            align-items: center;
-            display: grid;
-        }
-
-        .m-score-v2,
-        .m-score-main-v3,
-        .m-score-main,
-        .main-score {
-            font-size: clamp(1rem, 6vw, 2.2rem) !important;
-            line-height: 1 !important;
-        }
-
-        .m-pts-v2,
-        .m-pts-badge {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .m-team-row,
-        .m-team-v3,
-        .m-opp-v2 {
-            white-space: normal;
-            overflow-wrap: break-word;
-            word-break: normal;
-            min-width: 0;
-        }
-    }
-
-    /* Additional mobile fixes to override inline styles on team pages */
-    @media (max-width: 900px) {
-
-        .match-row,
-        .team-grid,
-        .roster-container {
-            grid-template-columns: 1fr !important;
-            width: 100% !important;
-            gap: 20px !important;
-            padding: 0 10px !important;
-        }
-
-        .card,
-        .match-card,
-        .match-card-v3 {
-            width: 100% !important;
-            margin-bottom: 18px !important;
-        }
-
-        .table-responsive {
-            overflow-x: auto;
-            -webkit-overflow-scrolling: touch;
-        }
-    }
-
-    @media (max-width: 600px) {
-
-        .hero h1,
-        .hero-title {
-            font-size: 2.5rem !important;
-            line-height: 1.1 !important;
-        }
-
-        .hero p,
-        .hero-sub {
-            font-size: 0.9rem !important;
-        }
-
-        .m-score-main-v3,
-        .m-score-v2,
-        .main-score {
-            font-size: clamp(1rem, 6vw, 2.2rem) !important;
-        }
-
-        .team-name,
-        .team {
-            font-size: 1rem !important;
-        }
-    }
-
     .stat-group {
         border-bottom: 1px solid var(--vw-divider);
         padding-bottom: 20px;
+    }
+}
+
+@media (max-width: 600px) {
+    .bio-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .player-number-display {
+        font-size: 3rem;
+    }
+
+    .player-lastname {
+        font-size: 2.5rem;
     }
 }

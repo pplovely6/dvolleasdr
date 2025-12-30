@@ -64,7 +64,7 @@ function renderVWCard(match, playerPoints) {
     const homeScore = scores[0] || 0;
     const awayScore = scores[1] || 0;
 
-    const isHome = match.home.toUpperCase().includes("DARDILLY");
+    const isHome = (match.home || "").toUpperCase().includes("DARDILLY");
     const isWin = isHome ? (homeScore > awayScore) : (awayScore > homeScore);
 
     const statusClass = isWin ? "status-win" : "status-loss";
@@ -72,43 +72,43 @@ function renderVWCard(match, playerPoints) {
     const badgeText = isWin ? "VICTOIRE" : "DÉFAITE";
 
     // Logo Logic
-    const logoImg = `<img src="image_fd6867.png" class="team-logo" style="height:40px; width:auto;">`;
-    const placeholder = (name) => `<div class="logo-placeholder" style="height:35px; width:35px; background:#252525; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:0.7rem; color:#555;">${name.substring(0, 3).toUpperCase()}</div>`;
+    const logoImg = `<img src="image_fd6867.png" class="team-logo">`;
+    const placeholder = (name) => `<div class="logo-placeholder">${name ? name.substring(0, 2).toUpperCase() : '??'}</div>`;
 
     const homeDisplay = isHome ? logoImg : placeholder(match.home);
     const awayDisplay = !isHome ? logoImg : placeholder(match.away);
 
-    // Tag for M18 Boys is m18-m
+    // Tag for linking
     const tag = "m18-m";
 
     return `
-        <a href="match.html?id=${match.id}&tag=${tag}" style="text-decoration:none; display:block; margin-bottom:15px;">
-            <div class="result-card ${statusClass}" style="margin:0; padding:15px; grid-template-columns: 80px 1fr 100px 1fr;">
-                <div class="date-col" style="padding-right:15px;">
-                    <div class="date-val" style="font-size:0.9rem;">${match.date}</div>
-                    <div class="team-cat" style="font-size:0.7rem;">M18 GARÇONS</div>
+        <a href="match.html?id=${match.id}&tag=${tag}" style="text-decoration:none; display:block; margin-bottom:20px;">
+            <div class="result-card ${statusClass}" style="margin:0;">
+                <div class="date-col">
+                    <div class="date-val">${match.date}</div>
+                    <div class="team-cat">M18 GARÇONS</div>
                 </div>
 
-                <div class="team-col home" style="font-size:0.95rem;">
+                <div class="team-col home">
                     <span>${match.home}</span>
                     ${homeDisplay}
                 </div>
 
                 <div class="score-col">
-                    <div class="final-score" style="font-size:1.8rem;">${match.score}</div>
-                    <div class="score-sets" style="font-size:0.75rem;">${setsLine}</div>
-                    <div class="result-badge ${badgeClass}" style="font-size:0.6rem;">${badgeText}</div>
+                    <div class="final-score" style="font-family:var(--font-head);">${match.score}</div>
+                    <div class="score-sets">${setsLine}</div>
+                    <div class="result-badge ${badgeClass}">${badgeText}</div>
                 </div>
 
-                <div class="team-col away" style="font-size:0.95rem;">
+                <div class="team-col away">
                     ${awayDisplay}
                     <span>${match.away}</span>
                 </div>
             </div>
             ${playerPoints ? `
-                <div style="background:#222; padding:5px 15px; border-radius:0 0 6px 6px; border:1px solid #333; border-top:none; display:flex; justify-content:space-between; align-items:center; font-size:0.85rem; color:#aaa; width:90%; margin:0 auto; transform:translateY(-2px);">
-                    <span><i class="fa-solid fa-star" style="color:var(--brand-yellow)"></i> Performance Joueur</span>
-                    <span style="color:white; font-weight:bold;">${playerPoints} Pts</span>
+                <div style="background:#1a1d24; padding:10px 20px; border-radius:0 0 8px 8px; border:1px solid #333; border-top:none; display:flex; justify-content:space-between; align-items:center; font-size:0.9rem; margin-top:-2px; position:relative; z-index:1;">
+                    <span style="color:#aaa;"><i class="fa-solid fa-star" style="color:var(--brand-yellow); margin-right:8px;"></i>Performance Joueur</span>
+                    <span style="color:white; font-weight:800; font-family:var(--font-head);">${playerPoints} Pts</span>
                 </div>
             ` : ''}
         </a>
