@@ -415,8 +415,10 @@ nav a.active::after {
 }
 
 .m-team-row {
-    overflow-wrap: anywhere;
-    word-break: break-word;
+    overflow-wrap: break-word;
+    word-break: normal;
+    white-space: normal;
+    min-width: 0;
 }
 
 .m-score-main-v3 {
@@ -951,37 +953,54 @@ section {
     z-index: 2;
 }
 
+
 /* --- TABLES --- */
 .table-responsive {
     overflow-x: auto;
     margin-top: 20px;
 }
 
-/* Force grids to single column on mobile */
-.match-row,
-.team-grid,
-.roster-container,
-.match-dashboard-card {
-    grid-template-columns: 1fr !important;
-    width: 100% !important;
-    gap: 20px !important;
-    padding: 0 10px !important;
-}
+/* Mobile Responsive Styles */
+@media (max-width: 768px) {
 
-/* Ensure cards and matches take full width */
-.card,
-.match-card,
-.match-card-v3,
-.match-card-row {
-    width: 100% !important;
-    margin-bottom: 20px !important;
-}
+    /* Force grids to single column on mobile */
+    .match-row,
+    .team-grid,
+    .roster-container,
+    .match-dashboard-card {
+        grid-template-columns: 1fr !important;
+        width: 100% !important;
+        gap: 20px !important;
+        padding: 0 10px !important;
+    }
 
-/* Tables: allow horizontal scroll on small screens */
-.table-responsive {
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-}
+    /* Ensure cards and matches take full width */
+    .card,
+    .match-card,
+    .match-card-v3,
+    .match-card-row {
+        width: 100% !important;
+        margin-bottom: 20px !important;
+    }
+
+    /* Tables: allow horizontal scroll on small screens */
+    .table-responsive {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    /* Roster mobile fixes */
+    .roster-container {
+        grid-template-columns: 1fr !important;
+    }
+
+    .roster-image {
+        min-height: 250px;
+    }
+
+    .roster-content {
+        padding: 20px 15px;
+    }
 }
 
 @media (max-width: 600px) {
