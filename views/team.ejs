@@ -98,137 +98,150 @@
 
             <main>
                 <div class="hero"
-                    style="height: 40vh; background: linear-gradient(rgba(0,0,0,0.7), rgba(15,17,21,1)), url('/<%= team.image %>'); display:flex; align-items:flex-end; padding-bottom:40px; padding-left:5%; background-size: cover; background-position: center;">
+                    style="height: 40vh; background: linear-gradient(rgba(0,0,0,0.7), rgba(15,17,21,1)), url('/<%= metadata.heroImage || 'logo.jpg' %>'); display:flex; align-items:flex-end; padding-bottom:40px; padding-left:5%; background-size: cover; background-position: center;">
                     <div>
                         <h1
                             style="font-family: var(--font-head); font-size: 5rem; text-transform: uppercase; line-height: 1; margin:0;">
-                            <%= teamName.split(' ')[0] %> <span style="color:var(--brand-yellow);"><%= teamName.split(' ').slice(1).join(' ') %></span>
-                </h1>
-                <p style="color: #bbb; letter-spacing: 2px; font-weight: 600; margin-top:10px;">SAISON 2025 / 2026</p>
-            </div>
-        </div>
-
-        <section class="results-container">
-            <h2 class="section-title">Calendrier & <span>Résultats</span></h2>
-            <div class="split-results">
-                <div class="match-card-v3">
-                    <% if (latestMatch) { 
-                        const sc = (latestMatch.score || "0-0").split(/[-:]/).map(s => parseInt(s.trim()));
-                        const hS = sc[0] || 0;
-                        const aS = sc[1] || 0;
-                        const isH = latestMatch.home.toUpperCase().includes("DARDILLY");
-                        const win = isH ? (hS > aS) : (aS > hS);
-                        const hW = hS > aS;
-                        const aW = aS > hS;
-                    %>
-                    <div class="match-header-v3" style="border-left: 6px solid var(--<%= win ? ' win' : 'loss' %>);">
-                                <span class="m-category-tag">DERNIER RÉSULTAT</span>
-                                <span class="m-date-v3">
-                                    <%= latestMatch.date %>
-                                </span>
-                    </div>
-                    <div class="match-body-v3">
-                        <div class="m-teams-col">
-                            <div class="m-team-row <%= hW ? 'winner' : 'loser' %>">
-                                <% if (latestMatch.home.toUpperCase().includes('DARDILLY')) { %>
-                                    <img src="/image_fd6867.png" class="mini-logo-v3">
-                                    <% } else { %>
-                                        <div class="logo-spacer"></div>
-                                        <% } %>
-                                            <span>
-                                                <%= latestMatch.home %>
-                                            </span>
-                            </div>
-                            <div class="m-team-row <%= aW ? 'winner' : 'loser' %>">
-                                <% if (latestMatch.away.toUpperCase().includes('DARDILLY')) { %>
-                                    <img src="/image_fd6867.png" class="mini-logo-v3">
-                                    <% } else { %>
-                                        <div class="logo-spacer"></div>
-                                        <% } %>
-                                            <span>
-                                                <%= latestMatch.away %>
-                                            </span>
-                            </div>
-                        </div>
-                        <div class="m-score-col">
-                            <div class="m-score-main-v3">
-                                <%= latestMatch.score.replace('-', ' - ' ) %>
-                            </div>
-                            <div class="m-sets-v3">
-                                <%= Array.isArray(latestMatch.sets) ? latestMatch.sets.join(' ') : latestMatch.sets %></div>
-                        </div>
-                    </div>
-                    <% } else { %>
-                        <div class="match-header-v3">
-                            <span class="m-category-tag">DERNIER RÉSULTAT</span>
-                        </div>
-                        <div class="match-body-v3">
-                            <p style="color:#666; width:100%; text-align:center;">Aucun résultat disponible.</p>
-                        </div>
-                    <% } %>
-                </div>
-
-                <div class="vertical-divider"></div>
-
-                <div class="next-match-card">
-                    <div class="card-header-label">PROCHAIN MATCH</div>
-                    <% if (nextMatch) { %>
-                        <div class="card-date">
-                            <%= nextMatch.date %>
-                                <%= nextMatch.time ? ' • ' + nextMatch.time : '' %>
-                        </div>
-                        <div class="teams-row">
-                            <div class="team-block">
-                                <% if (nextMatch.home.toUpperCase().includes(' DARDILLY')) { %>
-                                    <img src="/image_fd6867.png" class="team-logo">
-                                    <% } else { %>
-                                        <div class="team-placeholder">
-                                            <%= nextMatch.home.substring(0,3).toUpperCase() %>
-                                        </div>
-                                        <% } %>
-                                            <div class="team-name">
-                                                <%= nextMatch.home %>
-                                            </div>
-                            </div>
-                            <div class="center-info">
-                                <div class="vs-text">VS</div>
-                            </div>
-                            <div class="team-block">
-                                <% if (nextMatch.away.toUpperCase().includes('DARDILLY')) { %>
-                                    <img src="/image_fd6867.png" class="team-logo">
-                                    <% } else { %>
-                                        <div class="team-placeholder">
-                                            <%= nextMatch.away.substring(0,3).toUpperCase() %>
-                                        </div>
-                                        <% } %>
-                                            <div class="team-name">
-                                                <%= nextMatch.away %>
-                                            </div>
-                            </div>
-                        </div>
-                        <div class="match-location">
-                            <i class="fa-solid fa-location-dot"
-                                style="color: var(--brand-yellow); margin-right: 5px;"></i>
-                            <strong>
-                                <%= nextMatch.location %>
-                            </strong>
-                        </div>
-                        <% } else { %>
-                            <p style="color:#666;">Aucun match prévu.</p>
-                            <% } %>
+                            <%= (metadata.teamName ||
+                                teamName).split(' ')[0] %> <span style="color:var(--brand-yellow);"><%= (metadata.teamName || teamName).split(' ').slice(1).join(' ') %></span>
+                        </h1>
+                        <p style="color: #bbb; letter-spacing: 2px; font-weight: 600; margin-top:10px;"><%= metadata.season || '
+                                SAISON 2025 / 2026' %>
+                                </p>
                     </div>
                 </div>
+
+                <section class="results-container">
+                    <h2 class="section-title">Calendrier & <span>Résultats</span></h2>
+                    <div class="split-results">
+                        <div class="match-card-v3">
+                            <% if (latestMatch) { const sc=(latestMatch.score || "0-0" ).split(/[-:]/).map(s=>
+                                parseInt(s.trim()));
+                                const hS = sc[0] || 0;
+                                const aS = sc[1] || 0;
+                                const isH = latestMatch.home.toUpperCase().includes("DARDILLY");
+                                const win = isH ? (hS > aS) : (aS > hS);
+                                const hW = hS > aS;
+                                const aW = aS > hS;
+                                %>
+                                <div class="match-header-v3"
+                                    style="border-left: 6px solid var(--<%= win ? 'win' : 'loss' %>);">
+                                    <span class="m-category-tag">
+                                        <%= metadata.category || 'DERNIER RÉSULTAT' %>
+                                    </span>
+                                    <span class="m-date-v3">
+                                        <%= latestMatch.date %>
+                                    </span>
+                                </div>
+                                <div class="match-body-v3">
+                                    <div class="m-teams-col">
+                                        <div class="m-team-row <%= hW ? 'winner' : 'loser' %>">
+                                            <% if (latestMatch.home.toUpperCase().includes('DARDILLY')) { %>
+                                                <img src="/image_fd6867.png" class="mini-logo-v3" alt="Logo">
+                                                <% } else { %>
+                                                    <div class="logo-spacer"></div>
+                                                    <% } %>
+                                                        <span>
+                                                            <%= latestMatch.home %>
+                                                        </span>
+                                        </div>
+                                        <div class="m-team-row <%= aW ? 'winner' : 'loser' %>">
+                                            <% if (latestMatch.away.toUpperCase().includes('DARDILLY')) { %>
+                                                <img src="/image_fd6867.png" class="mini-logo-v3" alt="Logo">
+                                                <% } else { %>
+                                                    <div class="logo-spacer"></div>
+                                                    <% } %>
+                                                        <span>
+                                                            <%= latestMatch.away %>
+                                                        </span>
+                                        </div>
+                                    </div>
+                                    <div class="m-score-col">
+                                        <div class="m-score-main-v3">
+                                            <%= latestMatch.score.replace('-', ' - ' ) %>
+                                        </div>
+                                        <div class="m-sets-v3">
+                                            <%= Array.isArray(latestMatch.sets) ? latestMatch.sets.join(' ') : latestMatch.sets %>
+                                    </div>
+                                </div>
+                            </div>
+                            <% } else { %>
+                                <div class="match-header-v3">
+                                    <span class="m-category-tag"><%= metadata.category || ' DERNIER RÉSULTAT' %></span>
+                                        </div>
+                                        <div class="match-body-v3">
+                                            <p style="color:#666; width:100%; text-align:center;">Aucun résultat
+                                                disponible.</p>
+                                        </div>
+                                        <% } %>
+                                    </div>
+
+                                    <div class="vertical-divider"></div>
+
+                                    <div class="next-match-card">
+                                        <div class="card-header-label">PROCHAIN MATCH</div>
+                                        <% if (nextMatch) { %>
+                                            <div class="card-date">
+                                                <%= nextMatch.date %>
+                                                    <%= nextMatch.time ? ' • ' + nextMatch.time : '' %>
+                                            </div>
+                                            <div class="teams-row">
+                                                <div class="team-block">
+                                                    <% if (nextMatch.home.toUpperCase().includes('DARDILLY')) { %>
+                                                        <img src="/image_fd6867.png" class="team-logo" alt="Logo">
+                                                        <% } else { %>
+                                                            <div class="team-placeholder">
+                                                                <%= nextMatch.home.substring(0,3).toUpperCase() %>
+                                                            </div>
+                                                            <% } %>
+                                                                <div class="team-name">
+                                                                    <%= nextMatch.home %>
+                                                                </div>
+                                                </div>
+                                                <div class="center-info">
+                                                    <div class="vs-text">VS</div>
+                                                </div>
+                                                <div class="team-block">
+                                                    <% if (nextMatch.away.toUpperCase().includes('DARDILLY')) { %>
+                                                        <img src="/image_fd6867.png" class="team-logo" alt="Logo">
+                                                        <% } else { %>
+                                                            <div class="team-placeholder">
+                                                                <%= nextMatch.away.substring(0,3).toUpperCase() %>
+                                                            </div>
+                                                            <% } %>
+                                                                <div class="team-name">
+                                                                    <%= nextMatch.away %>
+                                                                </div>
+                                                </div>
+                                            </div>
+                                            <div class="match-location">
+                                                <i class="fa-solid fa-location-dot"
+                                                    style="color: var(--brand-yellow); margin-right: 5px;"></i>
+                                                <strong>
+                                                    <%= nextMatch.location %>
+                                                </strong>
+                                            </div>
+                                            <% } else { %>
+                                                <p style="color:#666;">Aucun match prévu.</p>
+                                                <% } %>
+                                    </div>
+                                </div>
                 </section>
 
                 <section
                     style="background: #1a1d24; border-top: 1px solid #333; padding-top: 100px; margin-top: 60px; padding-bottom: 60px;">
                     <h2 class="section-title" style="width:90%; max-width:1400px; margin:0 auto 40px;">L'Effectif
-                        <span>2025-26</span>
-                    </h2>
+                        <span>2025-26</span></h2>
                     <div class="roster-container"
                         style="width:90%; max-width:1400px; margin:0 auto; display:grid; grid-template-columns: 1fr 1.5fr; gap:40px;">
                         <div class="roster-image"
-                            style="background-image: url('/<%= team.image %>'); background-size: cover; background-position: center; min-height: 500px; border-radius: 0;">
+                            style="background-position: center; background-size: cover; background-image: url('/<%= metadata.heroImage || 'logo.jpg' %>'); min-height: 500px; border-radius: 0; position: relative;">
+                            <% if (metadata.rankTag) { %>
+                                <div
+                                    style="position: absolute; bottom: 0; left: 0; width: 100%; padding: 12px; background: var(--brand-yellow); color: black; font-weight: 800; font-size: 0.9rem; text-transform: uppercase; text-align: center; letter-spacing: 1px;">
+                                    <%= metadata.rankTag %>
+                                </div>
+                                <% } %>
                         </div>
                         <div class="roster-content">
                             <div class="roster-header"

@@ -1,4 +1,12 @@
 {
+  "metadata": {
+    "teamName": "M18 Garçons",
+    "category": "M18 Garçons",
+    "season": "SAISON 2025 / 2026",
+    "heroImage": "m18-photo-garcon2025.jpg",
+    "rankTag": "1er POULE JM5",
+    "type": "Filière Jeunes"
+  },
   "team": "M18 Garçons",
   "players": [
     {

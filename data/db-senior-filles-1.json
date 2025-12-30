@@ -1,11 +1,13 @@
 {
-  "players": [
-    {
-      "number": 1,
-      "name": "DE PIN LINA",
-      "position": "S",
-      "profile": "#player-reg-01-f",
-      "captain": false
-    }
-  ]
+  "metadata": {
+    "teamName": "Seniors Filles 1",
+    "category": "Régional",
+    "season": "SAISON 2025 / 2026",
+    "heroImage": "reg-f2025.jpg",
+    "rankTag": "",
+    "type": "Seniors",
+    "description": "Équipe Compétition Régionale"
+  },
+  "team": "Seniors Filles 1",
+  "players": []
 }

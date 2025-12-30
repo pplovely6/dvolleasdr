@@ -1,4 +1,13 @@
 {
+  "metadata": {
+    "teamName": "Seniors Garçons",
+    "category": "Départemental",
+    "season": "SAISON 2025 / 2026",
+    "heroImage": "dep-garcon-2025-1.jpeg",
+    "rankTag": "",
+    "type": "Seniors",
+    "description": "Championnat Départemental"
+  },
   "team": "DEP Garçons",
   "players": [
     {

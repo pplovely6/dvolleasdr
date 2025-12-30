@@ -211,27 +211,27 @@ app.get('/match.html', (req, res) => {
 });
 
 const TEAM_MAP = {
-    'reg-filles': { db: 'db-senior-filles-1', matches: 'matches-senior-filles-1', schedule: 'schedule-senior-filles-1', image: 'reg-f2025.jpg' },
-    'dep-filles': { db: 'db-senior-filles-2', matches: 'matches-senior-filles-2', schedule: 'schedule-senior-filles-2', image: 'Dep-fille-2025.jpg' },
-    'dep-garcons': { db: 'db-dep-garcons', matches: 'matches-dep-garcons', schedule: 'schedule-dep-garcons', image: 'dep-garcon-2025-1.jpeg' },
-    'm18': { db: 'db-m18-garcons', matches: 'matches-db', schedule: 'schedule-m18-garcons', image: 'm18-photo-garcon2025.jpg' },
-    'm18-filles-1': { db: 'db-m18-filles-1', matches: 'matches-m18-filles-1', schedule: 'schedule-m18-filles-1', image: 'm18f-1-2.jpg' },
-    'm18-f-2': { db: 'db-m18-filles-2', matches: 'matches-m18-filles-2', schedule: 'schedule-m18-filles-2', image: 'm18-photo-fille.jpg' },
-    'm15-f': { db: 'db-m15-filles', matches: 'matches-m15-filles', schedule: 'schedule-m15-filles', image: 'm15f-photo.jpg' },
-    'm13-mx': { db: 'db-m13-mixte', matches: 'matches-m13-mixte', schedule: 'schedule-m13-mixte', image: 'm13mx-photo.jpg' }
+    'reg-filles': { db: 'db-senior-filles-1', matches: 'matches-senior-filles-1', schedule: 'schedule-senior-filles-1' },
+    'dep-filles': { db: 'db-senior-filles-2', matches: 'matches-senior-filles-2', schedule: 'schedule-senior-filles-2' },
+    'dep-garcons': { db: 'db-dep-garcons', matches: 'matches-dep-garcons', schedule: 'schedule-dep-garcons' },
+    'm18': { db: 'db-m18-garcons', matches: 'matches-db', schedule: 'schedule-m18-garcons' },
+    'm18-filles-1': { db: 'db-m18-filles-1', matches: 'matches-m18-filles-1', schedule: 'schedule-m18-filles-1' },
+    'm18-f-2': { db: 'db-m18-filles-2', matches: 'matches-m18-filles-2', schedule: 'schedule-m18-filles-2' },
+    'm15-f': { db: 'db-m15-filles', matches: 'matches-m15-filles', schedule: 'schedule-m15-filles' },
+    'm13-mx': { db: 'db-m13-mixte', matches: 'matches-m13-mixte', schedule: 'schedule-m13-mixte' }
 };
 
 app.get('/equipe/:slug', (req, res) => {
-    const team = TEAM_MAP[req.params.slug];
-    if (!team) return res.status(404).send("Équipe non trouvée");
+    const teamCfg = TEAM_MAP[req.params.slug];
+    if (!teamCfg) return res.status(404).send("Équipe non trouvée");
 
-    const rosterData = getJsonData(team.db);
-    const matchesData = getJsonData(team.matches);
-    const scheduleData = getJsonData(team.schedule);
+    const rosterData = getJsonData(teamCfg.db);
+    const matchesData = getJsonData(teamCfg.matches);
+    const scheduleData = getJsonData(teamCfg.schedule);
 
     res.render('team', {
         slug: req.params.slug,
-        team,
+        metadata: rosterData.metadata || {},
         roster: rosterData.players || [],
         matches: matchesData.matches || [],
         schedule: scheduleData.schedule || [],

@@ -1,3 +1,13 @@
 {
+  "metadata": {
+    "teamName": "M15 Filles",
+    "category": "M15",
+    "season": "SAISON 2025 / 2026",
+    "heroImage": "m15f-photo.jpg",
+    "rankTag": "",
+    "type": "Filière Jeunes",
+    "description": "Championnat Jeunes"
+  },
+  "team": "M15 Filles",
   "players": []
 }
