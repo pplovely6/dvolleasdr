@@ -2,7 +2,7 @@
 <html lang="fr">
 
 <head>
-    <%- include('partials/head', { title: teamName + ' | AS Dardilly' }) %>
+    <%- include('partials/head', { title: (metadata.teamName || teamName) + ' | AS Dardilly' }) %>
         <style>
             .results-container {
                 width: 90%;
@@ -16,13 +16,6 @@
                 gap: 40px;
                 align-items: stretch;
                 width: 100%;
-            }
-
-            .vertical-divider {
-                width: 1px;
-                background: #333;
-                height: 100%;
-                opacity: 0.5;
             }
 
             .vertical-divider {
@@ -90,7 +83,8 @@
             parseDate(b.date) - parseDate(a.date));
             const latestMatch = sortedMatches[0];
 
-            const now = new Date(); now.setHours(0,0,0,0);
+            const now = new Date();
+            now.setHours(0,0,0,0);
             const sortedSchedule = [...schedule].sort((a,b) => parseDate(a.date) - parseDate(b.date));
             let nextMatch = sortedSchedule.find(m => parseDate(m.date) >= now.getTime());
             if (!nextMatch && sortedSchedule.length > 0) nextMatch = sortedSchedule[0];
@@ -100,14 +94,16 @@
                 <div class="hero"
                     style="height: 40vh; background: linear-gradient(rgba(0,0,0,0.7), rgba(15,17,21,1)), url('/<%= metadata.heroImage || 'logo.jpg' %>'); display:flex; align-items:flex-end; padding-bottom:40px; padding-left:5%; background-size: cover; background-position: center;">
                     <div>
-                        <h1
-                            style="font-family: var(--font-head); font-size: 5rem; text-transform: uppercase; line-height: 1; margin:0;">
-                            <%= (metadata.teamName ||
-                                teamName).split(' ')[0] %> <span style="color:var(--brand-yellow);"><%= (metadata.teamName || teamName).split(' ').slice(1).join(' ') %></span>
-                        </h1>
-                        <p style="color: #bbb; letter-spacing: 2px; font-weight: 600; margin-top:10px;"><%= metadata.season || '
-                                SAISON 2025 / 2026' %>
-                                </p>
+                        <% const displayTeam=(metadata.teamName || teamName); const
+                            nameParts=displayTeam.split(' ');
+                    const firstName = nameParts[0];
+                    const restName = nameParts.slice(1).join(' ');
+                %>
+                <h1 style="font-family: var(--font-head); font-size: 5rem; text-transform: uppercase; line-height: 1; margin:0;">
+                    <%= firstName %> <span style="color:var(--brand-yellow);"><%= restName %></span>
+                </h1>
+                <p style="color: #bbb; letter-spacing: 2px; font-weight: 600; margin-top:10px;"><%= metadata.season || ' SAISON 2025 / 2026' %>
+                            </p>
                     </div>
                 </div>
 
@@ -156,9 +152,9 @@
                                             </div>
                                             <div class="sets-detail">
                                                 <%= Array.isArray(latestMatch.sets) ? latestMatch.sets.join(' ') : latestMatch.sets %></div>
-                                    </div>
-                                    <div class="team-block">
-                                        <% if (latestMatch.away.toUpperCase().includes(' DARDILLY')) { %>
+                            </div>
+                            <div class="team-block">
+                                <% if (latestMatch.away.toUpperCase().includes(' DARDILLY')) { %>
                                                     <img src="/image_fd6867.png" class="team-logo" alt="Logo">
                                                     <% } else { %>
                                                         <div class="team-placeholder">
@@ -249,8 +245,7 @@
                 <section
                     style="background: #1a1d24; border-top: 1px solid #333; padding-top: 100px; margin-top: 60px; padding-bottom: 60px;">
                     <h2 class="section-title" style="width:90%; max-width:1400px; margin:0 auto 40px;">L'Effectif
-                        <span>2025-26</span>
-                    </h2>
+                        <span>2025-26</span></h2>
                     <div class="roster-container"
                         style="width:90%; max-width:1400px; margin:0 auto; display:grid; grid-template-columns: 1fr 1.5fr; gap:40px;">
                         <div class="roster-image"

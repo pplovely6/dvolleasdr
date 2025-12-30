@@ -64,6 +64,10 @@ app.get('/', (req, res) => {
     res.render('index', { recentMatches });
 });
 
+app.get('/home', (req, res) => {
+    res.redirect('/');
+});
+
 app.get('/index.html', (req, res) => {
     res.redirect('/');
 });
