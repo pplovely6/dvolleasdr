@@ -337,6 +337,13 @@
                 document.getElementById('homeName').innerText = match.home;
                 document.getElementById('awayName').innerText = match.away;
 
+                // Logo Logic
+                const isHomeDardilly = match.home.toUpperCase().includes('DARDILLY');
+                const isAwayDardilly = match.away.toUpperCase().includes('DARDILLY');
+
+                document.getElementById('homeLogo').src = isHomeDardilly ? 'image_fd6867.png' : 'https://via.placeholder.com/100?text=' + match.home.substring(0, 3).toUpperCase();
+                document.getElementById('awayLogo').src = isAwayDardilly ? 'image_fd6867.png' : 'https://via.placeholder.com/100?text=' + match.away.substring(0, 3).toUpperCase();
+
                 // For tables titles
                 document.getElementById('tableHomeName').innerText = match.home;
                 document.getElementById('tableAwayName').innerText = match.away;

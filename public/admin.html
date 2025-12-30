@@ -506,11 +506,11 @@
             <div class="form-group">
                 <label>Poste</label>
                 <select id="py-pos">
-                    <option value="S">S - Passeur</option>
-                    <option value="OH">OH - Récep/Attaq</option>
-                    <option value="MB">MB - Central</option>
-                    <option value="OP">OP - Pointu</option>
-                    <option value="L">L - Libero</option>
+                    <option value="S">S (Passeur)</option>
+                    <option value="OH">OH (Récep/Attaq)</option>
+                    <option value="MB">MB (Central)</option>
+                    <option value="OP">OP (Pointu)</option>
+                    <option value="L">L (Libero)</option>
                 </select>
             </div>
             <div class="form-group"><label>Lien Profil</label><input type="text" id="py-profile"></div>
@@ -966,6 +966,7 @@
                 body: JSON.stringify(payload)
             });
 
+            alert("Détails du match enregistrés !");
             closeModals();
             loadMatches(); // Refresh grid
         }

@@ -522,10 +522,13 @@
             // Helper to parse French Date to JS Date for sorting
             const parseDate = (dateStr) => {
                 if (!dateStr) return new Date(0);
-                // Parsing DD/MM/YYYY
+                // Parsing DD/MM/YYYY or DD/MM/YY
                 const parts = dateStr.split('/');
-                if (parts.length === 3) return new Date(parts[2], parts[1] - 1, parts[0]);
-                // Fallback
+                if (parts.length === 3) {
+                    let year = parseInt(parts[2]);
+                    if (year < 100) year += 2000;
+                    return new Date(year, parts[1] - 1, parts[0]);
+                }
                 return new Date();
             };
 

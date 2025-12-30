@@ -605,7 +605,7 @@
             document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
             event.target.classList.add('active');
 
-            document.querySelectorAll('.match-row').forEach(row => {
+            document.querySelectorAll('.schedule-card').forEach(row => {
                 row.style.display = (tag === 'all' || row.dataset.tag === tag) ? 'grid' : 'none';
             });
         }
