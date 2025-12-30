@@ -241,24 +241,55 @@
                 { file: "matches-m13-mixte", label: "M13", code: "m13" }
             ];
 
-            const parseDate = (dateStr) => {
-                if (!dateStr) return new Date(0);
-                const parts = dateStr.split('/');
-                if (parts.length === 3) return new Date(parts[2], parts[1] - 1, parts[0]);
-                return new Date();
-            };
+            function parseDateString(s) {
+                if (!s) return 0;
+                s = s.toString().trim();
+                // Try Date constructor first (handles '10 JAN 2026' and ISO)
+                const byCtor = new Date(s);
+                if (!isNaN(byCtor.getTime())) return byCtor.getTime();
+
+                // Digit parts like 11/10/25 or 6/12/2025
+                const parts = s.match(/(\d+)/g);
+                if (parts && parts.length >= 3) {
+                    let day = parts[0], month = parts[1], year = parts[2];
+                    if (year.length === 2) year = '20' + year;
+                    return new Date(parseInt(year, 10), parseInt(month, 10) - 1, parseInt(day, 10)).getTime();
+                }
+
+                // Fallback: try parsing month names (e.g. '10 JAN 2026' or just '10 JAN')
+                const tokens = s.split(/\s+/);
+                if (tokens.length >= 2) {
+                    const mnames = {
+                        jan: 0, feb: 1, mar: 2, apr: 3, may: 4, jun: 5, jul: 6, aug: 7, sep: 8, oct: 9, nov: 10, dec: 11,
+                        janv: 0, fev: 1, mars: 2, avr: 3, mai: 4, juin: 5, juil: 6, aout: 7, sept: 8, oct: 9, nov: 10, dec: 11
+                    };
+                    const day = parseInt(tokens[0], 10);
+                    const monStr = tokens[1].toLowerCase().substring(0, 4).replace('.', ''); // handle 'jan.'
+                    const month = mnames[monStr];
+
+                    let year = new Date().getFullYear(); // Default to current year if missing
+                    if (tokens[2]) {
+                        const yearT = tokens[2];
+                        year = (yearT.length === 2) ? parseInt('20' + yearT, 10) : parseInt(yearT, 10);
+                    }
+
+                    if (!isNaN(day) && month !== undefined) return new Date(year, month, day).getTime();
+                }
+                return 0; // failed
+            }
 
             Promise.all(teamFiles.map(t =>
                 fetch(`${API_BASE}/data/${t.file}`)
                     .then(res => res.json())
-                    .then(data => (data.matches || []).map(m => ({ ...m, category: t.label, tag: t.code, id: m.id || Math.random().toString(36).substr(2, 9) }))) // Ensure ID exists
+                    .then(data => (data.matches || []).map(m => ({ ...m, category: t.label, tag: t.code })))
                     .catch(() => [])
             )).then(results => {
                 let allMatches = results.flat();
                 // Sort newest first
-                allMatches.sort((a, b) => parseDate(b.date) - parseDate(a.date));
-                // Take top 5 for the slider (to show a bit more if we want to slide, but req said 3 latest cards. Let's start with 3 static or a small list)
-                const latestMatches = allMatches.slice(0, 5);
+                allMatches.sort((a, b) => parseDateString(b.date) - parseDateString(a.date));
+
+                // Limit to 6
+                const latestMatches = allMatches.slice(0, 6);
 
                 if (latestMatches.length === 0) {
                     track.innerHTML = "<div style='text-align:center; width:100%; color:#666;'>Aucun résultat récent.</div>";
@@ -276,22 +307,17 @@
                     const badgeText = isWin ? "VICTOIRE" : "DÉFAITE";
 
                     const logoImg = `<img src="image_fd6867.png" class="slider-logo-img">`;
-                    const placeholder = (name) => `<div class="slider-logo-ph">${name.substring(0, 2).toUpperCase()}</div>`;
+                    const placeholder = (name) => `<div class="slider-logo-ph">${name ? name.substring(0, 2).toUpperCase() : '??'}</div>`;
 
                     const homeDisplay = isHome ? logoImg : placeholder(m.home);
                     const awayDisplay = !isHome ? logoImg : placeholder(m.away);
 
-                    // Use m.id if available, or generate a hash/index if not. The prompt asked to link to match.html?id=ID.
-                    // We need to ensure matches have IDs or we use some index. 
-                    // Since specific ID logic isn't in JSONs usually, we might need to rely on what's there. 
-                    // Ideally, we'd pass the file source + index as ID if no intrinsic ID.
-                    // For now, let's assume we pass the ID if present or just '#' if not ready.
-                    // Actually, the user requirement said "auto create when add result on back end", suggesting backend creates IDs.
-                    // Existing JSONs might not have IDs. I'll use a placeholder link for now or generated one.
-                    const matchLink = `match.html?id=${m.id}&tag=${m.tag}`;
+                    // Only link if we have an ID
+                    const tagStart = m.id ? `<a href="match.html?id=${m.id}&tag=${m.tag}" class="slider-card">` : `<div class="slider-card" style="cursor:default">`;
+                    const tagEnd = m.id ? `</a>` : `</div>`;
 
                     return `
-                    <a href="${matchLink}" class="slider-card">
+                    ${tagStart}
                         <div class="slider-match-header">
                             <span class="slider-date">${m.date}</span>
                             <span class="slider-cat">${m.category}</span>
@@ -308,25 +334,9 @@
                             </div>
                         </div>
                         <div class="slider-badge ${badgeClass}">${badgeText}</div>
-                    </a>
+                    ${tagEnd}
                     `;
                 }).join('');
-
-                // Optional: Initialize auto-sliding if more than 3 items
-                if (latestMatches.length > 3) {
-                    let scrollAmount = 0;
-                    setInterval(() => {
-                        scrollAmount += 300;
-                        if (scrollAmount > track.scrollWidth - track.clientWidth) scrollAmount = 0;
-                        track.style.transform = `translateX(-${scrollAmount}px)`;
-                        // This is a simple/naive auto-scroll. A better one would specific card width calculation.
-                        // For now, let's just leave it as a horizontal flex scroll or simple static grid if 3 items.
-                        // User asked for "auto sliding". I'll add a simple CSS animation or JS interval.
-                        // Let's stick to CSS scroll snap or simple JS logic. 
-                        // To keep it simple and robust:
-                        track.style.transform = `translateX(0)`; // Reset
-                    }, 5000);
-                }
             });
         });
     </script>
