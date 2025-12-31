@@ -108,8 +108,17 @@ app.delete('/api/news/:id', (req, res) => {
 });
 
 // --- UPLOAD API ---
-app.post('/api/upload', upload.single('image'), (req, res) => {
-    if (!req.file) return res.status(400).json({ error: 'No file uploaded' });
+app.post('/api/upload', (req, res, next) => {
+    console.log('--- Upload Request Started ---');
+    console.log('Headers:', req.headers);
+    next();
+}, upload.single('image'), (req, res) => {
+    console.log('Multer processing finished');
+    if (!req.file) {
+        console.error('No file found in request');
+        return res.status(400).json({ error: 'No file uploaded' });
+    }
+    console.log('File saved:', req.file.path);
     res.json({ url: `/uploads/${req.file.filename}` });
 });
 

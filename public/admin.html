@@ -649,11 +649,11 @@
                     targetInput.value = data.url;
                     alert('Image uploadée avec succès !');
                 } else {
-                    alert('Erreur lors de l\'upload');
+                    alert('Erreur lors de l\'upload: ' + (data.error || 'Erreur inconnue'));
                 }
             } catch (e) {
                 console.error(e);
-                alert('Erreur serveur lors de l\'upload');
+                alert('Erreur serveur: ' + e.message);
             }
         }
 
