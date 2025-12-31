@@ -55,7 +55,36 @@ const getAllRecentMatches = () => {
 
 app.get('/', (req, res) => {
     const recentMatches = getAllRecentMatches();
-    res.render('index', { recentMatches });
+    const news = getJsonData('news');
+    res.render('index', { recentMatches, news });
+});
+
+// --- NEWS API ---
+app.get('/api/news', (req, res) => {
+    res.json(getJsonData('news'));
+});
+
+app.post('/api/news/update', (req, res) => {
+    const newsItem = req.body;
+    let news = getJsonData('news');
+    if (!Array.isArray(news)) news = [];
+
+    const idx = news.findIndex(n => n.id === newsItem.id);
+    if (idx !== -1) {
+        news[idx] = newsItem;
+    } else {
+        news.push(newsItem);
+    }
+
+    saveJsonData('news', news);
+    res.json({ success: true });
+});
+
+app.delete('/api/news/:id', (req, res) => {
+    let news = getJsonData('news');
+    news = news.filter(n => n.id !== req.params.id);
+    saveJsonData('news', news);
+    res.json({ success: true });
 });
 
 app.get('/home', (req, res) => {
@@ -362,18 +391,56 @@ app.post('/api/matches/update', (req, res) => {
     res.json({ success: true });
 });
 
-// 4. SAVE PLAYERS
+// 4. SAVE PLAYERS (with Smart Merge to prevent data loss)
 app.post('/api/players/update', (req, res) => {
     const { team, playerInfo } = req.body;
     const file = team.startsWith('db-') ? team : `db-${team}`;
-    console.log(`[POST] Saving Player to ${file}`);
+    console.log(`[POST] Saving Player to ${file} (Smart Merge)`);
 
     let data = getJsonData(file);
     if (!data.players) data.players = [];
 
     const idx = data.players.findIndex(p => p.number == playerInfo.number);
-    if (idx !== -1) data.players[idx] = { ...data.players[idx], ...playerInfo };
-    else data.players.push(playerInfo);
+    if (idx !== -1) {
+        const existing = data.players[idx];
+
+        // Smart Merge for Bio Fields: Only overwrite if the new value is NOT empty/0
+        const updatedPlayer = { ...existing };
+
+        ['name', 'pos', 'position', 'profile', 'nationality', 'dob', 'height'].forEach(field => {
+            if (playerInfo[field] !== undefined && playerInfo[field] !== "" && playerInfo[field] !== null) {
+                updatedPlayer[field] = playerInfo[field];
+            }
+        });
+
+        if (playerInfo.age && playerInfo.age > 0) updatedPlayer.age = playerInfo.age;
+        if (playerInfo.captain !== undefined) updatedPlayer.captain = playerInfo.captain;
+
+        // Deep Merge for Stats
+        if (playerInfo.stats) {
+            if (!updatedPlayer.stats) updatedPlayer.stats = {};
+
+            updatedPlayer.stats.totalPoints = playerInfo.stats.totalPoints || updatedPlayer.stats.totalPoints || 0;
+            updatedPlayer.stats.avgPerMatch = playerInfo.stats.avgPerMatch || updatedPlayer.stats.avgPerMatch || 0;
+
+            ['attack', 'block', 'serve'].forEach(cat => {
+                if (playerInfo.stats[cat]) {
+                    if (!updatedPlayer.stats[cat]) updatedPlayer.stats[cat] = {};
+                    Object.keys(playerInfo.stats[cat]).forEach(key => {
+                        const val = playerInfo.stats[cat][key];
+                        if (val !== undefined && val !== "" && val !== 0) {
+                            updatedPlayer.stats[cat][key] = val;
+                        }
+                    });
+                }
+            });
+        }
+
+        data.players[idx] = updatedPlayer;
+    } else {
+        // New player: use provided info
+        data.players.push(playerInfo);
+    }
 
     saveJsonData(file, data);
     res.json({ success: true });

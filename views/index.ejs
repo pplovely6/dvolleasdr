@@ -176,42 +176,28 @@
                     <h2 class="section-title" data-i18n="section_news"
                         style="font-family:var(--font-head); font-weight:800; text-transform:uppercase;">Actualités</h2>
                     <div class="team-grid">
-                        <div class="card">
-                            <div class="card-image"
-                                style="background-image: url('https://images.unsplash.com/photo-1541534741688-6078c6bfb5c5?w=600');">
+                        <% news.forEach(item=> { %>
+                            <div class="card">
+                                <div class="card-image" style="background-image: url('<%= item.image %>');">
+                                </div>
+                                <div class="card-content">
+                                    <span class="card-tag">
+                                        <%= item.tag %>
+                                    </span>
+                                    <h3 class="card-title">
+                                        <%= item.title %>
+                                    </h3>
+                                    <p style="font-size: 1rem; color: #aaa;">
+                                        <%= item.content %>
+                                    </p>
+                                    <% if (item.link) { %>
+                                        <a href="<%= item.link %>"
+                                            style="color: var(--brand-yellow); text-decoration: underline; font-weight: bold; margin-top:10px; display:block;">En
+                                            savoir plus &rarr;</a>
+                                        <% } %>
+                                </div>
                             </div>
-                            <div class="card-content">
-                                <span class="card-tag">Tournoi</span>
-                                <h3 class="card-title" data-i18n="card_tournoi_title">Tournoi Interne Mixte</h3>
-                                <p style="font-size: 1rem; color: #aaa;" data-i18n="card_tournoi_desc">Rejoignez-nous ce
-                                    juillet pour le grand tournoi d'été.</p>
-                            </div>
-                        </div>
-                        <div class="card">
-                            <div class="card-image"
-                                style="background-image: url('https://images.unsplash.com/photo-1592656094267-764a45160876?w=600');">
-                            </div>
-                            <div class="card-content">
-                                <span class="card-tag">Club</span>
-                                <h3 class="card-title" data-i18n="card_inscript_title">Inscriptions 2025</h3>
-                                <p style="font-size: 1rem; color: #aaa;" data-i18n="card_inscript_desc">Les créneaux se
-                                    remplissent vite. Inscrivez-vous maintenant.</p>
-                            </div>
-                        </div>
-                        <div class="card">
-                            <div class="card-image"
-                                style="background-image: url('https://images.unsplash.com/photo-1626245550596-f6d3301cb4d6?w=600');">
-                            </div>
-                            <div class="card-content">
-                                <span class="card-tag">Beach</span>
-                                <h3 class="card-title" data-i18n="card_beach_title">Saison de Beach Volley</h3>
-                                <p style="font-size: 1rem; color: #aaa;" data-i18n="card_beach_desc">Profitez de nos
-                                    terrains extérieurs dès le mois de mai.</p>
-                                <a href="/beach"
-                                    style="color: var(--brand-yellow); text-decoration: underline; font-weight: bold; margin-top:10px; display:block;">En
-                                    savoir plus &rarr;</a>
-                            </div>
-                        </div>
+                            <% }) %>
                     </div>
                 </div>
             </section>

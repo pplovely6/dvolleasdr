@@ -1,0 +1,27 @@
+[
+    {
+        "id": "tournoi-mixte-2025",
+        "title": "Tournoi Interne Mixte",
+        "image": "https://images.unsplash.com/photo-1541534741688-6078c6bfb5c5?w=600",
+        "date": "Juillet 2025",
+        "tag": "Tournoi",
+        "content": "Rejoignez-nous ce juillet pour le grand tournoi d'été."
+    },
+    {
+        "id": "inscriptions-2025",
+        "title": "Inscriptions 2025",
+        "image": "https://images.unsplash.com/photo-1592656094267-764a45160876?w=600",
+        "date": "Août 2025",
+        "tag": "Club",
+        "content": "Les créneaux se remplissent vite. Inscrivez-vous maintenant."
+    },
+    {
+        "id": "beach-volley-2025",
+        "title": "Saison de Beach Volley",
+        "image": "https://images.unsplash.com/photo-1626245550596-f6d3301cb4d6?w=600",
+        "date": "Mai 2025",
+        "tag": "Beach",
+        "content": "Profitez de nos terrains extérieurs dès le mois de mai.",
+        "link": "/beach"
+    }
+]

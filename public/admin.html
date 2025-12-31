@@ -252,6 +252,7 @@
         </div>
         <div class="nav-item" onclick="switchTab('matches')"><i class="fa-solid fa-trophy"></i> Résultats</div>
         <div class="nav-item" onclick="switchTab('players')"><i class="fa-solid fa-users"></i> Joueurs</div>
+        <div class="nav-item" onclick="switchTab('news')"><i class="fa-solid fa-newspaper"></i> Actualités</div>
         <div class="nav-item" style="margin-top:auto; border-top:1px solid #333"
             onclick="window.location.href='index.html'"><i class="fa-solid fa-arrow-up-right-from-square"></i> Voir le
             Site</div>
@@ -326,6 +327,14 @@
                 <button class="btn btn-icon" onclick="loadPlayers()"><i class="fa-solid fa-rotate"></i></button>
             </div>
             <div id="grid-players" class="grid"></div>
+        </section>
+
+        <section id="sec-news" class="section">
+            <div class="header">
+                <h1>Actualités</h1> <button class="btn" onclick="editNews()">+ Ajouter</button>
+            </div>
+            <div class="controls" style="display:none"></div>
+            <div id="grid-news" class="grid"></div>
         </section>
 
     </main>
@@ -581,6 +590,28 @@
     </div>
 
 
+    <div id="modal-news" class="modal">
+        <div class="modal-box">
+            <h2>Article d'Actualité</h2>
+            <input type="hidden" id="nw-id">
+            <div class="form-group"><label>Titre</label><input type="text" id="nw-title"></div>
+            <div class="form-row">
+                <div style="flex:1"><label>Date (ex: 10 JAN)</label><input type="text" id="nw-date"></div>
+                <div style="flex:1"><label>Tag (ex: Tournoi, Club)</label><input type="text" id="nw-tag"></div>
+            </div>
+            <div class="form-group"><label>Image URL</label><input type="text" id="nw-image"></div>
+            <div class="form-group"><label>Lien (optionnel)</label><input type="text" id="nw-link"></div>
+            <div class="form-group"><label>Description / Contenu</label>
+                <textarea id="nw-content"
+                    style="width:100%; height:100px; background:#0f0f0f; border:1px solid #333; color:white; border-radius:6px; padding:10px; font-family:inherit;"></textarea>
+            </div>
+            <div class="form-row" style="margin-top:30px">
+                <button class="btn" style="flex:2" onclick="saveNews()">Enregistrer</button>
+                <button class="btn" style="flex:1; background:#333;" onclick="closeModals()">Annuler</button>
+            </div>
+        </div>
+    </div>
+
     <script>
         const API_BASE = '/api';
 
@@ -595,10 +626,12 @@
             if (tab === 'planning') navs[0].classList.add('active');
             if (tab === 'matches') navs[1].classList.add('active');
             if (tab === 'players') navs[2].classList.add('active');
+            if (tab === 'news') navs[3].classList.add('active');
 
             if (tab === 'planning') loadPlanning();
             if (tab === 'matches') loadMatches();
             if (tab === 'players') loadPlayers();
+            if (tab === 'news') loadNews();
         }
 
         function closeModals() {
@@ -1043,35 +1076,42 @@
         }
 
         // --- PLAYERS ---
+        let currentPlayers = []; // Global cache to avoid JSON stringify in onclick
+
         async function loadPlayers() {
             const db = document.getElementById('player-db').value;
             try {
                 const res = await fetch(`${API_BASE}/data/${db}`);
                 const data = await res.json();
-                renderPlayers(data.players || [], db);
+                currentPlayers = data.players || [];
+                renderPlayers(currentPlayers, db);
             } catch (e) { console.error(e); }
         }
 
         function renderPlayers(list, db) {
             const grid = document.getElementById('grid-players');
             grid.innerHTML = '';
-            list.forEach(item => {
+            list.forEach((item, index) => {
                 const div = document.createElement('div');
                 div.className = 'card';
                 div.innerHTML = `
                     <div class="card-header">
                         <span class="badge">#${item.number}</span>
-                        <span style="font-weight:bold">${item.pos}</span>
+                        <span style="font-weight:bold">${item.pos || item.position || ''}</span>
                     </div>
                     <h3>${item.name}</h3>
                     <p style="color:#aaa; font-size:0.9rem">${item.captain ? 'Capitaine' : ''}</p>
                     <div class="actions">
-                        <div class="icon-action" onclick='editPlayer(${JSON.stringify(item)})'><i class="fa-solid fa-pen"></i></div>
+                        <div class="icon-action" onclick="editPlayerByIndex(${index})"><i class="fa-solid fa-pen"></i></div>
                         <div class="icon-action del" onclick="deleteItem('${db}', '${item.number}')"><i class="fa-solid fa-trash"></i></div>
                     </div>
                 `;
                 grid.appendChild(div);
             });
+        }
+
+        function editPlayerByIndex(index) {
+            editPlayer(currentPlayers[index]);
         }
 
         function editPlayer(item = null) {
@@ -1176,6 +1216,90 @@
             });
             closeModals();
             loadPlayers();
+        }
+
+        // --- NEWS ---
+        let currentNews = [];
+
+        async function loadNews() {
+            try {
+                const res = await fetch(`${API_BASE}/news`);
+                currentNews = await res.json();
+                renderNews(currentNews);
+            } catch (e) { console.error(e); }
+        }
+
+        function renderNews(list) {
+            const grid = document.getElementById('grid-news');
+            grid.innerHTML = '';
+            list.forEach((item, index) => {
+                const div = document.createElement('div');
+                div.className = 'card';
+                div.innerHTML = `
+                    <div class="card-image" style="background-image: url('${item.image}'); height:150px; background-size:cover; background-position:center; border-radius:8px 8px 0 0;"></div>
+                    <div style="padding:15px;">
+                        <span class="badge" style="margin-bottom:10px; display:inline-block;">${item.tag}</span>
+                        <h3 style="margin:0 0 5px 0;">${item.title}</h3>
+                        <p style="color:#aaa; font-size:0.85rem; margin:0 0 10px 0;">${item.date}</p>
+                        <div class="actions">
+                            <div class="icon-action" onclick="editNewsByIndex(${index})"><i class="fa-solid fa-pen"></i></div>
+                            <div class="icon-action del" onclick="deleteNews('${item.id}')"><i class="fa-solid fa-trash"></i></div>
+                        </div>
+                    </div>
+                `;
+                grid.appendChild(div);
+            });
+        }
+
+        function editNewsByIndex(index) {
+            editNews(currentNews[index]);
+        }
+
+        function editNews(item = null) {
+            document.getElementById('modal-news').style.display = 'flex';
+            if (item) {
+                document.getElementById('nw-id').value = item.id;
+                document.getElementById('nw-title').value = item.title;
+                document.getElementById('nw-date').value = item.date;
+                document.getElementById('nw-tag').value = item.tag;
+                document.getElementById('nw-image').value = item.image;
+                document.getElementById('nw-link').value = item.link || '';
+                document.getElementById('nw-content').value = item.content || '';
+            } else {
+                document.getElementById('nw-id').value = 'news-' + Date.now();
+                document.getElementById('nw-title').value = '';
+                document.getElementById('nw-date').value = '';
+                document.getElementById('nw-tag').value = '';
+                document.getElementById('nw-image').value = '';
+                document.getElementById('nw-link').value = '';
+                document.getElementById('nw-content').value = '';
+            }
+        }
+
+        async function saveNews() {
+            const newsItem = {
+                id: document.getElementById('nw-id').value,
+                title: document.getElementById('nw-title').value,
+                date: document.getElementById('nw-date').value,
+                tag: document.getElementById('nw-tag').value,
+                image: document.getElementById('nw-image').value,
+                link: document.getElementById('nw-link').value,
+                content: document.getElementById('nw-content').value
+            };
+
+            await fetch(`${API_BASE}/news/update`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(newsItem)
+            });
+            closeModals();
+            loadNews();
+        }
+
+        async function deleteNews(id) {
+            if (!confirm("Supprimer cet article ?")) return;
+            await fetch(`${API_BASE}/news/${id}`, { method: 'DELETE' });
+            loadNews();
         }
 
         // Init
