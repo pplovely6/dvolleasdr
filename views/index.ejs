@@ -171,30 +171,30 @@
                 </div>
             </section>
 
-            <section>
-                <div style="width:90%; max-width:1200px; margin:0 auto;">
+            <section id="news-section">
+                <div style="width:95%; max-width:1200px; margin:0 auto;">
                     <h2 class="section-title" data-i18n="section_news"
-                        style="font-family:var(--font-head); font-weight:800; text-transform:uppercase;">Actualités</h2>
-                    <div class="team-grid">
+                        style="font-family:var(--font-head); font-weight:800; text-transform:uppercase; text-align: center; margin-bottom: 40px;">
+                        Actualités</h2>
+                    <div class="team-grid" style="justify-items: center;">
                         <% news.forEach(item=> { %>
-                            <div class="card">
-                                <div class="card-image" style="background-image: url('<%= item.image %>');">
-                                </div>
+                            <div class="card" style="width: 100%; max-width: 380px;">
+                                <a href="/news/<%= item.id %>" class="card-image"
+                                    style="background-image: url('<%= item.image %>'); display: block;">
+                                </a>
                                 <div class="card-content">
                                     <span class="card-tag">
                                         <%= item.tag %>
                                     </span>
-                                    <h3 class="card-title">
+                                    <h3 class="card-title" style="font-size: 1.6rem;">
                                         <%= item.title %>
                                     </h3>
-                                    <p style="font-size: 1rem; color: #aaa;">
-                                        <%= item.content %>
+                                    <p style="font-size: 1rem; color: #aaa; margin-bottom: 15px;">
+                                        <%= item.content.substring(0, 120) %>...
                                     </p>
-                                    <% if (item.link) { %>
-                                        <a href="<%= item.link %>"
-                                            style="color: var(--brand-yellow); text-decoration: underline; font-weight: bold; margin-top:10px; display:block;">En
-                                            savoir plus &rarr;</a>
-                                        <% } %>
+                                    <a href="/news/<%= item.id %>"
+                                        style="color: var(--brand-yellow); text-decoration: underline; font-weight: bold; display:block;">En
+                                        savoir plus &rarr;</a>
                                 </div>
                             </div>
                             <% }) %>

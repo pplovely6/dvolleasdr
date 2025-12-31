@@ -2,6 +2,7 @@ const express = require('express');
 const fs = require('fs');
 const path = require('path');
 const cors = require('cors');
+const multer = require('multer');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -12,6 +13,18 @@ app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
+
+// --- MULTER CONFIG ---
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, path.join(__dirname, 'public/uploads'));
+    },
+    filename: (req, file, cb) => {
+        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+        cb(null, uniqueSuffix + path.extname(file.originalname));
+    }
+});
+const upload = multer({ storage: storage });
 
 // --- SSR ROUTES ---
 
@@ -59,6 +72,13 @@ app.get('/', (req, res) => {
     res.render('index', { recentMatches, news });
 });
 
+app.get('/news/:id', (req, res) => {
+    const newsData = getJsonData('news');
+    const article = newsData.find(n => n.id === req.params.id);
+    if (!article) return res.status(404).send("Article non trouvé");
+    res.render('news-detail', { article });
+});
+
 // --- NEWS API ---
 app.get('/api/news', (req, res) => {
     res.json(getJsonData('news'));
@@ -85,6 +105,12 @@ app.delete('/api/news/:id', (req, res) => {
     news = news.filter(n => n.id !== req.params.id);
     saveJsonData('news', news);
     res.json({ success: true });
+});
+
+// --- UPLOAD API ---
+app.post('/api/upload', upload.single('image'), (req, res) => {
+    if (!req.file) return res.status(400).json({ error: 'No file uploaded' });
+    res.json({ url: `/uploads/${req.file.filename}` });
 });
 
 app.get('/home', (req, res) => {

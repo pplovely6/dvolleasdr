@@ -578,7 +578,15 @@
                 </div>
             </div>
 
-            <div class="form-group"><label>Lien Profil / Photo</label><input type="text" id="py-profile"></div>
+            <div class="form-group">
+                <label>Lien Profil / Photo</label>
+                <div style="display:flex; gap:10px;">
+                    <input type="text" id="py-profile" style="flex:1">
+                    <input type="file" id="py-file" style="display:none" onchange="uploadFile('py-file', 'py-profile')">
+                    <button class="btn" style="width:auto; padding:0 15px;"
+                        onclick="document.getElementById('py-file').click()"><i class="fa-solid fa-upload"></i></button>
+                </div>
+            </div>
             <div class="form-group"><label style="display:flex;align-items:center;gap:10px"><input type="checkbox"
                         id="py-captain" style="width:auto"> Capitaine de l'équipe</label></div>
 
@@ -599,7 +607,15 @@
                 <div style="flex:1"><label>Date (ex: 10 JAN)</label><input type="text" id="nw-date"></div>
                 <div style="flex:1"><label>Tag (ex: Tournoi, Club)</label><input type="text" id="nw-tag"></div>
             </div>
-            <div class="form-group"><label>Image URL</label><input type="text" id="nw-image"></div>
+            <div class="form-group">
+                <label>Image URL</label>
+                <div style="display:flex; gap:10px;">
+                    <input type="text" id="nw-image" style="flex:1">
+                    <input type="file" id="nw-file" style="display:none" onchange="uploadFile('nw-file', 'nw-image')">
+                    <button class="btn" style="width:auto; padding:0 15px;"
+                        onclick="document.getElementById('nw-file').click()"><i class="fa-solid fa-upload"></i></button>
+                </div>
+            </div>
             <div class="form-group"><label>Lien (optionnel)</label><input type="text" id="nw-link"></div>
             <div class="form-group"><label>Description / Contenu</label>
                 <textarea id="nw-content"
@@ -614,6 +630,32 @@
 
     <script>
         const API_BASE = '/api';
+
+        async function uploadFile(inputId, targetInputId) {
+            const fileInput = document.getElementById(inputId);
+            const targetInput = document.getElementById(targetInputId);
+            if (!fileInput.files.length) return;
+
+            const formData = new FormData();
+            formData.append('image', fileInput.files[0]);
+
+            try {
+                const res = await fetch(`${API_BASE}/upload`, {
+                    method: 'POST',
+                    body: formData
+                });
+                const data = await res.json();
+                if (data.url) {
+                    targetInput.value = data.url;
+                    alert('Image uploadée avec succès !');
+                } else {
+                    alert('Erreur lors de l\'upload');
+                }
+            } catch (e) {
+                console.error(e);
+                alert('Erreur serveur lors de l\'upload');
+            }
+        }
 
         // --- TABS & NAVIGATION ---
         function switchTab(tab) {

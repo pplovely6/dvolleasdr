@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <%- include('partials/head', { title: article.title + ' | AS Dardilly Volley' }) %>
+        <style>
+            .news-hero {
+                height: 50vh;
+                background-size: cover;
+                background-position: center;
+                position: relative;
+                display: flex;
+                align-items: flex-end;
+                padding: 40px 5%;
+            }
+
+            .news-hero::after {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: linear-gradient(transparent, rgba(15, 17, 21, 1));
+            }
+
+            .news-header {
+                position: relative;
+                z-index: 2;
+                max-width: 900px;
+            }
+
+            .news-meta {
+                display: flex;
+                gap: 15px;
+                margin-bottom: 20px;
+                align-items: center;
+            }
+
+            .news-tag {
+                background: var(--brand-yellow);
+                color: black;
+                padding: 5px 15px;
+                border-radius: 4px;
+                font-weight: 800;
+                font-size: 0.8rem;
+                text-transform: uppercase;
+            }
+
+            .news-date {
+                color: #aaa;
+                font-weight: 600;
+                font-size: 0.9rem;
+            }
+
+            .news-title {
+                font-size: 3.5rem;
+                font-family: var(--font-head);
+                line-height: 1;
+                margin: 0;
+                text-transform: uppercase;
+            }
+
+            .news-content {
+                padding: 60px 5%;
+                max-width: 900px;
+                margin: 0 auto;
+                line-height: 1.8;
+                font-size: 1.2rem;
+                color: #ccc;
+            }
+
+            .news-content p {
+                margin-bottom: 30px;
+            }
+
+            @media (max-width: 768px) {
+                .news-title {
+                    font-size: 2.2rem;
+                }
+
+                .news-hero {
+                    height: 40vh;
+                }
+            }
+        </style>
+</head>
+
+<body>
+    <%- include('partials/header') %>
+
+        <main>
+            <div class="news-hero" style="background-image: url('<%= article.image %>');">
+                <div class="news-header">
+                    <div class="news-meta">
+                        <span class="news-tag">
+                            <%= article.tag %>
+                        </span>
+                        <span class="news-date"><i class="fa-solid fa-calendar"></i>
+                            <%= article.date %>
+                        </span>
+                    </div>
+                    <h1 class="news-title">
+                        <%= article.title %>
+                    </h1>
+                </div>
+            </div>
+
+            <section class="news-content">
+                <div style="white-space: pre-wrap;">
+                    <%= article.content %>
+                </div>
+
+                <% if (article.link) { %>
+                    <div style="margin-top: 40px;">
+                        <a href="<%= article.link %>" class="btn-join">Voir plus d'informations</a>
+                    </div>
+                    <% } %>
+
+                        <div style="margin-top: 60px; border-top: 1px solid #333; padding-top: 30px;">
+                            <a href="/" style="color: var(--brand-yellow); text-decoration: none; font-weight: 700;">
+                                <i class="fa-solid fa-arrow-left"></i> Retour à l'accueil
+                            </a>
+                        </div>
+            </section>
+        </main>
+
+        <%- include('partials/footer') %>
+</body>
+
+</html>
