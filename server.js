@@ -114,6 +114,8 @@ app.post('/api/upload-report', upload.single('report'), async (req, res) => {
     try {
         console.log('[UPLOAD] Parsing PDF:', req.file.path);
         const dataBuffer = fs.readFileSync(req.file.path);
+        
+        // Use pdf-parse correctly (it's the function returned by require)
         const data = await pdf(dataBuffer);
         
         if (!data || !data.text) {
