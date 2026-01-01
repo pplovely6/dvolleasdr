@@ -176,7 +176,15 @@ function parseMatchReport(text) {
     // Heuristic for opponent if not explicitly Rhodia
     if (!report.teamA.name) {
         // Look for all-caps lines that aren't other keywords
-        const headers = lines.filter(l => l.match(/^[A-ZÀ-Ÿ\s\-]{5,}$/) && !l.includes('DARDILLY') && !l.includes('MATCH') && !l.includes('VILLE') && !l.includes('COMITÉ') && !l.includes('JOUR'));
+        const headers = lines.filter(l => 
+            l.match(/^[A-ZÀ-Ÿ\s\-]{5,}$/) && 
+            !l.includes('DARDILLY') && 
+            !l.includes('DARDILLOISE') && 
+            !l.includes('MATCH') && 
+            !l.includes('VILLE') && 
+            !l.includes('COMITÉ') && 
+            !l.includes('JOUR')
+        );
         if (headers.length > 0) report.teamA.name = headers[0];
     }
 
