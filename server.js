@@ -115,8 +115,22 @@ app.post('/api/upload-report', upload.single('report'), async (req, res) => {
         console.log('[UPLOAD] Parsing PDF:', req.file.path);
         const dataBuffer = fs.readFileSync(req.file.path);
         
-        // Use pdf-parse correctly (it's the function returned by require)
-        const data = await pdf(dataBuffer);
+        // Handle different export styles of pdf-parse
+        let pdfParser = pdf;
+        if (typeof pdf !== 'function' && pdf.default) {
+            pdfParser = pdf.default;
+        } else if (typeof pdf !== 'function' && typeof pdf === 'object') {
+            // Some versions export it as the object itself if required differently
+            // but usually it's the direct function. 
+            // Let's log it to be sure if it fails again.
+            console.log('[UPLOAD] PDF library type:', typeof pdf);
+        }
+
+        if (typeof pdfParser !== 'function') {
+            throw new Error('PDF library not loaded correctly as a function');
+        }
+
+        const data = await pdfParser(dataBuffer);
         
         if (!data || !data.text) {
             throw new Error('PDF parsing returned no text');
@@ -124,7 +138,6 @@ app.post('/api/upload-report', upload.single('report'), async (req, res) => {
         
         console.log('[UPLOAD] Parsed text length:', data.text.length);
         const parsed = parseMatchReport(data.text);
-        console.log('[UPLOAD] Parsed data:', JSON.stringify(parsed, null, 2));
         res.json(parsed);
     } catch (err) {
         console.error('PDF Parse Error:', err);
