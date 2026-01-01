@@ -153,7 +153,6 @@ function parseMatchReport(text) {
     }
 
     // 2. Date
-    // Looking for something like "Samedi 06 Décembre 2025"
     const datePattern = /(Samedi|Dimanche|Lundi|Mardi|Mercredi|Jeudi|Vendredi)\s+(\d{1,2})\s+([A-ZÀ-Ÿ][a-zà-ÿ]+)\s+(\d{4})/i;
     const dateLine = lines.find(l => l.match(datePattern));
     if (dateLine) {
@@ -165,67 +164,63 @@ function parseMatchReport(text) {
                 'janvier': '01', 'février': '02', 'mars': '03', 'avril': '04', 'mai': '05', 'juin': '06', 
                 'juillet': '07', 'août': '08', 'septembre': '09', 'octobre': '10', 'novembre': '11', 'décembre': '12'
             };
-            report.date = `${m[2].padStart(2, '0')}/${months[m[3]] || '01'}/${m[4]}`;
+            report.date = `${m[2].padStart(2, '0')}/${months[m[3].toLowerCase().charAt(0).toUpperCase() + m[3].toLowerCase().slice(1)] || '01'}/${m[4]}`;
         }
     }
 
     // 3. Team Names
-    // The report has RHÔDIA-VAISE and AS DARDILLY
-    if (text.includes('RHÔDIA-VAISE')) report.teamA.name = 'RHÔDIA-VAISE';
+    const stfonsIdx = lines.findIndex(l => l.includes('CO ST FONS'));
+    if (stfonsIdx !== -1) report.teamA.name = 'CO ST FONS';
     
-    // Heuristic for opponent if not explicitly Rhodia
+    const rhodiaIdx = lines.findIndex(l => l.includes('RHÔDIA-VAISE'));
+    if (rhodiaIdx !== -1) report.teamA.name = 'RHÔDIA-VAISE';
+
     if (!report.teamA.name) {
-        // Look for all-caps lines that aren't other keywords
-        const headers = lines.filter(l => 
-            l.match(/^[A-ZÀ-Ÿ\s\-]{5,}$/) && 
-            !l.includes('DARDILLY') && 
-            !l.includes('DARDILLOISE') && 
-            !l.includes('MATCH') && 
-            !l.includes('VILLE') && 
-            !l.includes('COMITÉ') && 
-            !l.includes('JOUR')
-        );
-        if (headers.length > 0) report.teamA.name = headers[0];
+        // Find line between Salle and SENIOR | MASCULIN
+        const salleIdx = lines.findIndex(l => l.includes('Salle:'));
+        if (salleIdx !== -1 && lines[salleIdx+1]) {
+            const potential = lines[salleIdx+1].replace('AS DARDILLOISE', '').replace('AS DARDILLY', '').trim();
+            if (potential.length > 3) report.teamA.name = potential;
+        }
     }
 
     // 4. Score & Sets
-    // In these reports, scores are often listed in a summary line
-    // Look for "Score" then the numbers
-    let scoreFound = false;
-    for (let i = 0; i < lines.length; i++) {
-        if (lines[i].includes('Score')) {
-            // Check following lines for numbers
-            for (let j = i + 1; j < i + 5 && j < lines.length; j++) {
-                const sMatch = lines[j].match(/^([0-3])\s+([0-3])$/);
-                if (sMatch) {
-                    report.score = `${sMatch[1]} - ${sMatch[2]}`;
-                    scoreFound = true;
-                    // Look for sets below this
-                    if (lines[j+1]) {
-                        const sets = lines[j+1].match(/(\d{1,2})\s+(\d{1,2})/g);
-                        if (sets) report.sets = sets.map(s => s.replace(/\s+/, ':')).join(', ');
-                    }
-                    break;
+    const resultsIdx = lines.findIndex(l => l.includes('RESULTATS'));
+    if (resultsIdx !== -1) {
+        for (let i = resultsIdx + 1; i < resultsIdx + 20 && i < lines.length; i++) {
+            const line = lines[i];
+            // Score summary winner
+            if (line.includes('Vainqueur') && lines[i+1]) {
+                const scoreM = lines[i+1].match(/(\d)\/(\d)/) || line.match(/(\d)\/(\d)/);
+                if (scoreM) report.score = `${scoreM[1]} - ${scoreM[2]}`;
+            }
+            // Set scores pattern like "11125132'21011" -> 25:21
+            const setM = line.match(/(\d{2})\d+'(\d{2})/);
+            if (setM) {
+                const s1 = setM[1];
+                const s2 = setM[2];
+                if (parseInt(s1) > 5 && parseInt(s2) > 5) {
+                    report.sets += (report.sets ? ', ' : '') + `${s1}:${s2}`;
                 }
             }
         }
-        if (scoreFound) break;
     }
 
     // 5. Players
-    // Find player patterns: N° Name (License)
-    // Example: "1 PLAYER NAME" or "1 PLAYER NAME 1234567"
+    let currentRoster = null;
     lines.forEach(line => {
-        const pMatch = line.match(/^(\d{1,2})\s+([A-ZÀ-Ÿ\s\-]{3,})/);
+        if (line.includes('CO ST FONS')) currentRoster = 'A';
+        if (line.includes('AS DARDILLOISE') || line.includes('AS DARDILLY')) currentRoster = 'B';
+        
+        // Pattern: "01DURIEUX CLEMENT1813922"
+        const pMatch = line.match(/^(\d{2})([A-ZÀ-Ÿ\s\-]{3,})(\d{7})$/);
         if (pMatch) {
-            const num = pMatch[1];
+            const num = parseInt(pMatch[1]);
             const name = pMatch[2].trim();
-            // Skip if it looks like a header or city
-            if (name === 'LYON' || name === 'VILLE' || name === 'MATCH') return;
-            
-            const player = { number: num, name: name };
-            if (!report.teamB.players.find(p => p.number === num)) {
-                report.teamB.players.push(player);
+            if (currentRoster === 'B') {
+                if (!report.teamB.players.find(p => p.number === num)) {
+                    report.teamB.players.push({ number: num, name: name });
+                }
             }
         }
     });
