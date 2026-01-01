@@ -114,8 +114,6 @@ app.post('/api/upload-report', upload.single('report'), async (req, res) => {
     try {
         console.log('[UPLOAD] Parsing PDF:', req.file.path);
         const dataBuffer = fs.readFileSync(req.file.path);
-        
-        // Use pdf-parse
         const pdfParse = require('pdf-parse');
         const data = await pdfParse(dataBuffer);
         
@@ -132,7 +130,76 @@ app.post('/api/upload-report', upload.single('report'), async (req, res) => {
     }
 });
 
-// --- SSR ROUTES ---
+// --- PDF Parsing Logic ---
+function parseMatchReport(text) {
+    const lines = text.split('\n').map(l => l.trim()).filter(l => l.length > 0);
+    let report = {
+        matchId: "",
+        date: "",
+        teamA: { name: "", players: [] },
+        teamB: { name: "AS DARDILLY", players: [] },
+        sets: "",
+        score: ""
+    };
+
+    // 1. Match ID
+    const matchLine = lines.find(l => l.includes('Match:'));
+    if (matchLine) {
+        const m = matchLine.match(/Match:\s*([A-Z0-9\-]+)/i);
+        if (m) report.matchId = m[1];
+    }
+
+    // 2. Date
+    const dateLine = lines.find(l => l.match(/(Samedi|Dimanche|Lundi|Mardi|Mercredi|Jeudi|Vendredi)/i));
+    if (dateLine) {
+        const m = dateLine.match(/(\d{1,2})\s+([A-ZÉé][a-z]+)\s+(\d{4})/);
+        if (m) {
+            const months = { 
+                'Janvier': '01', 'Février': '02', 'Mars': '03', 'Avril': '04', 'Mai': '05', 'Juin': '06', 
+                'Juillet': '07', 'Août': '08', 'Septembre': '09', 'Octobre': '10', 'Novembre': '11', 'Décembre': '12',
+                'janvier': '01', 'février': '02', 'mars': '03', 'avril': '04', 'mai': '05', 'juin': '06', 
+                'juillet': '07', 'août': '08', 'septembre': '09', 'octobre': '10', 'novembre': '11', 'décembre': '12'
+            };
+            report.date = `${m[1].padStart(2, '0')}/${months[m[2]] || '01'}/${m[3]}`;
+        }
+    }
+
+    // 3. Team Names
+    const rhodiaLine = lines.find(l => l.includes('RHÔDIA-VAISE'));
+    if (rhodiaLine) report.teamA.name = 'RHÔDIA-VAISE';
+    
+    if (!report.teamA.name) {
+        const potentialOpponent = lines.find(l => l.match(/^[A-ZÀ-Ÿ\s\-]{5,}$/) && !l.includes('DARDILLY') && !l.includes('Match') && !l.includes('Ville') && !l.includes('Samedi') && !l.includes('Comité'));
+        if (potentialOpponent) report.teamA.name = potentialOpponent.trim();
+    }
+
+    // 4. Players, Score & Sets
+    lines.forEach((line, idx) => {
+        // Player detection
+        const playerMatch = line.match(/^(\d{1,2})\s+([A-ZÀ-Ÿ\s\-]{3,})(?!\s*\d{7})/);
+        if (playerMatch) {
+            const player = { number: playerMatch[1], name: playerMatch[2].trim() };
+            if (!report.teamB.players.find(p => p.number === player.number)) {
+                report.teamB.players.push(player);
+            }
+        }
+
+        // Score detection (e.g., "1 3" in a specific summary line)
+        const scoreMatch = line.match(/^([0-3])\s+([0-3])$/);
+        if (scoreMatch && !report.score) {
+            report.score = `${scoreMatch[1]} - ${scoreMatch[2]}`;
+        }
+        
+        // Sets detection (looks for set scores in the summary table)
+        if (line.includes('Score') && lines[idx+1]) {
+            const setLine = lines[idx+1];
+            const sets = setLine.match(/(\d{1,2})\s+(\d{1,2})/g);
+            if (sets) report.sets = sets.join(', ');
+        }
+    });
+
+    return report;
+}
 
 // Helper to get all matches for slider
 const getAllRecentMatches = () => {
