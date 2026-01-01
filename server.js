@@ -31,10 +31,16 @@ function parseMatchReport(text) {
     const dateLine = lines.find(l => l.includes('Samedi') || l.includes('Dimanche') || l.includes('Lundi'));
     if (dateLine) {
         // Sample: Samedi 06 Décembre 2025 à 15h00
-        const m = dateLine.match(/(\d{2})\s+([A-ZÉé][a-z]+)\s+(\d{4})/);
+        const m = dateLine.match(/(\d{1,2})\s+([A-ZÉé][a-z]+)\s+(\d{4})/);
         if (m) {
-            const months = { 'Janvier': '01', 'Février': '02', 'Mars': '03', 'Avril': '04', 'Mai': '05', 'Juin': '06', 'Juillet': '07', 'Août': '08', 'Septembre': '09', 'Octobre': '10', 'Novembre': '11', 'Décembre': '12' };
-            report.date = `${m[1]}/${months[m[2]]}/${m[3]}`;
+            const months = { 
+                'Janvier': '01', 'Février': '02', 'Mars': '03', 'Avril': '04', 'Mai': '05', 'Juin': '06', 
+                'Juillet': '07', 'Août': '08', 'Septembre': '09', 'Octobre': '10', 'Novembre': '11', 'Décembre': '12',
+                'janvier': '01', 'février': '02', 'mars': '03', 'avril': '04', 'mai': '05', 'juin': '06', 
+                'juillet': '07', 'août': '08', 'septembre': '09', 'octobre': '10', 'novembre': '11', 'décembre': '12'
+            };
+            const day = m[1].padStart(2, '0');
+            report.date = `${day}/${months[m[2]] || '01'}/${m[3]}`;
         } else {
             report.date = dateLine.trim();
         }
@@ -42,26 +48,42 @@ function parseMatchReport(text) {
 
     // Teams & Players
     // Find Team sections (RHÔDIA-VAISE and AS DARDILLY)
-    const teams = [];
-    lines.forEach((l, i) => {
-        if (l.includes('RHÔDIA-VAISE')) teams.push({ name: 'RHÔDIA-VAISE', index: i });
-        if (l.includes('AS DARDILLY')) teams.push({ name: 'AS DARDILLY', index: i });
-    });
+    let dardillyFound = false;
+    let otherTeamFound = false;
 
-    teams.forEach(t => {
-        const teamObj = t.name.includes('DARDILLY') ? report.teamB : report.teamA;
-        teamObj.name = t.name;
-        // Search for players in the subsequent lines
-        for (let i = t.index + 1; i < t.index + 50 && i < lines.length; i++) {
-            const playerMatch = lines[i].match(/^\s*(\d+)\s+([A-Z\s\-]+)(?!\s*\d{7})/);
-            if (playerMatch) {
-                teamObj.players.push({
-                    number: playerMatch[1],
-                    name: playerMatch[2].trim()
-                });
+    for (let i = 0; i < lines.length; i++) {
+        const line = lines[i];
+        if (line.includes('AS DARDILLY') && !dardillyFound) {
+            report.teamB.name = 'AS DARDILLY';
+            dardillyFound = true;
+            // Search for players
+            for (let j = i + 1; j < i + 60 && j < lines.length; j++) {
+                const playerMatch = lines[j].match(/^\s*(\d+)\s+([A-Z\s\-]{3,})(?!\s*\d{7})/);
+                if (playerMatch) {
+                    report.teamB.players.push({
+                        number: playerMatch[1],
+                        name: playerMatch[2].trim()
+                    });
+                }
             }
+        } else if ((line.includes('RHÔDIA-VAISE') || line.match(/[A-Z]{3,}/)) && !otherTeamFound && !line.includes('AS DARDILLY') && !line.includes('Match:')) {
+             // Heuristic for the other team
+             if (line.includes('RHÔDIA-VAISE')) {
+                report.teamA.name = 'RHÔDIA-VAISE';
+                otherTeamFound = true;
+                // Search for players
+                for (let j = i + 1; j < i + 60 && j < lines.length; j++) {
+                    const playerMatch = lines[j].match(/^\s*(\d+)\s+([A-Z\s\-]{3,})(?!\s*\d{7})/);
+                    if (playerMatch) {
+                        report.teamA.players.push({
+                            number: playerMatch[1],
+                            name: playerMatch[2].trim()
+                        });
+                    }
+                }
+             }
         }
-    });
+    }
 
     return report;
 }
@@ -90,12 +112,21 @@ const upload = multer({ storage: storage });
 app.post('/api/upload-report', upload.single('report'), async (req, res) => {
     if (!req.file) return res.status(400).json({ error: 'No file uploaded' });
     try {
-        const data = await pdf(req.file.path);
+        console.log('[UPLOAD] Parsing PDF:', req.file.path);
+        const dataBuffer = fs.readFileSync(req.file.path);
+        const data = await pdf(dataBuffer);
+        
+        if (!data || !data.text) {
+            throw new Error('PDF parsing returned no text');
+        }
+        
+        console.log('[UPLOAD] Parsed text length:', data.text.length);
         const parsed = parseMatchReport(data.text);
+        console.log('[UPLOAD] Parsed data:', JSON.stringify(parsed, null, 2));
         res.json(parsed);
     } catch (err) {
         console.error('PDF Parse Error:', err);
-        res.status(500).json({ error: 'Failed to parse PDF' });
+        res.status(500).json({ error: 'Failed to parse PDF: ' + err.message });
     }
 });
 
