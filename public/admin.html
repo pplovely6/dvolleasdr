@@ -285,7 +285,14 @@
 
         <section id="sec-matches" class="section">
             <div class="header">
-                <h1>Résultats Passés</h1> <button class="btn" onclick="editMatch()">+ Ajouter</button>
+                <h1>Résultats Passés</h1> 
+                <div style="display: flex; gap: 10px;">
+                    <button class="btn" style="background: #252525; color: white; border: 1px solid #444;" onclick="document.getElementById('pdf-input').click()">
+                        <i class="fa-solid fa-file-pdf"></i> Importer PDF
+                    </button>
+                    <input type="file" id="pdf-input" style="display:none" accept=".pdf" onchange="uploadPDF(this)">
+                    <button class="btn" onclick="editMatch()">+ Ajouter</button>
+                </div>
             </div>
             <div class="controls">
                 <div style="flex:1">
@@ -629,6 +636,77 @@
     </div>
 
     <script>
+        async function uploadPDF(input) {
+            if (!input.files || !input.files[0]) return;
+            const file = input.files[0];
+            const formData = new FormData();
+            formData.append('report', file);
+
+            const btn = input.previousElementSibling;
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Analyse...';
+            btn.disabled = true;
+
+            try {
+                const res = await fetch('/api/upload-report', {
+                    method: 'POST',
+                    body: formData
+                });
+                const data = await res.json();
+                
+                if (data.error) throw new Error(data.error);
+
+                // Auto-fill match modal
+                document.getElementById('mt-id').value = '';
+                document.getElementById('mt-home').value = data.teamB.name || 'AS DARDILLY';
+                document.getElementById('mt-away').value = data.teamA.name || '';
+                document.getElementById('mt-date').value = data.date || '';
+                
+                // Show modal
+                switchTab('matches');
+                document.getElementById('modal-match').style.display = 'flex';
+
+                // Store parsed data for advanced details
+                window.parsedPDFData = data;
+                
+                alert('PDF analysé ! Les informations ont été pré-remplies. Vérifiez les détails dans "Gérer les Détails du Match".');
+            } catch (err) {
+                console.error(err);
+                alert('Erreur lors de l\'analyse du PDF');
+            } finally {
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+                input.value = '';
+            }
+        }
+
+        // Extend existing switchToAdvancedDetail to use PDF data
+        const originalSwitchToAdvanced = window.switchToAdvancedDetail;
+        window.switchToAdvancedDetail = function() {
+            if (typeof originalSwitchToAdvanced === 'function') originalSwitchToAdvanced();
+            
+            if (window.parsedPDFData) {
+                const data = window.parsedPDFData;
+                // Pre-fill lineups if possible
+                if (data.teamB && data.teamB.players) {
+                    const list = document.getElementById('list-roster-home');
+                    if (list) {
+                        list.innerHTML = '';
+                        data.teamB.players.forEach(p => {
+                            const li = document.createElement('li');
+                            li.style.cssText = "display:flex; justify-content:space-between; align-items:center; background:#0f0f0f; padding:8px; margin-bottom:5px; border-radius:4px;";
+                            li.innerHTML = `
+                                <span style="font-size:0.9rem;"><b>#${p.number}</b> ${p.name}</span>
+                                <i class="fa-solid fa-xmark" style="color:#ff4e45; cursor:pointer;" onclick="this.parentElement.remove()"></i>
+                                <input type="hidden" class="roster-item" data-num="${p.number}" data-name="${p.name}">
+                            `;
+                            list.appendChild(li);
+                        });
+                    }
+                }
+            }
+        };
+
         const API_BASE = '/api';
 
         async function uploadFile(inputId, targetInputId) {
@@ -664,11 +742,16 @@
 
             document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
             const navs = document.querySelectorAll('.nav-item');
-            // Mapping based on index
-            if (tab === 'planning') navs[0].classList.add('active');
-            if (tab === 'matches') navs[1].classList.add('active');
-            if (tab === 'players') navs[2].classList.add('active');
-            if (tab === 'news') navs[3].classList.add('active');
+            
+            // Handle active class for nav items
+            if (window.event && window.event.currentTarget && window.event.currentTarget.classList.contains('nav-item')) {
+                window.event.currentTarget.classList.add('active');
+            } else {
+                if (tab === 'planning') navs[0].classList.add('active');
+                if (tab === 'matches') navs[1].classList.add('active');
+                if (tab === 'players') navs[2].classList.add('active');
+                if (tab === 'news') navs[3].classList.add('active');
+            }
 
             if (tab === 'planning') loadPlanning();
             if (tab === 'matches') loadMatches();

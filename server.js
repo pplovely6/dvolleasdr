@@ -3,10 +3,68 @@ const fs = require('fs');
 const path = require('path');
 const cors = require('cors');
 const multer = require('multer');
+const pdf = require('pdf-parse');
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 5000;
 const HOST = '0.0.0.0';
+
+// --- PDF Parsing Logic ---
+function parseMatchReport(text) {
+    const lines = text.split('\n');
+    let report = {
+        matchId: "",
+        date: "",
+        teamA: { name: "", players: [] },
+        teamB: { name: "", players: [] },
+        sets: ""
+    };
+
+    // Match ID
+    const matchLine = lines.find(l => l.includes('Match:'));
+    if (matchLine) {
+        const m = matchLine.match(/Match:\s*(\w+)/);
+        if (m) report.matchId = m[1];
+    }
+
+    // Date
+    const dateLine = lines.find(l => l.includes('Samedi') || l.includes('Dimanche') || l.includes('Lundi'));
+    if (dateLine) {
+        // Sample: Samedi 06 Décembre 2025 à 15h00
+        const m = dateLine.match(/(\d{2})\s+([A-ZÉé][a-z]+)\s+(\d{4})/);
+        if (m) {
+            const months = { 'Janvier': '01', 'Février': '02', 'Mars': '03', 'Avril': '04', 'Mai': '05', 'Juin': '06', 'Juillet': '07', 'Août': '08', 'Septembre': '09', 'Octobre': '10', 'Novembre': '11', 'Décembre': '12' };
+            report.date = `${m[1]}/${months[m[2]]}/${m[3]}`;
+        } else {
+            report.date = dateLine.trim();
+        }
+    }
+
+    // Teams & Players
+    // Find Team sections (RHÔDIA-VAISE and AS DARDILLY)
+    const teams = [];
+    lines.forEach((l, i) => {
+        if (l.includes('RHÔDIA-VAISE')) teams.push({ name: 'RHÔDIA-VAISE', index: i });
+        if (l.includes('AS DARDILLY')) teams.push({ name: 'AS DARDILLY', index: i });
+    });
+
+    teams.forEach(t => {
+        const teamObj = t.name.includes('DARDILLY') ? report.teamB : report.teamA;
+        teamObj.name = t.name;
+        // Search for players in the subsequent lines
+        for (let i = t.index + 1; i < t.index + 50 && i < lines.length; i++) {
+            const playerMatch = lines[i].match(/^\s*(\d+)\s+([A-Z\s\-]+)(?!\s*\d{7})/);
+            if (playerMatch) {
+                teamObj.players.push({
+                    number: playerMatch[1],
+                    name: playerMatch[2].trim()
+                });
+            }
+        }
+    });
+
+    return report;
+}
 
 app.use(cors());
 app.use(express.json());
@@ -17,7 +75,9 @@ app.set('views', path.join(__dirname, 'views'));
 // --- MULTER CONFIG ---
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-        cb(null, path.join(__dirname, 'public/uploads'));
+        const dir = path.join(__dirname, 'public/uploads');
+        if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
+        cb(null, dir);
     },
     filename: (req, file, cb) => {
         const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
@@ -25,6 +85,19 @@ const storage = multer.diskStorage({
     }
 });
 const upload = multer({ storage: storage });
+
+// PDF Upload Endpoint
+app.post('/api/upload-report', upload.single('report'), async (req, res) => {
+    if (!req.file) return res.status(400).json({ error: 'No file uploaded' });
+    try {
+        const data = await pdf(req.file.path);
+        const parsed = parseMatchReport(data.text);
+        res.json(parsed);
+    } catch (err) {
+        console.error('PDF Parse Error:', err);
+        res.status(500).json({ error: 'Failed to parse PDF' });
+    }
+});
 
 // --- SSR ROUTES ---
 
