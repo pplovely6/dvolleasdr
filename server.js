@@ -121,8 +121,11 @@ app.post('/api/upload-report', upload.single('report'), async (req, res) => {
             throw new Error('PDF parsing returned no text');
         }
         
-        console.log('[UPLOAD] Parsed text length:', data.text.length);
+        // LOG RAW TEXT FOR DEBUGGING
+        console.log('[UPLOAD] RAW TEXT PREVIEW:', data.text);
+        
         const parsed = parseMatchReport(data.text);
+        console.log('[UPLOAD] PARSED DATA:', JSON.stringify(parsed, null, 2));
         res.json(parsed);
     } catch (err) {
         console.error('PDF Parse Error:', err);
@@ -150,9 +153,11 @@ function parseMatchReport(text) {
     }
 
     // 2. Date
-    const dateLine = lines.find(l => l.match(/(Samedi|Dimanche|Lundi|Mardi|Mercredi|Jeudi|Vendredi)/i));
+    // Looking for something like "Samedi 06 Décembre 2025"
+    const datePattern = /(Samedi|Dimanche|Lundi|Mardi|Mercredi|Jeudi|Vendredi)\s+(\d{1,2})\s+([A-ZÀ-Ÿ][a-zà-ÿ]+)\s+(\d{4})/i;
+    const dateLine = lines.find(l => l.match(datePattern));
     if (dateLine) {
-        const m = dateLine.match(/(\d{1,2})\s+([A-ZÉé][a-z]+)\s+(\d{4})/);
+        const m = dateLine.match(datePattern);
         if (m) {
             const months = { 
                 'Janvier': '01', 'Février': '02', 'Mars': '03', 'Avril': '04', 'Mai': '05', 'Juin': '06', 
@@ -160,41 +165,60 @@ function parseMatchReport(text) {
                 'janvier': '01', 'février': '02', 'mars': '03', 'avril': '04', 'mai': '05', 'juin': '06', 
                 'juillet': '07', 'août': '08', 'septembre': '09', 'octobre': '10', 'novembre': '11', 'décembre': '12'
             };
-            report.date = `${m[1].padStart(2, '0')}/${months[m[2]] || '01'}/${m[3]}`;
+            report.date = `${m[2].padStart(2, '0')}/${months[m[3]] || '01'}/${m[4]}`;
         }
     }
 
     // 3. Team Names
-    const rhodiaLine = lines.find(l => l.includes('RHÔDIA-VAISE'));
-    if (rhodiaLine) report.teamA.name = 'RHÔDIA-VAISE';
+    // The report has RHÔDIA-VAISE and AS DARDILLY
+    if (text.includes('RHÔDIA-VAISE')) report.teamA.name = 'RHÔDIA-VAISE';
     
+    // Heuristic for opponent if not explicitly Rhodia
     if (!report.teamA.name) {
-        const potentialOpponent = lines.find(l => l.match(/^[A-ZÀ-Ÿ\s\-]{5,}$/) && !l.includes('DARDILLY') && !l.includes('Match') && !l.includes('Ville') && !l.includes('Samedi') && !l.includes('Comité'));
-        if (potentialOpponent) report.teamA.name = potentialOpponent.trim();
+        // Look for all-caps lines that aren't other keywords
+        const headers = lines.filter(l => l.match(/^[A-ZÀ-Ÿ\s\-]{5,}$/) && !l.includes('DARDILLY') && !l.includes('MATCH') && !l.includes('VILLE') && !l.includes('COMITÉ') && !l.includes('JOUR'));
+        if (headers.length > 0) report.teamA.name = headers[0];
     }
 
-    // 4. Players, Score & Sets
-    lines.forEach((line, idx) => {
-        // Player detection
-        const playerMatch = line.match(/^(\d{1,2})\s+([A-ZÀ-Ÿ\s\-]{3,})(?!\s*\d{7})/);
-        if (playerMatch) {
-            const player = { number: playerMatch[1], name: playerMatch[2].trim() };
-            if (!report.teamB.players.find(p => p.number === player.number)) {
-                report.teamB.players.push(player);
+    // 4. Score & Sets
+    // In these reports, scores are often listed in a summary line
+    // Look for "Score" then the numbers
+    let scoreFound = false;
+    for (let i = 0; i < lines.length; i++) {
+        if (lines[i].includes('Score')) {
+            // Check following lines for numbers
+            for (let j = i + 1; j < i + 5 && j < lines.length; j++) {
+                const sMatch = lines[j].match(/^([0-3])\s+([0-3])$/);
+                if (sMatch) {
+                    report.score = `${sMatch[1]} - ${sMatch[2]}`;
+                    scoreFound = true;
+                    // Look for sets below this
+                    if (lines[j+1]) {
+                        const sets = lines[j+1].match(/(\d{1,2})\s+(\d{1,2})/g);
+                        if (sets) report.sets = sets.map(s => s.replace(/\s+/, ':')).join(', ');
+                    }
+                    break;
+                }
             }
         }
+        if (scoreFound) break;
+    }
 
-        // Score detection (e.g., "1 3" in a specific summary line)
-        const scoreMatch = line.match(/^([0-3])\s+([0-3])$/);
-        if (scoreMatch && !report.score) {
-            report.score = `${scoreMatch[1]} - ${scoreMatch[2]}`;
-        }
-        
-        // Sets detection (looks for set scores in the summary table)
-        if (line.includes('Score') && lines[idx+1]) {
-            const setLine = lines[idx+1];
-            const sets = setLine.match(/(\d{1,2})\s+(\d{1,2})/g);
-            if (sets) report.sets = sets.join(', ');
+    // 5. Players
+    // Find player patterns: N° Name (License)
+    // Example: "1 PLAYER NAME" or "1 PLAYER NAME 1234567"
+    lines.forEach(line => {
+        const pMatch = line.match(/^(\d{1,2})\s+([A-ZÀ-Ÿ\s\-]{3,})/);
+        if (pMatch) {
+            const num = pMatch[1];
+            const name = pMatch[2].trim();
+            // Skip if it looks like a header or city
+            if (name === 'LYON' || name === 'VILLE' || name === 'MATCH') return;
+            
+            const player = { number: num, name: name };
+            if (!report.teamB.players.find(p => p.number === num)) {
+                report.teamB.players.push(player);
+            }
         }
     });
 
