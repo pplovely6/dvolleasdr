@@ -188,38 +188,71 @@ function parseMatchReport(text) {
     const resultsIdx = lines.findIndex(l => l.includes('RESULTATS'));
     if (resultsIdx !== -1) {
         // Look for the table lines below RESULTATS
-        // Example line: "1 1 1 25 1 32' 21 0 1 1"
-        // Pattern: [T] [R] [G] [P] [Durée] [P] [G] [R] [T]
-        const tableLines = lines.slice(resultsIdx + 1, resultsIdx + 10);
+        const tableLines = lines.slice(resultsIdx + 1, resultsIdx + 12);
         tableLines.forEach(line => {
-            // Match set scores like "25 ... 21" or "25 ... 18"
-            // The OCR might put spaces or multiple numbers between the scores
-            const match = line.match(/(\d{2})\s+\d+\s+\d+\s+(\d{2})/);
-            if (match) {
-                const s1 = match[1];
-                const s2 = match[2];
-                if (parseInt(s1) > 5 && parseInt(s2) > 5) {
+            // Updated extraction logic for packed result lines
+            // Example: "00125226'18000" where 25 and 18 are relevant
+            // Example: "00011135'25100" where 11 and 25 are relevant
+            
+            const matchBefore = line.match(/(\d{2})(\d{1,2})(\d{2,3})'/);
+            const matchAfter = line.match(/'(\d{2})(\d{2,3})/);
+            
+            if (matchBefore && matchAfter) {
+                // If we have both, we can be more precise
+                const s1 = parseInt(matchBefore[1]);
+                const s2 = parseInt(matchAfter[1]);
+                if (s1 > 5 && s2 > 5) {
                     report.sets += (report.sets ? ', ' : '') + `${s1}:${s2}`;
+                    return;
                 }
-            } else {
-                // Try another pattern if the duration (') is present
-                const match2 = line.match(/(\d{2})\s+\d+\s+\d+'\s+(\d{2})/);
-                if (match2) {
-                    const s1 = match2[1];
-                    const s2 = match2[2];
-                    if (parseInt(s1) > 5 && parseInt(s2) > 5) {
+            } else if (matchBefore) {
+                const s1 = parseInt(matchBefore[1]);
+                // Try to find the second score in the line after '
+                const s2Match = line.match(/'(\d{2})/);
+                if (s2Match) {
+                    const s2 = parseInt(s2Match[1]);
+                    if (s1 > 5 && s2 > 5) {
                         report.sets += (report.sets ? ', ' : '') + `${s1}:${s2}`;
+                        return;
                     }
+                }
+            } else if (matchAfter) {
+                const s2 = parseInt(matchAfter[1]);
+                // Try to find the first score in the line before '
+                const s1Match = line.match(/(\d{2})(\d{1,2})'/);
+                if (s1Match) {
+                    const s1 = parseInt(s1Match[1]);
+                    if (s1 > 5 && s2 > 5) {
+                        report.sets += (report.sets ? ', ' : '') + `${s1}:${s2}`;
+                        return;
+                    }
+                }
+            }
+
+            // Fallback for spaced/other formats
+            const matchFallback = line.match(/(\d{2})\s+\d+'\s+(\d{2})/) || 
+                                 line.match(/(\d{2})\s+\d+\s+\d+'\s+(\d{2})/) ||
+                                 line.match(/(\d{2})\s+(\d{2})\s+\d+'/);
+            if (matchFallback) {
+                const s1 = parseInt(matchFallback[1]);
+                const s2 = parseInt(matchFallback[2]);
+                if (s1 > 5 && s2 > 5) {
+                    report.sets += (report.sets ? ', ' : '') + `${s1}:${s2}`;
                 }
             }
         });
 
         // Match winner and final score line
-        // Example: "Vainqueur: AS DARDILLOISE 3/0"
-        const winnerLine = lines.slice(resultsIdx).find(l => l.includes('Vainqueur'));
-        if (winnerLine) {
-            const scoreM = winnerLine.match(/(\d)\/(\d)/);
-            if (scoreM) report.score = `${scoreM[1]} - ${scoreM[2]}`;
+        const winnerLineIdx = lines.slice(resultsIdx).findIndex(l => l.includes('Vainqueur'));
+        if (winnerLineIdx !== -1) {
+            const winnerLine = lines[resultsIdx + winnerLineIdx];
+            const nextLine = lines[resultsIdx + winnerLineIdx + 1] || "";
+            const combined = winnerLine + " " + nextLine;
+            
+            const scoreM = combined.match(/(\d)\/(\d)/);
+            if (scoreM) {
+                report.score = `${scoreM[1]} - ${scoreM[2]}`;
+            }
         }
     }
 
