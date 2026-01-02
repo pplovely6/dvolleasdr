@@ -187,22 +187,39 @@ function parseMatchReport(text) {
     // 4. Score & Sets
     const resultsIdx = lines.findIndex(l => l.includes('RESULTATS'));
     if (resultsIdx !== -1) {
-        for (let i = resultsIdx + 1; i < resultsIdx + 20 && i < lines.length; i++) {
-            const line = lines[i];
-            // Score summary winner
-            if (line.includes('Vainqueur') && lines[i+1]) {
-                const scoreM = lines[i+1].match(/(\d)\/(\d)/) || line.match(/(\d)\/(\d)/);
-                if (scoreM) report.score = `${scoreM[1]} - ${scoreM[2]}`;
-            }
-            // Set scores pattern like "11125132'21011" -> 25:21
-            const setM = line.match(/(\d{2})\d+'(\d{2})/);
-            if (setM) {
-                const s1 = setM[1];
-                const s2 = setM[2];
+        // Look for the table lines below RESULTATS
+        // Example line: "1 1 1 25 1 32' 21 0 1 1"
+        // Pattern: [T] [R] [G] [P] [Durée] [P] [G] [R] [T]
+        const tableLines = lines.slice(resultsIdx + 1, resultsIdx + 10);
+        tableLines.forEach(line => {
+            // Match set scores like "25 ... 21" or "25 ... 18"
+            // The OCR might put spaces or multiple numbers between the scores
+            const match = line.match(/(\d{2})\s+\d+\s+\d+\s+(\d{2})/);
+            if (match) {
+                const s1 = match[1];
+                const s2 = match[2];
                 if (parseInt(s1) > 5 && parseInt(s2) > 5) {
                     report.sets += (report.sets ? ', ' : '') + `${s1}:${s2}`;
                 }
+            } else {
+                // Try another pattern if the duration (') is present
+                const match2 = line.match(/(\d{2})\s+\d+\s+\d+'\s+(\d{2})/);
+                if (match2) {
+                    const s1 = match2[1];
+                    const s2 = match2[2];
+                    if (parseInt(s1) > 5 && parseInt(s2) > 5) {
+                        report.sets += (report.sets ? ', ' : '') + `${s1}:${s2}`;
+                    }
+                }
             }
+        });
+
+        // Match winner and final score line
+        // Example: "Vainqueur: AS DARDILLOISE 3/0"
+        const winnerLine = lines.slice(resultsIdx).find(l => l.includes('Vainqueur'));
+        if (winnerLine) {
+            const scoreM = winnerLine.match(/(\d)\/(\d)/);
+            if (scoreM) report.score = `${scoreM[1]} - ${scoreM[2]}`;
         }
     }
 
