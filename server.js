@@ -186,9 +186,16 @@ function parseMatchReport(text) {
         if (wm) {
             report.score = `${wm[1]} - ${wm[2]}`;
         } else {
-            // sometimes final score formatted as '3/0' with team text before
-            const wm2 = winnerLine.match(/\b(\d{1})\/(\d{1})\b/);
-            if (wm2) report.score = `${wm2[1]} - ${wm2[2]}`;
+            // sometimes final score is on the next line (e.g. 'Vainqueur:' then next line 'AS DARDILLY 3/0')
+            const idx = lines.findIndex(l => /Vainqueur\b/i.test(l));
+            if (idx !== -1 && lines[idx+1]) {
+                const next = lines[idx+1];
+                const wm2 = next.match(/\b(\d{1})\/(\d{1})\b/);
+                if (wm2) report.score = `${wm2[1]} - ${wm2[2]}`;
+            }
+            // fallback: sometimes the score is inline with a slash
+            const wm3 = winnerLine.match(/\b(\d{1})\/(\d{1})\b/);
+            if (!report.score && wm3) report.score = `${wm3[1]} - ${wm3[2]}`;
         }
     }
 
@@ -294,36 +301,30 @@ function parseMatchReport(text) {
 
     // Additional heuristic #1: look for table headers that often precede per-set points
     const tryHeaderExtract = () => {
-        // try to capture block between T R G P and P G headers (common layout)
-        const bMatches = text.match(/P\s+G\s+([0-9\s\']{1,200})/i);
-        // try to find TRGP header region before the P G header
-        let aMatches = null;
-        const pgIndex = text.search(/P\s+G\s+/i);
-        if (pgIndex !== -1) {
-            const before = text.slice(0, pgIndex);
-            const trIdx = before.toUpperCase().lastIndexOf('T R G P');
-            if (trIdx !== -1) {
-                aMatches = [null, before.slice(trIdx)];
-            }
+        // try to find a 'PGRT' (or similar PG header) block and extract the next few numeric lines
+        const idx = text.search(/PGRT|PGR T|P G R T|P\s+G|PG/i);
+        if (idx === -1) return null;
+        // take substring starting at the header and inspect the subsequent lines
+        const sub = text.slice(idx);
+        const subLines = sub.split(/\r?\n/).slice(1, 6); // next up to 5 lines
+        const extracted = [];
+        for (const ln of subLines) {
+            // collect 1-2 digit numbers (the pdf extraction often concatenates fields)
+            const nums = (ln.match(/\d{1,2}/g) || []).map(n=>parseInt(n,10));
+            if (nums.length >= 5) extracted.push(nums);
         }
-        let aNums = [], bNums = [];
-        if (aMatches && aMatches[1]) {
-            const nums = (aMatches[1].match(/\d+/g) || []).map(n=>parseInt(n,10));
-            // Table after T R G P is usually groups of 4 numbers (T R G P): take 4th, 8th, 12th...
-            const pvals = [];
-            for (let i = 3; i < nums.length && pvals.length < 3; i += 4) {
-                const v = nums[i]; if (v > 5 && v <= 31) pvals.push(v);
-            }
-            aNums = pvals;
-        }
-        if (bMatches && bMatches[1]) {
-            const nums = (bMatches[1].match(/\d+/g) || []).map(n=>parseInt(n,10));
-            bNums = nums.filter(n=>n>5 && n<=31).slice(0,3);
-        }
-        if (aNums.length === 3 && bNums.length === 3) {
+        // typical layout: each row has tokens where tokens[3] and tokens[4] are team points
+        if (extracted.length >= 3) {
             const res = [];
-            for (let i = 0; i < 3; i++) res.push(`${aNums[i]}:${bNums[i]}`);
-            return res;
+            for (let i = 0; i < 3; i++) {
+                const row = extracted[i];
+                if (row.length > 4) {
+                    const a = row[3];
+                    const b = row[4];
+                    if (a > 0 && b > 0) res.push(`${a}:${b}`);
+                }
+            }
+            if (res.length) return res;
         }
         return null;
     };
