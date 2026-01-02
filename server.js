@@ -135,95 +135,151 @@ app.post('/api/upload-report', upload.single('report'), async (req, res) => {
 
 // --- PDF Parsing Logic ---
 function parseMatchReport(text) {
-    const lines = text.split('\n').map(l => l.trim()).filter(l => l.length > 0);
+    const rawLines = text.split(/\r?\n/);
+    const lines = rawLines.map(l => l.trim()).filter(l => l.length > 0);
     let report = {
         matchId: "",
         date: "",
         teamA: { name: "", players: [] },
         teamB: { name: "AS DARDILLY", players: [] },
-        sets: "",
+        sets: [],
         score: ""
     };
 
-    // 1. Match ID
-    const matchLine = lines.find(l => l.includes('Match:'));
-    if (matchLine) {
-        const m = matchLine.match(/Match:\s*([A-Z0-9\-]+)/i);
-        if (m) report.matchId = m[1];
+    // Helper: normalize for month lookup
+    const monthMap = {
+        'janvier':'01','février':'02','fevrier':'02','mars':'03','avril':'04','mai':'05','juin':'06',
+        'juillet':'07','août':'08','aout':'08','septembre':'09','octobre':'10','novembre':'11','décembre':'12','decembre':'12'
+    };
+
+    // 1) Match ID (flexible)
+    for (const l of lines) {
+        const m = l.match(/Match[:\s]+([A-Z0-9\-]+)/i);
+        if (m) { report.matchId = m[1]; break; }
     }
 
-    // 2. Date
-    const datePattern = /(Samedi|Dimanche|Lundi|Mardi|Mercredi|Jeudi|Vendredi)\s+(\d{1,2})\s+([A-ZÀ-Ÿ][a-zà-ÿ]+)\s+(\d{4})/i;
-    const dateLine = lines.find(l => l.match(datePattern));
-    if (dateLine) {
-        const m = dateLine.match(datePattern);
+    // 2) Date (try multiple formats)
+    for (const l of lines) {
+        const m = l.match(/(Samedi|Dimanche|Lundi|Mardi|Mercredi|Jeudi|Vendredi)\s+(\d{1,2})\s+([A-Za-zÀ-ÿ]+)\s+(\d{4})/i);
         if (m) {
-            const months = { 
-                'Janvier': '01', 'Février': '02', 'Mars': '03', 'Avril': '04', 'Mai': '05', 'Juin': '06', 
-                'Juillet': '07', 'Août': '08', 'Septembre': '09', 'Octobre': '10', 'Novembre': '11', 'Décembre': '12',
-                'janvier': '01', 'février': '02', 'mars': '03', 'avril': '04', 'mai': '05', 'juin': '06', 
-                'juillet': '07', 'août': '08', 'septembre': '09', 'octobre': '10', 'novembre': '11', 'décembre': '12'
-            };
-            report.date = `${m[2].padStart(2, '0')}/${months[m[3].toLowerCase().charAt(0).toUpperCase() + m[3].toLowerCase().slice(1)] || '01'}/${m[4]}`;
+            const day = m[2].padStart(2,'0');
+            const mon = monthMap[m[3].toLowerCase()] || '01';
+            report.date = `${day}/${mon}/${m[4]}`;
+            break;
+        }
+        // ISO-like or dd/mm/yyyy
+        const m2 = l.match(/(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{2,4})/);
+        if (m2) {
+            const day = m2[1].padStart(2,'0');
+            const mon = m2[2].padStart(2,'0');
+            let yr = m2[3]; if (yr.length === 2) yr = '20'+yr;
+            report.date = `${day}/${mon}/${yr}`;
+            break;
         }
     }
 
-    // 3. Team Names
-    const stfonsIdx = lines.findIndex(l => l.includes('CO ST FONS'));
-    if (stfonsIdx !== -1) report.teamA.name = 'CO ST FONS';
-    
-    const rhodiaIdx = lines.findIndex(l => l.includes('RHÔDIA-VAISE'));
-    if (rhodiaIdx !== -1) report.teamA.name = 'RHÔDIA-VAISE';
-
-    if (!report.teamA.name) {
-        // Find line between Salle and SENIOR | MASCULIN
-        const salleIdx = lines.findIndex(l => l.includes('Salle:'));
-        if (salleIdx !== -1 && lines[salleIdx+1]) {
-            const potential = lines[salleIdx+1].replace('AS DARDILLOISE', '').replace('AS DARDILLY', '').trim();
-            if (potential.length > 3) report.teamA.name = potential;
-        }
-    }
-
-    // 4. Score & Sets
-    const resultsIdx = lines.findIndex(l => l.includes('RESULTATS'));
-    if (resultsIdx !== -1) {
-        for (let i = resultsIdx + 1; i < resultsIdx + 20 && i < lines.length; i++) {
-            const line = lines[i];
-            // Score summary winner
-            if (line.includes('Vainqueur') && lines[i+1]) {
-                const scoreM = lines[i+1].match(/(\d)\/(\d)/) || line.match(/(\d)\/(\d)/);
-                if (scoreM) report.score = `${scoreM[1]} - ${scoreM[2]}`;
+    // 3) Team names: look for a delimiter line e.g. "TEAM A - TEAM B" or "TEAM A vs TEAM B"
+    let teamLine = lines.find(l => /\bVS\b|\bvs\b|\bcontre\b|\s-\s|\s–\s|VS\.|V\.S\./.test(l));
+    if (teamLine) {
+        // split by common separators
+        const parts = teamLine.split(/\bVS\b|\bvs\b|\bcontre\b|\s-\s|\s–\s|VS\.|V\.S\./i).map(p=>p.trim()).filter(Boolean);
+        if (parts.length >= 2) {
+            // prefer to keep AS DARDILLY as teamB
+            if (parts[0].toUpperCase().includes('DARDILL')) {
+                report.teamB.name = parts[0]; report.teamA.name = parts[1];
+            } else if (parts[1].toUpperCase().includes('DARDILL')) {
+                report.teamA.name = parts[0]; report.teamB.name = parts[1];
+            } else {
+                report.teamA.name = parts[0]; report.teamB.name = parts[1];
             }
-            // Set scores pattern like "11125132'21011" -> 25:21
-            const setM = line.match(/(\d{2})\d+'(\d{2})/);
-            if (setM) {
-                const s1 = setM[1];
-                const s2 = setM[2];
-                if (parseInt(s1) > 5 && parseInt(s2) > 5) {
-                    report.sets += (report.sets ? ', ' : '') + `${s1}:${s2}`;
+        }
+    } else {
+        // fallback: find any line that contains AS DARDILLY and try to use neighbor as opponent
+        const dIdx = lines.findIndex(l => /AS\s*DARDILL/i.test(l) || /AS\s*DARDILLOIS/i.test(l));
+        if (dIdx !== -1) {
+            report.teamB.name = lines[dIdx];
+            // search backward/forward for opponent name (short uppercase line)
+            for (let k = dIdx-1; k >= Math.max(0,dIdx-6); k--) {
+                if (/^[A-ZÀ-Ÿ0-9 \-']{3,50}$/.test(lines[k]) && !/AS\s*DARDILL/i.test(lines[k])) { report.teamA.name = lines[k]; break; }
+            }
+            if (!report.teamA.name) {
+                for (let k = dIdx+1; k <= Math.min(lines.length-1,dIdx+6); k++) {
+                    if (/^[A-ZÀ-Ÿ0-9 \-']{3,50}$/.test(lines[k]) && !/AS\s*DARDILL/i.test(lines[k])) { report.teamA.name = lines[k]; break; }
                 }
             }
         }
     }
 
-    // 5. Players
-    let currentRoster = null;
-    lines.forEach(line => {
-        if (line.includes('CO ST FONS')) currentRoster = 'A';
-        if (line.includes('AS DARDILLOISE') || line.includes('AS DARDILLY')) currentRoster = 'B';
-        
-        // Pattern: "01DURIEUX CLEMENT1813922"
-        const pMatch = line.match(/^(\d{2})([A-ZÀ-Ÿ\s\-]{3,})(\d{7})$/);
-        if (pMatch) {
-            const num = parseInt(pMatch[1]);
-            const name = pMatch[2].trim();
-            if (currentRoster === 'B') {
-                if (!report.teamB.players.find(p => p.number === num)) {
-                    report.teamB.players.push({ number: num, name: name });
-                }
-            }
+    // 4) Score and sets: find explicit score patterns and per-set scores
+    // overall score like '3 - 1' or '3/1' or 'Score: 3-1'
+    for (const l of lines) {
+        const m = l.match(/\b(\d)\s*[\-\/]\s*(\d)\b/);
+        if (m && !/\d{6,}/.test(l)) { // avoid matching license numbers
+            // interpret as sets won
+            report.score = `${m[1]} - ${m[2]}`;
+            break;
+        }
+    }
+    // per-set scores like 25-21 or 21:25
+    const setScores = [];
+    lines.forEach(l => {
+        let match;
+        const regex = /(\d{1,2})\s*[:\-\/]\s*(\d{1,2})/g;
+        while ((match = regex.exec(l)) !== null) {
+            const a = parseInt(match[1],10), b = parseInt(match[2],10);
+            // ignore small numeric patterns (like dates) by requiring at least one value > 5
+            if (a > 5 || b > 5) setScores.push(`${a}:${b}`);
         }
     });
+    // keep unique and in order
+    report.sets = Array.from(new Set(setScores));
+
+    // 5) Players: detect roster headings and lines starting with numbers
+    let current = null; // 'A' or 'B'
+    lines.forEach(l => {
+        // roster header detection
+        if (report.teamA.name && l.toUpperCase().includes(report.teamA.name.toUpperCase())) current = 'A';
+        if (report.teamB.name && l.toUpperCase().includes(report.teamB.name.toUpperCase())) current = 'B';
+        if (/^Equipe\b/i.test(l) || /^ROSTER\b/i.test(l) || /^Joueurs\b/i.test(l)) {
+            // don't change current, it's a heading
+        }
+
+        // pattern 1: leading number then name, optional trailing license
+        let p = l.match(/^0?(\d{1,2})\s+([A-ZÀ-Ÿ][A-ZÀ-Ÿ\-\s']+?)\s*(?:\d{6,})?$/i);
+        if (p) {
+            const num = parseInt(p[1],10);
+            const name = p[2].trim();
+            if (current === 'A') {
+                if (!report.teamA.players.some(x=>x.number===num && x.name===name)) report.teamA.players.push({ number: num, name });
+            } else {
+                if (!report.teamB.players.some(x=>x.number===num && x.name===name)) report.teamB.players.push({ number: num, name });
+            }
+            return;
+        }
+
+        // pattern 2: concatenated like 01DURIEUX CLEMENT1813922
+        let p2 = l.match(/^0?(\d{1,2})([A-ZÀ-Ÿ\-\s']{3,})(?:\d{5,})?$/i);
+        if (p2) {
+            const num = parseInt(p2[1],10);
+            const name = p2[2].trim();
+            if (current === 'A') {
+                if (!report.teamA.players.some(x=>x.number===num && x.name===name)) report.teamA.players.push({ number: num, name });
+            } else {
+                if (!report.teamB.players.some(x=>x.number===num && x.name===name)) report.teamB.players.push({ number: num, name });
+            }
+            return;
+        }
+    });
+
+    // Final cleanup: if team names still blank try to infer from early uppercase lines
+    if (!report.teamA.name) {
+        const cand = lines.find(l => /^[A-ZÀ-Ÿ0-9 \-']{3,60}$/.test(l) && !/AS\s*DARDILL/i.test(l));
+        if (cand) report.teamA.name = cand;
+    }
+
+    // Convert sets array to string for backward compatibility
+    if (report.sets.length) report.sets = report.sets.join(', ');
+    else report.sets = '';
 
     return report;
 }
