@@ -178,48 +178,91 @@ function parseMatchReport(text) {
         }
     }
 
-    // 3) Team names: look for a delimiter line e.g. "TEAM A - TEAM B" or "TEAM A vs TEAM B"
-    let teamLine = lines.find(l => /\bVS\b|\bvs\b|\bcontre\b|\s-\s|\s–\s|VS\.|V\.S\./.test(l));
-    if (teamLine) {
-        // split by common separators
-        const parts = teamLine.split(/\bVS\b|\bvs\b|\bcontre\b|\s-\s|\s–\s|VS\.|V\.S\./i).map(p=>p.trim()).filter(Boolean);
-        if (parts.length >= 2) {
-            // prefer to keep AS DARDILLY as teamB
-            if (parts[0].toUpperCase().includes('DARDILL')) {
-                report.teamB.name = parts[0]; report.teamA.name = parts[1];
-            } else if (parts[1].toUpperCase().includes('DARDILL')) {
-                report.teamA.name = parts[0]; report.teamB.name = parts[1];
-            } else {
-                report.teamA.name = parts[0]; report.teamB.name = parts[1];
+    // 3) Team names: prefer explicit labels 'DOMICILE' / 'EXTÉRIEUR' if present
+    for (let i = 0; i < lines.length; i++) {
+        const l = lines[i];
+        if (/^DOMICILE\b[:\s]?/i.test(l) || /^DOMICILE[:\s]/i.test(l)) {
+            // capture after colon or next non-empty line
+            let val = l.split(':').slice(1).join(':').trim();
+            if (!val && lines[i+1]) val = lines[i+1];
+            if (val) {
+                if (/DARDILL/i.test(val)) report.teamB.name = val;
+                else report.teamA.name = val;
             }
         }
-    } else {
-        // fallback: find any line that contains AS DARDILLY and try to use neighbor as opponent
-        const dIdx = lines.findIndex(l => /AS\s*DARDILL/i.test(l) || /AS\s*DARDILLOIS/i.test(l));
-        if (dIdx !== -1) {
-            report.teamB.name = lines[dIdx];
-            // search backward/forward for opponent name (short uppercase line)
-            for (let k = dIdx-1; k >= Math.max(0,dIdx-6); k--) {
-                if (/^[A-ZÀ-Ÿ0-9 \-']{3,50}$/.test(lines[k]) && !/AS\s*DARDILL/i.test(lines[k])) { report.teamA.name = lines[k]; break; }
+        if (/^EXT\b|^EXTÉRIEUR\b|^EXTERIEUR\b/i.test(l)) {
+            let val = l.split(':').slice(1).join(':').trim();
+            if (!val && lines[i+1]) val = lines[i+1];
+            if (val) {
+                if (/DARDILL/i.test(val)) report.teamB.name = val;
+                else report.teamA.name = val;
             }
-            if (!report.teamA.name) {
-                for (let k = dIdx+1; k <= Math.min(lines.length-1,dIdx+6); k++) {
-                    if (/^[A-ZÀ-Ÿ0-9 \-']{3,50}$/.test(lines[k]) && !/AS\s*DARDILL/i.test(lines[k])) { report.teamA.name = lines[k]; break; }
+        }
+        // also common French labels
+        if (/^DOMICILE[:\s]/i.test(l) || /^EXTERIEUR[:\s]/i.test(l) || /^EXTÉRIEUR[:\s]/i.test(l)) {
+            // handled above
+        }
+    }
+
+    // If DOM/EXT labels not found, fallback to previous heuristic: team vs team line
+    if (!report.teamA.name || !report.teamB.name) {
+        let teamLine = lines.find(l => /\bVS\b|\bvs\b|\bcontre\b|\s-\s|\s–\s|VS\.|V\.S\./.test(l));
+        if (teamLine) {
+            const parts = teamLine.split(/\bVS\b|\bvs\b|\bcontre\b|\s-\s|\s–\s|VS\.|V\.S\./i).map(p=>p.trim()).filter(Boolean);
+            if (parts.length >= 2) {
+                if (parts[0].toUpperCase().includes('DARDILL')) {
+                    report.teamB.name = report.teamB.name || parts[0]; report.teamA.name = report.teamA.name || parts[1];
+                } else if (parts[1].toUpperCase().includes('DARDILL')) {
+                    report.teamA.name = report.teamA.name || parts[0]; report.teamB.name = report.teamB.name || parts[1];
+                } else {
+                    report.teamA.name = report.teamA.name || parts[0]; report.teamB.name = report.teamB.name || parts[1];
+                }
+            }
+        } else {
+            // fallback: find any isolated uppercase line with probable team name
+            const dIdx = lines.findIndex(l => /AS\s*DARDILL/i.test(l) || /AS\s*DARDILLOIS/i.test(l));
+            if (dIdx !== -1) {
+                report.teamB.name = report.teamB.name || lines[dIdx];
+                for (let k = dIdx-1; k >= Math.max(0,dIdx-6); k--) {
+                    if (/^[A-ZÀ-Ÿ0-9 \-']{3,50}$/.test(lines[k]) && !/AS\s*DARDILL/i.test(lines[k])) { report.teamA.name = report.teamA.name || lines[k]; break; }
+                }
+                if (!report.teamA.name) {
+                    for (let k = dIdx+1; k <= Math.min(lines.length-1,dIdx+6); k++) {
+                        if (/^[A-ZÀ-Ÿ0-9 \-']{3,50}$/.test(lines[k]) && !/AS\s*DARDILL/i.test(lines[k])) { report.teamA.name = report.teamA.name || lines[k]; break; }
+                    }
                 }
             }
         }
     }
 
-    // 4) Score and sets: find explicit score patterns and per-set scores
-    // overall score like '3 - 1' or '3/1' or 'Score: 3-1'
+    // 4) Score and sets: prefer lines with explicit labels 'SCORE' or 'RESULTAT'
+    let scoreFound = false;
     for (const l of lines) {
-        const m = l.match(/\b(\d)\s*[\-\/]\s*(\d)\b/);
-        if (m && !/\d{6,}/.test(l)) { // avoid matching license numbers
-            // interpret as sets won
-            report.score = `${m[1]} - ${m[2]}`;
-            break;
+        if (/SCORE|RÉSULTAT|RÉSULTATS|RESULTAT|RÉSULTAT/i.test(l)) {
+            const m = l.match(/(\d)\s*[\-\/]\s*(\d)/);
+            if (m) {
+                report.score = `${m[1]} - ${m[2]}`;
+                scoreFound = true;
+                break;
+            }
+            // sometimes score is on next line
+            const next = lines[lines.indexOf(l)+1];
+            if (next) {
+                const m2 = next.match(/(\d)\s*[\-\/]\s*(\d)/);
+                if (m2) { report.score = `${m2[1]} - ${m2[2]}`; scoreFound = true; break; }
+            }
         }
     }
+    if (!scoreFound) {
+        for (const l of lines) {
+            const m = l.match(/\b(\d)\s*[\-\/]\s*(\d)\b/);
+            if (m && !/\d{6,}/.test(l)) { // avoid matching license numbers
+                report.score = `${m[1]} - ${m[2]}`;
+                break;
+            }
+        }
+    }
+
     // per-set scores like 25-21 or 21:25
     const setScores = [];
     lines.forEach(l => {
@@ -227,12 +270,111 @@ function parseMatchReport(text) {
         const regex = /(\d{1,2})\s*[:\-\/]\s*(\d{1,2})/g;
         while ((match = regex.exec(l)) !== null) {
             const a = parseInt(match[1],10), b = parseInt(match[2],10);
-            // ignore small numeric patterns (like dates) by requiring at least one value > 5
-            if (a > 5 || b > 5) setScores.push(`${a}:${b}`);
+            // skip if this line is a time/duration line (contains Début/Fin/Durée)
+            if (/\b(Début|Fin|Durée|Durée par Set)\b/i.test(l)) continue;
+            if ((a > 5 || b > 5) && !(a > 31 || b > 31)) setScores.push(`${a}:${b}`);
         }
     });
     // keep unique and in order
-    report.sets = Array.from(new Set(setScores));
+    let setsFromPairs = Array.from(new Set(setScores));
+
+    // Additional heuristic #1: look for table headers that often precede per-set points
+    const tryHeaderExtract = () => {
+        // try to capture block between T R G P and P G headers (common layout)
+        const bMatches = text.match(/P\s+G\s+([0-9\s\']{1,200})/i);
+        // try to find TRGP header region before the P G header
+        let aMatches = null;
+        const pgIndex = text.search(/P\s+G\s+/i);
+        if (pgIndex !== -1) {
+            const before = text.slice(0, pgIndex);
+            const trIdx = before.toUpperCase().lastIndexOf('T R G P');
+            if (trIdx !== -1) {
+                aMatches = [null, before.slice(trIdx)];
+            }
+        }
+        let aNums = [], bNums = [];
+        if (aMatches && aMatches[1]) {
+            const nums = (aMatches[1].match(/\d+/g) || []).map(n=>parseInt(n,10));
+            // Table after T R G P is usually groups of 4 numbers (T R G P): take 4th, 8th, 12th...
+            const pvals = [];
+            for (let i = 3; i < nums.length && pvals.length < 3; i += 4) {
+                const v = nums[i]; if (v > 5 && v <= 31) pvals.push(v);
+            }
+            aNums = pvals;
+        }
+        if (bMatches && bMatches[1]) {
+            const nums = (bMatches[1].match(/\d+/g) || []).map(n=>parseInt(n,10));
+            bNums = nums.filter(n=>n>5 && n<=31).slice(0,3);
+        }
+        if (aNums.length === 3 && bNums.length === 3) {
+            const res = [];
+            for (let i = 0; i < 3; i++) res.push(`${aNums[i]}:${bNums[i]}`);
+            return res;
+        }
+        return null;
+    };
+
+    const headerSets = tryHeaderExtract();
+    if (headerSets && headerSets.length) finalSets = headerSets;
+
+    // Additional heuristic: scan numeric tokens to find runs of team points
+    // collect numeric tokens with positions and skip obvious timestamps (13:48, 30')
+    const numMatches = [];
+    const numRe = /\b(\d{1,2})\b/g;
+    let mm; let tokenIdx = 0;
+    while ((mm = numRe.exec(text)) !== null) {
+        const s = mm[1]; const n = parseInt(s,10); const pos = mm.index;
+        const prev = text[pos-1] || '';
+        const next = text[pos + s.length] || '';
+        // skip times like 13:48 or minute marks like 30' or 'h' suffix
+        if (prev === ':' || next === ':' || next === '\'' || /h/i.test(next)) { tokenIdx++; continue; }
+        numMatches.push({ n, tokenIdx, pos });
+        tokenIdx++;
+    }
+    const validIdx = numMatches.filter(x => x.n > 5 && x.n <= 31);
+    // find consecutive runs in the original numeric sequence (by token index)
+    const runs = [];
+    if (validIdx.length) {
+        let run = [validIdx[0]];
+        for (let i = 1; i < validIdx.length; i++) {
+            if (validIdx[i].tokenIdx === validIdx[i-1].tokenIdx + 1) run.push(validIdx[i]);
+            else { if (run.length >= 3) runs.push(run.map(r=>r.n)); run = [validIdx[i]]; }
+        }
+        if (run.length >= 3) runs.push(run.map(r=>r.n));
+    }
+
+    let finalSets = [];
+    if (runs.length) {
+        // If there's a run of length >=6, split into two teams
+        const longRun = runs.find(r => r.length >= 6);
+        if (longRun) {
+            const first = longRun.slice(0,3);
+            const second = longRun.slice(3,6);
+            for (let i = 0; i < Math.min(first.length, second.length); i++) finalSets.push(`${first[i]}:${second[i]}`);
+        } else if (runs.length >= 2) {
+            // take first two runs (closest ones) as teamA and teamB
+            const a = runs[0].slice(0,3);
+            const b = runs[1].slice(0,3);
+            for (let i = 0; i < Math.min(a.length, b.length); i++) finalSets.push(`${a[i]}:${b[i]}`);
+        } else if (runs.length === 1 && runs[0].length === 3) {
+            // single triple found; try to find the opposing triple nearby in text
+            const idxFirstNum = text.indexOf(String(runs[0][0]));
+            // search for another triple within 200 chars
+            const nearby = text.slice(Math.max(0, idxFirstNum - 200), idxFirstNum + 200).match(/\b(\d{1,2})\b/g) || [];
+            if (nearby.length >= 6) {
+                const nums = nearby.map(n=>parseInt(n,10)).filter(n=>n>5 && n<=31);
+                if (nums.length >= 6) {
+                    const a = nums.slice(0,3), b = nums.slice(3,6);
+                    for (let i = 0; i < Math.min(a.length,b.length); i++) finalSets.push(`${a[i]}:${b[i]}`);
+                }
+            }
+        }
+    }
+
+    // Prefer explicit pair matches first, otherwise fall back to heuristic
+    if (setsFromPairs.length) report.sets = setsFromPairs.join(', ');
+    else if (finalSets.length) report.sets = finalSets.join(', ');
+    else report.sets = '';
 
     // 5) Players: detect roster headings and lines starting with numbers
     let current = null; // 'A' or 'B'
