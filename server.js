@@ -178,6 +178,20 @@ function parseMatchReport(text) {
         }
     }
 
+    // Quick check: some PDFs include final score on a 'Vainqueur' line like
+    // "Vainqueur: AS DARDILLY 1 3/0" — capture that first if present
+    const winnerLine = lines.find(l => /Vainqueur\b/i.test(l));
+    if (winnerLine) {
+        const wm = winnerLine.match(/(\d)\s*[\-\/]\s*(\d)/);
+        if (wm) {
+            report.score = `${wm[1]} - ${wm[2]}`;
+        } else {
+            // sometimes final score formatted as '3/0' with team text before
+            const wm2 = winnerLine.match(/\b(\d{1})\/(\d{1})\b/);
+            if (wm2) report.score = `${wm2[1]} - ${wm2[2]}`;
+        }
+    }
+
     // 3) Team names: prefer explicit labels 'DOMICILE' / 'EXTÉRIEUR' if present
     for (let i = 0; i < lines.length; i++) {
         const l = lines[i];

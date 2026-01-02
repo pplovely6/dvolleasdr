@@ -207,6 +207,14 @@ function parseMatchReport(text) {
     let report = { sets: [], score: "" };
 
     // Using same heuristics as server.js: pairs and numeric runs
+    // Quick 'Vainqueur' scan
+    const winnerLine = lines.find(l => /Vainqueur\b/i.test(l));
+    if (winnerLine) {
+        const wm = winnerLine.match(/(\d)\s*[\-\/]\s*(\d)/);
+        if (wm) { report.sets = ''; report.score = `${wm[1]} - ${wm[2]}`; return report; }
+        const wm2 = winnerLine.match(/\b(\d{1})\/(\d{1})\b/);
+        if (wm2) { report.sets = ''; report.score = `${wm2[1]} - ${wm2[2]}`; return report; }
+    }
     const setScores = [];
     lines.forEach(l => {
         let match;
@@ -309,3 +317,4 @@ function parseMatchReport(text) {
 
 const out = parseMatchReport(text);
 console.log('Parsed sets:', out.sets);
+console.log('Parsed score:', out.score || '(none)');
